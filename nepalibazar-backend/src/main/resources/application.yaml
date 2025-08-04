@@ -71,7 +71,7 @@ jpa:
         show_sql: true
 
 smtp:
-  username: sagardhungana061@gmail.com
-  password: srhw srgv axbz qmwi
+  username: "your email"
+  password: "your google app password"
 
 
