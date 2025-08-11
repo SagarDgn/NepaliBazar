@@ -6,14 +6,16 @@ import React from 'react'
 
 const Navbar = () => {
   return (
-    <nav className="border-b border-zinc-500 py-3 px-4 md:px-12 h-24 ">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4  text-black my-5">
+    <nav className="border-b border-zinc-500 py-3 px-4 md:px-12 h-24  ">
+      <div className="flex flex-col md:flex-row items-center justify-between  text-black my-5">
         
         <div className=" md:text-2xl mt-1 mx-6 font-bold ">
-          <Link href="/home" className='text-2xl'>NepaliBazar</Link>
+          <Link href="/home" className='text-2xl'>
+          <img src='logo.png' height={100} width={200}/>
+          </Link>
         </div>
 
-        <ul className="hidden md:flex gap-6 mt-1 font-normal text-base text-black">
+        <ul className="hidden md:flex gap-6 mt-1 font-normal text-base text-black ">
             <Link href="/home" className="hover:underline decoration-gray-400 hover:text-gray-800">
             Home</Link>
            <Link href="/about" className="hover:underline decoration-gray-400 hover:text-gray-800">

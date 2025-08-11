@@ -1,6 +1,7 @@
 package com.nepalibazar.usecase.user.add;
 
 import com.nepalibazar.convertor.UserConvertor;
+import com.nepalibazar.core.usecase.UseCase;
 import com.nepalibazar.repository.UserRepository;
 import com.nepalibazar.service.EmailService;
 import com.nepalibazar.service.EmailValidationService;
@@ -9,7 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class AddUserUseCase {
+public class AddUserUseCase implements UseCase<AddUserUseCaseRequest, AddUserUseCaseResponse> {
     public final UserRepository userRepository;
     public final EmailValidationService emailValidationService;
     public final EmailService emailService;
@@ -26,6 +27,7 @@ public class AddUserUseCase {
         this.otpService=otpService;
     }
 
+    @Override
     public AddUserUseCaseResponse execute(AddUserUseCaseRequest request) {
 
         if (request.emailPhone() == null || request.emailPhone().isBlank()) {

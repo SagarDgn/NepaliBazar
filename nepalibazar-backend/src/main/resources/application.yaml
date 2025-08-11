@@ -37,7 +37,7 @@ micronaut:
   email:
     from:
       name: NepaliBazar Support
-      email: sagardhungana0612535@gmail.com
+      email: sagardhungana06@gmail.com
     javamail:
       properties:
         mail:
@@ -71,7 +71,7 @@ jpa:
         show_sql: true
 
 smtp:
-  username: "your email"
-  password: "your google app password"
+  username: 
+  password:
 
 

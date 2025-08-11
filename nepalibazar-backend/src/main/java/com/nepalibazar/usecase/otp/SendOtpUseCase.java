@@ -1,5 +1,6 @@
 package com.nepalibazar.usecase.otp;
 
+import com.nepalibazar.core.usecase.UseCase;
 import com.nepalibazar.service.EmailValidationService;
 import com.nepalibazar.service.OtpService;
 import jakarta.inject.Inject;
@@ -16,6 +17,7 @@ public class SendOtpUseCase {
         this.emailValidationService = emailValidationService;
         this.otpService = otpService;
     }
+
 
     public SendOtpUseCaseResponse execute(String email){
         if(email == null || email.isBlank()){

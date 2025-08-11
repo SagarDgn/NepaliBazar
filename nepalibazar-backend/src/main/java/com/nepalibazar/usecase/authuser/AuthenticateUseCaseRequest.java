@@ -1,4 +1,7 @@
-package com.nepalibazar.usecase.auth;
+package com.nepalibazar.usecase.authuser;
 
-public record AuthenticateUseCaseRequest() {
+import com.nepalibazar.core.usecase.UseCase;
+
+public record AuthenticateUseCaseRequest(String emailphone,
+                                         String password) implements UseCase.Request {
 }

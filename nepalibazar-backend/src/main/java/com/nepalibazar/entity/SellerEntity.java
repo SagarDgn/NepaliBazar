@@ -41,7 +41,8 @@ public class SellerEntity {
     private String rating;
 
 //    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductEntity> products = new ArrayList<>();
+//    private List<ProductEntity> products = new ArrayList<>();
+
 
     @DateCreated
     @Column(name = "creation_date")
@@ -110,13 +111,13 @@ public class SellerEntity {
         this.rating = rating;
     }
 
-    public List<ProductEntity> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<ProductEntity> products) {
-        this.products = products;
-    }
+//    public List<ProductEntity> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<ProductEntity> products) {
+//        this.products = products;
+//    }
 
     public Instant getCreatedAt() {
         return createdAt;

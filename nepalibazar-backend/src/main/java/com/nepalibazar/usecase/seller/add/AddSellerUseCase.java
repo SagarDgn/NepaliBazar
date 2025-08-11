@@ -1,12 +1,13 @@
 package com.nepalibazar.usecase.seller.add;
 
 import com.nepalibazar.convertor.SellerConvertor;
+import com.nepalibazar.core.usecase.UseCase;
 import com.nepalibazar.repository.SellerRepository;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class AddSellerUseCase {
+public class AddSellerUseCase implements UseCase<AddSellerUseCaseRequest, AddSellerUseCaseResponse> {
 
     public final SellerRepository sellerRepository;
 

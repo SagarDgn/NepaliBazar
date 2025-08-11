@@ -1,11 +1,12 @@
 package com.nepalibazar.usecase.product.delete;
 
+import com.nepalibazar.core.usecase.UseCase;
 import com.nepalibazar.repository.ProductRepository;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class DeleteProductUseCase {
+public class DeleteProductUseCase  {
 
     public final ProductRepository productRepository;
 

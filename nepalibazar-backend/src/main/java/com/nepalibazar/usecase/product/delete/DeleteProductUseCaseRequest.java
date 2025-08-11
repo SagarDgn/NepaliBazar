@@ -1,4 +1,6 @@
 package com.nepalibazar.usecase.product.delete;
 
-public record DeleteProductUseCaseRequest() {
+import com.nepalibazar.core.usecase.UseCase;
+
+public record DeleteProductUseCaseRequest() implements UseCase.Request {
 }

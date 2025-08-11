@@ -1,11 +1,12 @@
 package com.nepalibazar.usecase.user.update;
 
+import com.nepalibazar.core.usecase.UseCase;
 import com.nepalibazar.repository.UserRepository;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class UpdateUserUseCase {
+public class UpdateUserUseCase implements UseCase<UpdateUserUseCaseRequest, UpdateUserUseCaseResponse> {
     public final UserRepository userRepository;
 
     @Inject
@@ -13,6 +14,7 @@ public class UpdateUserUseCase {
         this.userRepository=userRepository;
     }
 
+    @Override
     public UpdateUserUseCaseResponse execute(UpdateUserUseCaseRequest request){
         var existingUser= userRepository.findById(request.id())
                 .orElseThrow(()->new RuntimeException("User not found with: "+ request.id()));

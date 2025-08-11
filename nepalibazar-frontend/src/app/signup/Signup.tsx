@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { sendOtp } from "../services/UserService"; // New API for /user/sent-otp
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 interface SignupProps {
   onOtpSent: (email: string) => void;
@@ -49,7 +50,7 @@ const Signup: React.FC<SignupProps> = ({ onOtpSent }) => {
 
   return (
 
-  <div className="flex flex-row items-start justify-start w-full min-h-screen px-10 py-16 bg-blue-50/25 gap-16 border-t border-gray-300 rounded ">
+  <div className="flex flex-row  w-full min-h-screen px-10 py-16 bg-blue-50/25 gap-16 border-t border-gray-300 rounded ">
     <div className=" w-[500px] h-[600px] ">
       <img className="rounded shadow-blue-200 w-full" src="signupPic.png"/>
     </div>
@@ -74,6 +75,12 @@ const Signup: React.FC<SignupProps> = ({ onOtpSent }) => {
         {loading ? "Sending OTP..." : "Request OTP"}
       </button>
     </form>
+    <div className="py-1.5 ">
+      <Link href="/login" className=" flex flex-row">
+      <p className="font-extralight">Already have account?</p>
+      <p className=" hover  font-light hover:underline">Login</p>
+      </Link>
+    </div>
     </div>
     </div>
   );

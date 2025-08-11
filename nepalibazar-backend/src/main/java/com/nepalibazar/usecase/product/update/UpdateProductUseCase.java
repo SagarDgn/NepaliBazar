@@ -1,11 +1,12 @@
 package com.nepalibazar.usecase.product.update;
 
+import com.nepalibazar.core.usecase.UseCase;
 import com.nepalibazar.repository.ProductRepository;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class UpdateProductUseCase {
+public class UpdateProductUseCase implements UseCase<UpdateProductUseCaseRequest, UpdateProductUseCaseResponse> {
 
     public final ProductRepository productRepository;
 

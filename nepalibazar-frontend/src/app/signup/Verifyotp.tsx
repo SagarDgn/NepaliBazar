@@ -84,7 +84,7 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
 
 
   return (
-    <div className="flex flex-row items-start justify-start w-full min-h-screen px-10 py-16 bg-blue-50/25 gap-16 border-t border-gray-300 rounded">
+    <div className="flex flex-row items-start justify-start w-full min-h-screen px-10 py-16  bg-blue-50/25 gap-16 border-t border-gray-300 rounded">
       <div className="w-[500px] h-[600px]">
         <img className="rounded shadow-blue-200 w-full object-cover" src="signupPic.png" />
       </div>
@@ -99,7 +99,7 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
             placeholder="Name"
             value={formData.userName}
             onChange={handleChange}
-            className="border-b border-gray-500 p-2 rounded outline-none"
+            className="border-b border-gray-500 p-2 outline-none"
           />
           {errors.userName && <p className="text-red-600 text-sm">{errors.userName}</p>}
 
@@ -109,7 +109,7 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="border-b border-gray-500 p-2 rounded outline-none"
+            className="border-b border-gray-500 p-2  outline-none"
           />
           {errors.password && <p className="text-red-600 text-sm">{errors.password}</p>}
 
@@ -118,7 +118,7 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
             placeholder="Address"
             value={formData.address}
             onChange={handleChange}
-            className="border-b border-gray-500 p-2 rounded outline-none"
+            className="border-b border-gray-500 p-2  outline-none"
           />
           {errors.address && <p className="text-red-600 text-sm">{errors.address}</p>}
 

@@ -23,7 +23,7 @@ public class SellerConvertor {
         return sellerEntity;
     }
 
-    public static SearchSellerUseCaseResponse searchSellerUseCaseResponse(SellerEntity sellerEntity) {
+    public static SearchSellerUseCaseResponse toSearchSellerUseCaseResponse(SellerEntity sellerEntity) {
         return new SearchSellerUseCaseResponse(
                 sellerEntity.getId(),
                 sellerEntity.getSellerName(),
