@@ -22,6 +22,8 @@ public class SecurityUtils {
     }
 
     public static boolean verifyPassword(String password, String stored) {
+        System.out.println("Password "+ password);
+        System.out.println("Stored " + stored);
         String[] parts = stored.split(":");
         if (parts.length != 2) return false;
 
