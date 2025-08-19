@@ -5,6 +5,7 @@ import io.micronaut.data.annotation.DateCreated;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 
@@ -22,8 +23,9 @@ public class ReviewEntity {
     @Column(name = "product_rating")
     private double rating;
 
-//    @Column(name = "product_image")
-//    private List<String> productImage;
+    @Column(name = "product_image")
+    @ElementCollection
+    private List<String> productImage;
 
     @JoinColumn(name = "product_data")
     @ManyToOne
@@ -61,13 +63,13 @@ public class ReviewEntity {
         this.rating = rating;
     }
 
-//    public List<String> getProductImage() {
-//        return productImage;
-//    }
-//
-//    public void setProductImage(List<String> productImage) {
-//        this.productImage = productImage;
-//    }
+    public List<String> getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(List<String> productImage) {
+        this.productImage = productImage;
+    }
 
     public ProductEntity getProductEntity() {
         return productEntity;

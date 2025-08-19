@@ -23,7 +23,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row w-full min-h-screen px-10 py-16 mt-6 ml-6 bg-blue-50/25 gap-16 border-t border-gray-300 rounded">
+    <div className="flex flex-row w-full min-h-screen px-10 py-16 mt-6 ml-6 bg-blue-100/25 gap-16 border-t border-gray-300 rounded">
       <div className="w-[500px] h-[600px]">
         <img
           className="rounded shadow-blue-200 w-full"

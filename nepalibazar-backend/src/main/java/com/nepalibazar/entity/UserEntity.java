@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -25,32 +27,34 @@ public class UserEntity {
     @Column(name = "username")
     private String userName;
 
-    @Column(name = "user-email-phone")
+    @Column(name = "user-email_phone")
     private String emailPhone;
 
     @NotBlank(message = "password is required")
-    @Column(name = "user-password")
+    @Column(name = "user_password")
     private String password;
 
-    @Column(name = "user-address")
+    @Column(name = "user_address")
     private String address;
 
-    @Column(name = "user-role")
+    @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private USER_ROLE userRole= USER_ROLE.BUYER;
 
     @JsonIgnore
     @DateCreated
-    @Column(name = "created-date")
+    @Column(name = "created_date")
     private Instant createdAt;
 
     @JsonIgnore
     @DateUpdated
-    @Column(name = "updated-date")
+    @Column(name = "updated_date")
     private Instant updatedAt;
 
-//    @Column(name = "user-cart")
-//    private List<CartEntity> myCart= new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private Set<AddressEntity> addressEntityset= new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -116,12 +120,8 @@ public class UserEntity {
         this.updatedAt = updatedAt;
     }
 
-//    public List<CartEntity> getMyCart() {
-//        return myCart;
-//    }
-//
-//    public void setMyCart(List<CartEntity> myCart) {
-//        this.myCart = myCart;
-//    }
+    public void setAddressEntityset(Set<AddressEntity> addressEntityset) {
+        this.addressEntityset = addressEntityset;
+    }
 }
 

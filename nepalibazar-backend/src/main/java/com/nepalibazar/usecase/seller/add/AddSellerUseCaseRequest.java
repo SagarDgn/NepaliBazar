@@ -19,6 +19,7 @@ public record AddSellerUseCaseRequest(
         @Nullable
         String productCategory,
         @Nullable
-        USER_ROLE role
+        USER_ROLE role,
+        String otp
 ) implements UseCase.Request {
 }

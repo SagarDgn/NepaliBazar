@@ -69,7 +69,7 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
 
     if (  res.code === "0") {
       toast.success(res.message);
-      router.push("/");
+      router.push("/login");
     } else {
       toast.error(res.message || "Signup failed");
     }

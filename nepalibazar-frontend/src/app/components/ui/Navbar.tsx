@@ -22,7 +22,7 @@ const Navbar = () => {
            About</Link>
            <Link href="/contact" className="hover:underline decoration-gray-400 hover:text-gray-800">
            Contact</Link>
-          <Link href="/signup" className="hover:underline decoration-gray-400 hover:text-gray-800">
+          <Link href="/signup-user" className="hover:underline decoration-gray-400 hover:text-gray-800">
           Sign Up</Link>
           <Link href="/seller" className="hover:underline decoration-gray-400 hover:text-gray-800">
           Become a Seller</Link>

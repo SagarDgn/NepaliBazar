@@ -41,7 +41,7 @@ public class ProductEntity {
     @JoinColumn(name = "product_seller")
     private SellerEntity seller;
 
-    @Column(name = "created-time")
+    @Column(name = "created_time")
     @DateCreated
     private Instant createdAt;
 

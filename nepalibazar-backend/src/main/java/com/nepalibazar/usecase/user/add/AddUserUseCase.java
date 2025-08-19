@@ -35,7 +35,7 @@ public class AddUserUseCase implements UseCase<AddUserUseCaseRequest, AddUserUse
         }
 
         if (!emailValidationService.isGoogleEmail(request.emailPhone())) {
-            return new AddUserUseCaseResponse(-1,null, "Invalid Google account");
+            return new AddUserUseCaseResponse(-1,null, "Invalid Gmail");
         }
 
         if(request.otp()==null || request.otp().isBlank()){
