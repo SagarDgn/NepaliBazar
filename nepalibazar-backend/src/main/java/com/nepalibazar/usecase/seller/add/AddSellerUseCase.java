@@ -44,7 +44,7 @@ public class AddSellerUseCase implements UseCase<AddSellerUseCaseRequest, AddSel
         try{
             var sellerEntity= SellerConvertor.toEntity(request);
             var saved= sellerRepository.save(sellerEntity);
-            return new  AddSellerUseCaseResponse(null, sellerEntity.getId(), "Successfuln registration for seller");
+            return new  AddSellerUseCaseResponse(null, sellerEntity.getId(), "Successfull registration for seller");
         }catch (Exception e){
             throw new RuntimeException("Fail to register as seller "+e.getMessage(),e);
         }
