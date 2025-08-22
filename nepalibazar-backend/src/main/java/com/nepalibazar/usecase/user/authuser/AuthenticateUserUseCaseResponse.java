@@ -1,4 +1,4 @@
-package com.nepalibazar.usecase.authuser;
+package com.nepalibazar.usecase.user.authuser;
 
 import com.nepalibazar.core.usecase.UseCase;
 import io.micronaut.serde.annotation.Serdeable;

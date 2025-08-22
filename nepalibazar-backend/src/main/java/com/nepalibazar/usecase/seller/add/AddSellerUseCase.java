@@ -29,6 +29,8 @@ public class AddSellerUseCase implements UseCase<AddSellerUseCaseRequest, AddSel
     }
 
     public AddSellerUseCaseResponse execute(AddSellerUseCaseRequest request){
+
+
         if(request.emailPhone()==null || request.emailPhone().isBlank()){
             return new AddSellerUseCaseResponse(-1, null, "Email is required");
         }
@@ -44,7 +46,7 @@ public class AddSellerUseCase implements UseCase<AddSellerUseCaseRequest, AddSel
         try{
             var sellerEntity= SellerConvertor.toEntity(request);
             var saved= sellerRepository.save(sellerEntity);
-            return new  AddSellerUseCaseResponse(null, sellerEntity.getId(), "Successfull registration for seller");
+            return new  AddSellerUseCaseResponse(0, null, "Successfull registration for seller");
         }catch (Exception e){
             throw new RuntimeException("Fail to register as seller "+e.getMessage(),e);
         }

@@ -6,6 +6,7 @@ import com.nepalibazar.repository.UserRepository;
 import com.nepalibazar.service.EmailService;
 import com.nepalibazar.service.EmailValidationService;
 import com.nepalibazar.service.OtpService;
+import com.nepalibazar.usecase.otp.SendOtpUseCaseResponse;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -29,6 +30,7 @@ public class AddUserUseCase implements UseCase<AddUserUseCaseRequest, AddUserUse
 
     @Override
     public AddUserUseCaseResponse execute(AddUserUseCaseRequest request) {
+
 
         if (request.emailPhone() == null || request.emailPhone().isBlank()) {
             return new AddUserUseCaseResponse(-1,null, "Email is required");

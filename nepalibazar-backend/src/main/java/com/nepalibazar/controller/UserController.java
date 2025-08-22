@@ -47,12 +47,10 @@ public class UserController {
         try {
             AddUserUseCaseResponse response = addUserUseCase.execute(request);
 
-            // Check for business logic failure from response.message or response.id
             if (response.code() != 0) {
                 return new RestResponse<>("-1", response.message(), null);
             }
 
-            // Success
             return RestResponse.success(response);
 
         } catch (Exception e) {
@@ -65,6 +63,8 @@ public class UserController {
     public RestResponse<SendOtpUseCaseResponse> sendOtp(@Body SendOtpUseCaseRequest request){
         try{
             SendOtpUseCaseResponse response= sendOtpUseCase.execute(request.email());
+            if(response.id() == -1)
+                return new RestResponse<>("-1", response.message(), null);
             return RestResponse.success(response);
         }catch (Exception e){
             return RestResponse.error("Otp sending failed "+ e.getMessage());

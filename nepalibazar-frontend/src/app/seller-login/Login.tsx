@@ -1,27 +1,27 @@
-'use client';
-
-import React, { useState } from "react";
-import { loginUser } from "../services/UserLoginService";
-import toast from "react-hot-toast";
+"use client";
+import React, { useState } from 'react'
+import { loginSeller } from '../services/SellerLoginService';
+import toast from 'react-hot-toast';
 
 const Login: React.FC = () => {
-  const [emailPhone, setEmailPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
 
-const handleLogin = async (e: React.FormEvent) => {
+  const[emailPhone, setEmailPhone]= useState("");
+  const[password, setPassword]= useState("");
+  const[loading, setLoading]= useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
   e.preventDefault();
   if (loading) return;
   setLoading(true);
 
   try {
-    debugger
-    const res = await loginUser.login({ emailPhone, password });
+    
+    const res = await loginSeller.login({ emailPhone, password });
     
     if (res.data.token) { 
       localStorage.setItem("token", res.data.token); 
       toast.success(res.message || "Login successful");
-      window.location.href = "/";
+      window.location.href = "/seller-dashbord";
     } else {
       toast.error(res.message || "Invalid email or password");
     }
@@ -51,6 +51,7 @@ const handleLogin = async (e: React.FormEvent) => {
         <form 
           className="flex flex-col gap-4 w-96 border-gray-300"
           onSubmit={handleLogin}
+          
         >
           <h2 className="text-2xl font-medium mb-4 border-b border-gray-300 rounded">
             Login to your account
@@ -60,7 +61,7 @@ const handleLogin = async (e: React.FormEvent) => {
             type="text"
             placeholder="Email or Phone"
             value={emailPhone}
-            onChange={(e) => setEmailPhone(e.target.value)}
+            onChange={(e)=>setEmailPhone(e.target.value)}
             className="border-b border-gray-500 p-2 outline-none"
             required
           />
@@ -69,7 +70,7 @@ const handleLogin = async (e: React.FormEvent) => {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e)=> setPassword(e.target.value)}
             className="border-b border-gray-500 p-2 outline-none"
             required
           />
@@ -79,12 +80,12 @@ const handleLogin = async (e: React.FormEvent) => {
             disabled={loading}
             className={`bg-red-700/95 text-white py-2 rounded hover:bg-red-700 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading? 'Logging in...': 'Login'}
           </button>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

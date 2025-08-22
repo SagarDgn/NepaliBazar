@@ -1,9 +1,9 @@
 package com.nepalibazar.controller;
 
 import com.nepalibazar.core.response.RestResponse;
-import com.nepalibazar.usecase.authuser.AuthenticateUserUseCase;
-import com.nepalibazar.usecase.authuser.AuthenticateUserUseCaseRequest;
-import com.nepalibazar.usecase.authuser.AuthenticateUserUseCaseResponse;
+import com.nepalibazar.usecase.user.authuser.AuthenticateUserUseCase;
+import com.nepalibazar.usecase.user.authuser.AuthenticateUserUseCaseRequest;
+import com.nepalibazar.usecase.user.authuser.AuthenticateUserUseCaseResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;

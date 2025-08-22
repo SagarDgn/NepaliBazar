@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { sendOtp } from "../services/UserService"; // New API for /user/sent-otp
+import { sendOtp } from "../services/UserService"; 
 import toast from "react-hot-toast";
 import Link from "next/link";
 
@@ -35,11 +35,13 @@ const Signup: React.FC<SignupProps> = ({ onOtpSent }) => {
     try {
       setLoading(true);
       const res = await sendOtp(emailPhone);
-      if (res.code === "0") {
+      const code = Number(res.code);
+      // backend must send res.code now
+      if (code === 0) {
         toast.success(res.message);
-        onOtpSent(emailPhone);
+        onOtpSent(emailPhone); // proceed to OTP page
       } else {
-        toast.error(res.message);
+        toast.error(res.message); // show error, don't redirect
       }
     } catch {
       toast.error("Failed to send OTP");
@@ -48,40 +50,53 @@ const Signup: React.FC<SignupProps> = ({ onOtpSent }) => {
     }
   };
 
+
   return (
+    <div className="flex flex-row w-full min-h-screen px-10  py-16 bg-blue-50/25 gap-16 border-t border-gray-300 rounded">
+      {/* Left Image */}
+      <div className="w-[500px] h-[600px]">
+        <img
+          className="rounded shadow-blue-200 w-full"
+          src="signupPic.png"
+          alt="Signup illustration"
+        />
+      </div>
 
-  <div className="flex flex-row  w-full min-h-screen px-10 py-16 bg-blue-50/25 gap-16 border-t border-gray-300 rounded ">
-    <div className=" w-[500px] h-[600px] ">
-      <img className="rounded shadow-blue-200 w-full" src="signupPic.png"/>
-    </div>
-    <div className="my-32 mx-14">  
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-96 border-gray-300 ">
-      <h2 className="text-2xl font-medium mb-4 border-b border-gray-300 rounded">Enter Gmail  to signup</h2>
+      {/* Right Form */}
+      <div className="my-32 mx-14">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 w-96 border-gray-300"
+        >
+          <h2 className="text-2xl font-medium mb-4 border-b border-gray-300 rounded">
+            Enter Gmail to signup
+          </h2>
 
-      <input
-        name="emailPhone"
-        placeholder="Gmail "
-        value={emailPhone}
-        onChange={(e) => setEmailPhone(e.target.value)}
-        className="border-b border-gray-500 p-2  outline-none"
-      />
-      {error && <p className="text-red-600 text-sm">{error}</p>}
+          <input
+            name="emailPhone"
+            placeholder="Gmail"
+            value={emailPhone}
+            onChange={(e) => setEmailPhone(e.target.value)}
+            className="border-b border-gray-500 p-2 outline-none"
+          />
+          {error && <p className="text-red-600 text-sm">{error}</p>}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-red-700/95 text-white py-2 rounded hover:bg-red-700 disabled:opacity-60"
-      >
-        {loading ? "Sending OTP..." : "Request OTP"}
-      </button>
-    </form>
-    <div className="py-1.5 ">
-      <Link href="/login" className=" flex flex-row">
-      <p className="font-extralight">Already have account?</p>
-      <p className=" hover  font-light hover:underline">Login</p>
-      </Link>
-    </div>
-    </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-red-700/95 text-white py-2 rounded hover:bg-red-700 disabled:opacity-60"
+          >
+            {loading ? "Sending OTP..." : "Request OTP"}
+          </button>
+        </form>
+
+        <div className="py-1.5">
+          <Link href="/login" className="flex flex-row">
+            <p className="font-extralight">Already have account?</p>
+            <p className="font-light hover:underline">Login</p>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };

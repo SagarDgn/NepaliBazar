@@ -1,6 +1,7 @@
 package com.nepalibazar.controller;
 
 import com.nepalibazar.core.response.RestResponse;
+import com.nepalibazar.core.security.JwtUtils;
 import com.nepalibazar.usecase.product.add.AddProductUseCase;
 import com.nepalibazar.usecase.product.add.AddProductUseCaseRequest;
 import com.nepalibazar.usecase.product.add.AddProductUseCaseResponse;
@@ -11,6 +12,7 @@ import com.nepalibazar.usecase.product.search.SearchAllProductUseCaseResponse;
 import com.nepalibazar.usecase.product.update.UpdateProductUseCase;
 import com.nepalibazar.usecase.product.update.UpdateProductUseCaseRequest;
 import com.nepalibazar.usecase.product.update.UpdateProductUseCaseResponse;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
 
@@ -36,9 +38,23 @@ public class ProductController {
     }
 
     @Post("/add")
-    public RestResponse<AddProductUseCaseResponse> postProduct(@Body AddProductUseCaseRequest request){
+    public RestResponse<AddProductUseCaseResponse> postProduct(@Body AddProductUseCaseRequest request,
+                                                               @Header(HttpHeaders.AUTHORIZATION)String authHeader){
         try{
-            AddProductUseCaseResponse response= addProductUseCase.execute(request);
+            String token= authHeader.replace("Bearer ","");
+            String sellerEmailPhone= JwtUtils.getEmailFromToken(token);
+
+            AddProductUseCaseRequest enrichedRequest= new AddProductUseCaseRequest(
+                    request.productName(),
+                    request.aboutProduct(),
+                    request.price(),
+                    request.discount(),
+                    request.image(),
+                    request.quantity(),
+                    request.sellerEmail()
+            );
+
+            AddProductUseCaseResponse response= addProductUseCase.execute(enrichedRequest);
             return RestResponse.success(response);
 
         }catch(Exception e){

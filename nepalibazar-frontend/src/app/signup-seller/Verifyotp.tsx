@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { signupUser, SignupRequest } from "../services/UserService";
+import { signupSeller, SignupRequest } from "../services/SellerSignupService";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -10,15 +10,17 @@ interface VerifyOtpProps {
   onVerified: () => void;
 }
 
-const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
+const Verifyotp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
   const router = useRouter();
 
   const [formData, setFormData] = useState<Omit<SignupRequest, "otp">>({
-    userName: "",
+    sellerName: "",
     emailPhone: email,
     password: "",
-    address: "",
-    userRole: "BUYER",
+    location: "",
+    productCategory: "",
+    role: "SELLER"
+
   });
 
   const [otp, setOtp] = useState("");
@@ -27,7 +29,7 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
 
   const validate = () => {
     const errs: { [key: string]: string } = {};
-    if (!formData.userName.trim()) errs.userName = "Name is required";
+    if (!formData.sellerName.trim()) errs.sellerName = "Name is required";
     if (!formData.password.trim()) {
       errs.password = "Password is required";
     } else {
@@ -38,8 +40,9 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
           "Must contain 8+ chars with uppercase, lowercase, digit & special char";
       }
     }
-    if (!formData.address.trim()) errs.address = "Address is required";
+    if (!formData.location.trim()) errs.location = "Location is required";
     if (!otp.trim() || otp.trim().length !== 6) errs.otp = "Enter 6-digit OTP";
+    if(!formData.productCategory.trim())errs.productCategory= "Product category is required";
 
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -63,13 +66,13 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
       otp,
     };
 
-    const res = await signupUser(fullRequest);
+    const res = await signupSeller(fullRequest);
     console.log("Raw response:", res);
     console.log("Code:", res.code, "Type:", typeof res.code);
 
     if (  res.code === "0") {
       toast.success(res.message);
-      router.push("/login");
+      router.push("/seller-login");
     } else {
       toast.error(res.message || "Signup failed");
     }
@@ -87,16 +90,16 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
       <div className="w-[500px] h-[600px]">
         <img className="rounded shadow-blue-200 w-full object-cover" src="signupPic.png" />
       </div>
-      <div className="my-32 mx-14">
+      <div className="my-12 mx-14">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-96">
           <h2 className="text-2xl font-semibold mb-4 border-b border-gray-500 rounded">
             Verify OTP and Complete Signup
           </h2>
 
           <input
-            name="userName"
+            name="sellerName"
             placeholder="Name"
-            value={formData.userName}
+            value={formData.sellerName}
             onChange={handleChange}
             className="border-b border-gray-500 p-2 outline-none"
           />
@@ -113,13 +116,22 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
           {errors.password && <p className="text-red-600 text-sm">{errors.password}</p>}
 
           <input
-            name="address"
-            placeholder="Address"
-            value={formData.address}
+            name="location"
+            placeholder="Location"
+            value={formData.location}
             onChange={handleChange}
             className="border-b border-gray-500 p-2  outline-none"
           />
-          {errors.address && <p className="text-red-600 text-sm">{errors.address}</p>}
+          {errors.location && <p className="text-red-600 text-sm">{errors.location}</p>}
+
+           <input
+            name="productCategory"
+            placeholder="Product category"
+            value={formData.productCategory}
+            onChange={handleChange}
+            className="border-b border-gray-500 p-2  outline-none"
+          />
+          {errors.productCategory && <p className="text-red-600 text-sm"></p>}
 
           <input
             name="otp"
@@ -146,4 +158,4 @@ const VerifyOtp: React.FC<VerifyOtpProps> = ({ email, onVerified }) => {
   );
 };
 
-export default VerifyOtp;
+export default Verifyotp;

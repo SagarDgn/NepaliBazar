@@ -10,6 +10,7 @@ export interface LoginPayload{
 export interface LoginResponse{
     token: string
     username: string
+    message: string
 }
 
 export const loginUser= {

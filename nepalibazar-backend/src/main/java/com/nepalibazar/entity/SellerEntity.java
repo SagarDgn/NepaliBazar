@@ -4,6 +4,7 @@ import com.nepalibazar.domain.USER_ROLE;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -13,6 +14,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "sellers_details")
+@Introspected
+@Serdeable
 
 public class SellerEntity {
 

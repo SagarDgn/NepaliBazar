@@ -15,6 +15,7 @@ public class ProductConvertor {
         productEntity.setDiscount(product.discount());
         productEntity.setImage(product.image());
         productEntity.setQuantity(product.quantity());
+        productEntity.setSeller(product.sellerEmail());
 
         return productEntity;
     }
@@ -27,7 +28,8 @@ public class ProductConvertor {
                 product.getImage(),
                 product.getPrice(),
                 product.getDiscount(),
-                product.getQuantity()
+                product.getQuantity(),
+                product.getSeller()
         );
     }
 

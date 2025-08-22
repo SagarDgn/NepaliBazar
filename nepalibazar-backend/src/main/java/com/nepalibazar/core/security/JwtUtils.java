@@ -61,4 +61,17 @@ public class JwtUtils {
             return true;
         }
     }
+
+    public static String getEmailFromToken(String token){
+        try{
+            return Jwts.parser()
+                    .verifyWith(SECRET_KEY)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getBody()
+                    .getSubject();
+        }catch (JwtException e){
+            throw new RuntimeException("Invalid token"+ e.getMessage());
+        }
+    }
 }

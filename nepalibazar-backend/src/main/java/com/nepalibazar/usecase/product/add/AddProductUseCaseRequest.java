@@ -1,6 +1,7 @@
 package com.nepalibazar.usecase.product.add;
 
 import com.nepalibazar.core.usecase.UseCase;
+import com.nepalibazar.entity.SellerEntity;
 import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
@@ -10,6 +11,7 @@ public record AddProductUseCaseRequest(
         Double  price,
         Integer discount,
         String image,
-        Integer quantity
+        Integer quantity,
+        SellerEntity sellerEmail
 ) implements UseCase.Request {
 }

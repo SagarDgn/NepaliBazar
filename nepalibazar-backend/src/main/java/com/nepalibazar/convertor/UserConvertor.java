@@ -12,7 +12,7 @@ public class UserConvertor {
     public static UserEntity toEntity(AddUserUseCaseRequest user){
         UserEntity userEntity= new UserEntity();
         userEntity.setUserName(user.userName());
-        userEntity.setEmailPhone(user.emailPhone());
+        userEntity.setEmailPhone(user.emailPhone().trim().toLowerCase());
         userEntity.setPassword(SecurityUtils.hashPassword(user.password()));
         userEntity.setAddress(user.address());
         userEntity.setUserRole(USER_ROLE.valueOf("BUYER"));

@@ -1,4 +1,4 @@
-package com.nepalibazar.usecase.authuser;
+package com.nepalibazar.usecase.user.authuser;
 
 import com.nepalibazar.core.security.JwtUtils;
 import com.nepalibazar.core.security.SecurityUtils;
@@ -18,7 +18,9 @@ public class AuthenticateUserUseCase implements UseCase<AuthenticateUserUseCaseR
 
     @Override
     public AuthenticateUserUseCaseResponse execute(AuthenticateUserUseCaseRequest request) {
-        return userRepository.findByEmailPhone(request.emailPhone())
+        var normalizedEmail = request.emailPhone().trim().toLowerCase();
+
+        return userRepository.findByEmailPhone(normalizedEmail)
                 .filter(userEntity -> SecurityUtils.verifyPassword(request.password(), userEntity.getPassword()))
                 .map(userEntity -> new AuthenticateUserUseCaseResponse(
                         JwtUtils.generateToken(userEntity.getEmailPhone()),
@@ -29,4 +31,6 @@ public class AuthenticateUserUseCase implements UseCase<AuthenticateUserUseCaseR
                 .orElseThrow(() -> new RuntimeException("Invalid username or password"));
     }
 
-    }
+
+
+}
