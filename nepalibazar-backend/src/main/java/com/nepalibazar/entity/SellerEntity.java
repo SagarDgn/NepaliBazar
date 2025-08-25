@@ -58,6 +58,9 @@ public class SellerEntity {
     @Column(name = "product_category")
     private String productCategory;
 
+    @Column(name = "is_logged-in")
+    private Boolean isLoggedIn;
+
     public Integer getId() {
         return id;
     }
@@ -144,5 +147,13 @@ public class SellerEntity {
 
     public void setProductCategory(String productCategory) {
         this.productCategory = productCategory;
+    }
+
+    public Boolean getLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(Boolean loggedIn) {
+        isLoggedIn = loggedIn;
     }
 }

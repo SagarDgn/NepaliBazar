@@ -7,6 +7,9 @@ import com.nepalibazar.usecase.otp.SendOtpUseCaseResponse;
 import com.nepalibazar.usecase.seller.add.AddSellerUseCase;
 import com.nepalibazar.usecase.seller.add.AddSellerUseCaseRequest;
 import com.nepalibazar.usecase.seller.add.AddSellerUseCaseResponse;
+import com.nepalibazar.usecase.seller.logout.LogoutSellerUseCase;
+import com.nepalibazar.usecase.seller.logout.LogoutSellerUseCaseRequest;
+import com.nepalibazar.usecase.seller.logout.LogoutSellerUseCaseResponse;
 import com.nepalibazar.usecase.seller.search.SearchSellerUseCase;
 import com.nepalibazar.usecase.seller.search.SearchSellerUseCaseResponse;
 import io.micronaut.http.annotation.Body;
@@ -23,14 +26,17 @@ public class SellerController {
     public final AddSellerUseCase addSellerUseCase;
     public final SendOtpUseCase sendOtpUseCase;
     public final SearchSellerUseCase searchSellerUseCase;
+    public final LogoutSellerUseCase logoutSellerUseCase;
 
     @Inject
     public SellerController(AddSellerUseCase addSellerUseCase,
                             SendOtpUseCase sendOtpUseCase,
-                            SearchSellerUseCase searchSellerUseCase){
+                            SearchSellerUseCase searchSellerUseCase,
+                            LogoutSellerUseCase logoutSellerUseCase){
         this.addSellerUseCase= addSellerUseCase;
         this.sendOtpUseCase=sendOtpUseCase;
         this.searchSellerUseCase=searchSellerUseCase;
+        this.logoutSellerUseCase=logoutSellerUseCase;
     }
 
     @Post("/signup")
@@ -69,4 +75,8 @@ public class SellerController {
             return RestResponse.error("Fail to search seller "+e.getMessage());
         }
     }
+
+
+
+
 }

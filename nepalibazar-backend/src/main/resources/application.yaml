@@ -71,7 +71,7 @@ jpa:
         show_sql: true
 
 smtp:
-  username: "Your email "
-  password: "Your app password"
+  username: 
+  password:
 
 

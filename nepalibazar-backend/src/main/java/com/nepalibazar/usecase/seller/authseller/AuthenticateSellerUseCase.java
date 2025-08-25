@@ -23,12 +23,14 @@ public class AuthenticateSellerUseCase implements UseCase<AuthenticateSellerUseC
         var normalizedEmail= request.emailPhone().trim().toLowerCase();
         return sellerRepository.findByEmailPhone(normalizedEmail)
                 .filter(sellerEntity-> SecurityUtils.verifyPassword(request.password(), sellerEntity.getPassword()))
-                .map(sellerEntity-> new AuthenticateSellerUseCaseResponse(
+                .map(sellerEntity->{
+                    sellerRepository.updateLoginStatus(sellerEntity.getEmailPhone(),true);
+                    return  new AuthenticateSellerUseCaseResponse(
                         JwtUtils.generateToken(sellerEntity.getEmailPhone()),
                         "Success Authenticate",
                         new String[] {String.valueOf(sellerEntity.getRole())},
                         sellerEntity.getSellerName()
-                ))
+                 );})
                 .orElseThrow(()->new RuntimeException("Invalid username or password"));
     }
 }

@@ -12,6 +12,6 @@ public record AddProductUseCaseRequest(
         Integer discount,
         String image,
         Integer quantity,
-        SellerEntity sellerEmail
+        String sellerEmail
 ) implements UseCase.Request {
 }

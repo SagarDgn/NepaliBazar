@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from "react";
-import { loginUser } from "../services/UserLoginService";
+import { loginUser } from "../services/auth/UserAuthService";
 import toast from "react-hot-toast";
 
 const Login: React.FC = () => {

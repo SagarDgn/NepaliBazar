@@ -56,6 +56,9 @@ public class UserEntity {
     @JoinColumn(name = "user_id")
     private Set<AddressEntity> addressEntityset= new HashSet<>();
 
+    @Column(name = "is_logged-in")
+    private Boolean isLoggedIin;
+
     public Integer getId() {
         return id;
     }
@@ -122,6 +125,18 @@ public class UserEntity {
 
     public void setAddressEntityset(Set<AddressEntity> addressEntityset) {
         this.addressEntityset = addressEntityset;
+    }
+
+    public Set<AddressEntity> getAddressEntityset() {
+        return addressEntityset;
+    }
+
+    public Boolean getLoggedIin() {
+        return isLoggedIin;
+    }
+
+    public void setLoggedIin(Boolean loggedIin) {
+        isLoggedIin = loggedIin;
     }
 }
 

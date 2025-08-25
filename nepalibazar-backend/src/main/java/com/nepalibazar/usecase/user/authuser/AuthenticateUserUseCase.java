@@ -22,12 +22,15 @@ public class AuthenticateUserUseCase implements UseCase<AuthenticateUserUseCaseR
 
         return userRepository.findByEmailPhone(normalizedEmail)
                 .filter(userEntity -> SecurityUtils.verifyPassword(request.password(), userEntity.getPassword()))
-                .map(userEntity -> new AuthenticateUserUseCaseResponse(
-                        JwtUtils.generateToken(userEntity.getEmailPhone()),
-                        "Success Authenticate",
-                        new String[]{String.valueOf(userEntity.getUserRole())},
-                        userEntity.getUserName()
-                ))
+                .map(userEntity -> {
+                    userRepository.updateLoginStatus(userEntity.getEmailPhone(), true);
+                    return new AuthenticateUserUseCaseResponse(
+                            JwtUtils.generateToken(userEntity.getEmailPhone()),
+                            "Success Authenticate",
+                            new String[]{String.valueOf(userEntity.getUserRole())},
+                            userEntity.getUserName()
+                    );
+                })
                 .orElseThrow(() -> new RuntimeException("Invalid username or password"));
     }
 

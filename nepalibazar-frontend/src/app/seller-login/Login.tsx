@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react'
-import { loginSeller } from '../services/SellerLoginService';
+import { authSeller } from '../services/auth/SellerAuthService';
 import toast from 'react-hot-toast';
 
 const Login: React.FC = () => {
@@ -15,21 +15,27 @@ const Login: React.FC = () => {
   setLoading(true);
 
   try {
+    debugger
+    const res = await authSeller.login({ emailPhone, password });
     
-    const res = await loginSeller.login({ emailPhone, password });
-    
-    if (res.data.token) { 
-      localStorage.setItem("token", res.data.token); 
-      toast.success(res.message || "Login successful");
-      window.location.href = "/seller-dashbord";
-    } else {
+ if (res && res.token) {
+  localStorage.setItem("token", res.token);
+  localStorage.setItem("sellerName", res.sellername);
+  localStorage.setItem("role", res.permission.join(","));
+  toast.success(res.message || "Login successful");
+
+  window.location.href = "/seller-dashbord";
+} 
+
+
+ else {
       toast.error(res.message || "Invalid email or password");
     }
   } catch (err: any) {
     if (err.response) {
       toast.error(err.response.data?.message || "Login failed");
     } else if (err.request) {
-      toast.error("No response from server. Check if the server is running.");
+      toast.error("No response from server. Try later.");
     } else {
       toast.error("Login error: " + err.message);
     }

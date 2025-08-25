@@ -1,5 +1,6 @@
 package com.nepalibazar.controller;
 
+import com.nepalibazar.controller.requestpayload.AddProductRequestPayload;
 import com.nepalibazar.core.response.RestResponse;
 import com.nepalibazar.core.security.JwtUtils;
 import com.nepalibazar.usecase.product.add.AddProductUseCase;
@@ -38,23 +39,26 @@ public class ProductController {
     }
 
     @Post("/add")
-    public RestResponse<AddProductUseCaseResponse> postProduct(@Body AddProductUseCaseRequest request,
-                                                               @Header(HttpHeaders.AUTHORIZATION)String authHeader){
+    public RestResponse<AddProductUseCaseResponse> postProduct(@Body AddProductRequestPayload request,
+                                                               @Header("authorization")String authorization
+                                                             ){
+        System.out.println("Inside seller add ");
+        System.out.println("Header is " + authorization);
         try{
-            String token= authHeader.replace("Bearer ","");
+            String token= authorization.replace("Bearer ","");
             String sellerEmailPhone= JwtUtils.getEmailFromToken(token);
-
-            AddProductUseCaseRequest enrichedRequest= new AddProductUseCaseRequest(
+            System.out.println("Email form token is"+ sellerEmailPhone);
+            AddProductUseCaseRequest addProductUseCaseRequest= new AddProductUseCaseRequest(
                     request.productName(),
                     request.aboutProduct(),
                     request.price(),
                     request.discount(),
                     request.image(),
                     request.quantity(),
-                    request.sellerEmail()
+                    sellerEmailPhone
             );
 
-            AddProductUseCaseResponse response= addProductUseCase.execute(enrichedRequest);
+            AddProductUseCaseResponse response= addProductUseCase.execute(addProductUseCaseRequest);
             return RestResponse.success(response);
 
         }catch(Exception e){

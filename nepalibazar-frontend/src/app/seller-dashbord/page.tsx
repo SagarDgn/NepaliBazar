@@ -3,7 +3,7 @@ import Dashbord from './Dashbord'
 
 const page = () => {
   return (
-    <div>
+    <div className='min-h-screen  items-center justify-center p-6 bg-gray-50'>
         <Dashbord/>
     </div>
   )

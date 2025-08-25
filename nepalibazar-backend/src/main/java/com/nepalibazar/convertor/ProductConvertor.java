@@ -1,13 +1,14 @@
 package com.nepalibazar.convertor;
 
 import com.nepalibazar.entity.ProductEntity;
+import com.nepalibazar.entity.SellerEntity;
 import com.nepalibazar.usecase.product.add.AddProductUseCaseRequest;
 import com.nepalibazar.usecase.product.search.SearchAllProductUseCaseResponse;
 
 public class ProductConvertor {
     private ProductConvertor(){}
 
-    public static ProductEntity toEntity(AddProductUseCaseRequest product){
+    public static ProductEntity toEntity(AddProductUseCaseRequest product, SellerEntity sellerEntity){
         ProductEntity productEntity= new ProductEntity();
         productEntity.setProductName(product.productName());
         productEntity.setAboutProduct(product.aboutProduct());
@@ -15,7 +16,7 @@ public class ProductConvertor {
         productEntity.setDiscount(product.discount());
         productEntity.setImage(product.image());
         productEntity.setQuantity(product.quantity());
-        productEntity.setSeller(product.sellerEmail());
+        productEntity.setSeller(sellerEntity);
 
         return productEntity;
     }

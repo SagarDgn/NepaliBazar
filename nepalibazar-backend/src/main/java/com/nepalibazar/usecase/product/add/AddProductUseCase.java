@@ -27,9 +27,9 @@ public class AddProductUseCase implements UseCase<AddProductUseCaseRequest, AddP
     public AddProductUseCaseResponse execute(AddProductUseCaseRequest request){
         try {
 
-            SellerEntity sellerEntity= sellerRepository.findByEmailPhone(String.valueOf(request.sellerEmail()))
+            SellerEntity sellerEntity= sellerRepository.findByEmailPhone(request.sellerEmail())
                     .orElseThrow(()->new RuntimeException("Seller not found"));
-            var productEntity= ProductConvertor.toEntity(request);
+            var productEntity= ProductConvertor.toEntity(request, sellerEntity);
             productEntity.setSeller(sellerEntity);
             var saved= productRepository.save(productEntity);
             return new AddProductUseCaseResponse(saved.getId(), "product added successfully");
