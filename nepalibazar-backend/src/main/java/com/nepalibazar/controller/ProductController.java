@@ -3,6 +3,8 @@ package com.nepalibazar.controller;
 import com.nepalibazar.controller.requestpayload.AddProductRequestPayload;
 import com.nepalibazar.core.response.RestResponse;
 import com.nepalibazar.core.security.JwtUtils;
+import com.nepalibazar.entity.SellerEntity;
+import com.nepalibazar.repository.SellerRepository;
 import com.nepalibazar.usecase.product.add.AddProductUseCase;
 import com.nepalibazar.usecase.product.add.AddProductUseCaseRequest;
 import com.nepalibazar.usecase.product.add.AddProductUseCaseResponse;
@@ -14,6 +16,7 @@ import com.nepalibazar.usecase.product.update.UpdateProductUseCase;
 import com.nepalibazar.usecase.product.update.UpdateProductUseCaseRequest;
 import com.nepalibazar.usecase.product.update.UpdateProductUseCaseResponse;
 import io.micronaut.http.HttpHeaders;
+
 import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
 
@@ -26,45 +29,55 @@ public class ProductController {
     public final SearchAllProductUseCase searchAllProductUseCase;
     public final UpdateProductUseCase updateProductUseCase;
     public final DeleteProductUseCase deleteProductUseCase;
+    public final SellerRepository sellerRepository;
 
     @Inject
     public ProductController(AddProductUseCase addProductUseCase,
                              SearchAllProductUseCase searchAllProductUseCase,
                              UpdateProductUseCase updateProductUseCase,
-                             DeleteProductUseCase deleteProductUseCase){
+                             DeleteProductUseCase deleteProductUseCase,
+                             SellerRepository sellerRepository){
         this.addProductUseCase=addProductUseCase;
         this.searchAllProductUseCase=searchAllProductUseCase;
         this.updateProductUseCase=updateProductUseCase;
         this.deleteProductUseCase=deleteProductUseCase;
+        this.sellerRepository=sellerRepository;
     }
 
     @Post("/add")
-    public RestResponse<AddProductUseCaseResponse> postProduct(@Body AddProductRequestPayload request,
-                                                               @Header("authorization")String authorization
-                                                             ){
-        System.out.println("Inside seller add ");
-        System.out.println("Header is " + authorization);
-        try{
-            String token= authorization.replace("Bearer ","");
-            String sellerEmailPhone= JwtUtils.getEmailFromToken(token);
-            System.out.println("Email form token is"+ sellerEmailPhone);
-            AddProductUseCaseRequest addProductUseCaseRequest= new AddProductUseCaseRequest(
+    public RestResponse<AddProductUseCaseResponse> postProduct(
+            @Body AddProductRequestPayload request,
+            @Header("authorization") String authorization
+    ) {
+        try {
+            String token = authorization.replace("Bearer ", "");
+            String emailOrPhone = JwtUtils.getEmailFromToken(token);// sub = email/phone
+            String role= JwtUtils.getRoleFromToken(token);
+
+            if(!"SELLER".equalsIgnoreCase(role)){
+                return RestResponse.error("Unauthorized");
+            }
+
+
+
+            AddProductUseCaseRequest addProductUseCaseRequest = new AddProductUseCaseRequest(
                     request.productName(),
                     request.aboutProduct(),
                     request.price(),
                     request.discount(),
                     request.image(),
                     request.quantity(),
-                    sellerEmailPhone
+                    emailOrPhone
             );
 
-            AddProductUseCaseResponse response= addProductUseCase.execute(addProductUseCaseRequest);
+            AddProductUseCaseResponse response = addProductUseCase.execute(addProductUseCaseRequest);
             return RestResponse.success(response);
 
-        }catch(Exception e){
-            return RestResponse.error("Cannot insert the product"+ e.getMessage());
+        } catch (Exception e) {
+            return RestResponse.error("Cannot insert the product: " + e.getMessage());
         }
     }
+
 
     @Get("/get")
     public RestResponse<List<SearchAllProductUseCaseResponse>> getAllProduct(){

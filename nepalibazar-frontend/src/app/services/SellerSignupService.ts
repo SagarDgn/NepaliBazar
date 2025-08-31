@@ -18,10 +18,10 @@ export interface RestResponse<T>{
     data: T;
 }
 
-const API_BASE_URL="http://localhost:8080/api/seller";
+const API_SELLER_BASE_URL="http://localhost:8080/api";
 
 export const sendOtp = async(email: string): Promise<RestResponse<any>> =>{
-    const response= await axios.post<RestResponse<any>>(`${API_BASE_URL}/sent-otp`,{
+    const response= await axios.post<RestResponse<any>>(`${API_SELLER_BASE_URL}/seller/sent-otp`,{
         email,
     });
       return response.data;
@@ -31,7 +31,7 @@ export const signupSeller= async(
     requestData: SignupRequest
 ): Promise<RestResponse<any>>=>{
     const response= axios.post<RestResponse<any>>(
-        `${API_BASE_URL}/signup`,
+        `${API_SELLER_BASE_URL}/seller/signup`,
         requestData
     );
   return (await response).data;

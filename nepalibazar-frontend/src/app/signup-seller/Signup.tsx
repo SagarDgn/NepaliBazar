@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { sendOtp } from "../services/UserService";
+import { sendOtp } from "../services/SellerSignupService";
 import toast from "react-hot-toast";
 
 

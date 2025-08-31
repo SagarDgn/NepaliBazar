@@ -2,7 +2,6 @@ package com.nepalibazar.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nepalibazar.domain.USER_ROLE;
-import io.micronaut.core.annotation.Introspected;
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
 import jakarta.persistence.*;

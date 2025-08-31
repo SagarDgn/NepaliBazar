@@ -6,6 +6,8 @@ import Navbar from "./components/ui/Navbar";
 import { Toaster } from "react-hot-toast";
 import Footer from "./components/ui/Footer";
 
+
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -35,6 +37,7 @@ export default function RootLayout({
          <Toaster position="top-center" />
         <Header/>
         <Navbar/>
+  
         {children}
         <Footer/>       
       </body>

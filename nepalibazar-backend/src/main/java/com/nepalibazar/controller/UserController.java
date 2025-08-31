@@ -6,12 +6,10 @@ import com.nepalibazar.usecase.user.add.AddUserUseCase;
 import com.nepalibazar.usecase.user.add.AddUserUseCaseResponse;
 import com.nepalibazar.usecase.user.delete.DeleteUserUcResponse;
 import com.nepalibazar.usecase.user.delete.DeleteUserUseCase;
-import com.nepalibazar.usecase.otp.SendOtpUseCase;
+import com.nepalibazar.usecase.otp.SendBuyerOtpUseCase;
 import com.nepalibazar.usecase.otp.SendOtpUseCaseRequest;
 import com.nepalibazar.usecase.otp.SendOtpUseCaseResponse;
 import com.nepalibazar.usecase.user.logout.LogoutUserUseCase;
-import com.nepalibazar.usecase.user.logout.LogoutUserUseCaseRequest;
-import com.nepalibazar.usecase.user.logout.LogoutUserUseCaseResponse;
 import com.nepalibazar.usecase.user.search.SearchAllUserUcResponse;
 import com.nepalibazar.usecase.user.search.SearchAllUserUseCase;
 import com.nepalibazar.usecase.user.update.UpdateUserUseCase;
@@ -28,7 +26,7 @@ public class UserController {
     public final UpdateUserUseCase updateUserUseCase;
     public final DeleteUserUseCase deleteUserUseCase;
     public final SearchAllUserUseCase searchAllUserUseCase;
-    public final SendOtpUseCase sendOtpUseCase;
+    public final SendBuyerOtpUseCase sendOtpUseCase;
     public final LogoutUserUseCase logoutUserUseCase;
 
 
@@ -37,7 +35,7 @@ public class UserController {
                           UpdateUserUseCase updateUserUseCase,
                           DeleteUserUseCase deleteUserUseCase,
                           SearchAllUserUseCase searchAllUserUseCase,
-                          SendOtpUseCase sendOtpUseCase,
+                          SendBuyerOtpUseCase sendOtpUseCase,
                           LogoutUserUseCase logoutUserUseCase){
         this.addUserUseCase=addUserUseCase;
         this.updateUserUseCase=updateUserUseCase;
@@ -67,6 +65,7 @@ public class UserController {
 
     @Post("/user/sent-otp")
     public RestResponse<SendOtpUseCaseResponse> sendOtp(@Body SendOtpUseCaseRequest request){
+        System.out.println("In user controller");
         try{
             SendOtpUseCaseResponse response= sendOtpUseCase.execute(request.email());
             if(response.id() == -1)

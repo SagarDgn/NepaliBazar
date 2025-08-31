@@ -5,7 +5,6 @@ import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
 public record AddWishListUseCaseRequest(
-        Integer userId,
         Integer productId
 )  implements UseCase.Request {
 }

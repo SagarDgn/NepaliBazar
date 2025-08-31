@@ -1,6 +1,6 @@
 'use client'
 
-import { Search, Heart, ShoppingCart } from 'lucide-react'
+import { Search, Heart, ShoppingCart, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -27,7 +27,8 @@ const Navbar = () => {
           <img src="logo.png" height={100} width={200} alt="Logo" />
         </div>
 
-        {/* Nav links */}
+        
+
         <ul className="hidden md:flex gap-6 mt-1 font-normal text-base text-black">
           {navItems.map((item, index) => (
             <li
@@ -40,7 +41,7 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Search */}
+        
         <div className="relative w-full max-w-xs mt-1">
           <input
             type="search"
@@ -51,7 +52,7 @@ const Navbar = () => {
           <Search className="absolute left-3 top-2.5 h-5 w-5 text-zinc-700" />
         </div>
 
-        {/* Icons */}
+        
         <div className="flex items-center gap-5 mt-1">
           <Heart
             className="w-5 h-5 cursor-pointer hover:text-gray-900"
@@ -61,7 +62,13 @@ const Navbar = () => {
             className="w-5 h-5 cursor-pointer hover:text-gray-900"
             onClick={() => router.push('/cart')}
           />
+          <User
+           className="w-5 h-5 cursor-pointer hover:text-gray-900"
+            onClick={() => router.push('/user-profile')}
+            />
+
         </div>
+        
       </div>
     </nav>
   )

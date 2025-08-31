@@ -26,7 +26,7 @@ public class AuthenticateSellerUseCase implements UseCase<AuthenticateSellerUseC
                 .map(sellerEntity->{
                     sellerRepository.updateLoginStatus(sellerEntity.getEmailPhone(),true);
                     return  new AuthenticateSellerUseCaseResponse(
-                        JwtUtils.generateToken(sellerEntity.getEmailPhone()),
+                        JwtUtils.generateToken(sellerEntity.getEmailPhone(), String.valueOf(sellerEntity.getRole())),
                         "Success Authenticate",
                         new String[] {String.valueOf(sellerEntity.getRole())},
                         sellerEntity.getSellerName()

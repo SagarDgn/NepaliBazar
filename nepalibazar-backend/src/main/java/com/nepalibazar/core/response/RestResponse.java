@@ -12,7 +12,7 @@ public record RestResponse<T>(String code,
         return new RestResponse<>("0","SUCCESS",data);
     }
     public static <T> RestResponse<T> error(String message){
-        return new RestResponse<>("-1","ERROR",null);
+        return new RestResponse<>("-1",message,null);
     }
     public static <T> RestResponse<T> success(){
         return new RestResponse<>("0","SUCCESS",null);
