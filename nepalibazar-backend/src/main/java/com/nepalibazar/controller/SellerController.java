@@ -9,33 +9,36 @@ import com.nepalibazar.usecase.seller.add.AddSellerUseCase;
 import com.nepalibazar.usecase.seller.add.AddSellerUseCaseRequest;
 import com.nepalibazar.usecase.seller.add.AddSellerUseCaseResponse;
 import com.nepalibazar.usecase.seller.logout.LogoutSellerUseCase;
+import com.nepalibazar.usecase.seller.products.GetSellerProductUseCaseResponse;
+import com.nepalibazar.usecase.seller.products.GetSellersProductUseCase;
 import com.nepalibazar.usecase.seller.search.SearchSellerUseCase;
 import com.nepalibazar.usecase.seller.search.SearchSellerUseCaseResponse;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Post;
+import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
 
 import java.util.List;
 
-@Controller("/api")
+@Controller("/api/v1")
 public class SellerController {
 
     public final AddSellerUseCase addSellerUseCase;
     public final SendSellerOtpUseCase sendSellerOtpUseCase;
     public final SearchSellerUseCase searchSellerUseCase;
     public final LogoutSellerUseCase logoutSellerUseCase;
+    public final GetSellersProductUseCase getSellersProductUseCase;
 
     @Inject
     public SellerController(AddSellerUseCase addSellerUseCase,
                             SendSellerOtpUseCase sendSellerOtpUseCase,
                             SearchSellerUseCase searchSellerUseCase,
-                            LogoutSellerUseCase logoutSellerUseCase){
+                            LogoutSellerUseCase logoutSellerUseCase,
+                            GetSellersProductUseCase getSellersProductUseCase){
         this.addSellerUseCase= addSellerUseCase;
         this.sendSellerOtpUseCase=sendSellerOtpUseCase;
         this.searchSellerUseCase=searchSellerUseCase;
         this.logoutSellerUseCase=logoutSellerUseCase;
+        this.getSellersProductUseCase=getSellersProductUseCase;
     }
 
     @Post("/seller/signup")
@@ -57,7 +60,7 @@ public class SellerController {
     public RestResponse<SendOtpUseCaseResponse> sentOtp(@Body SendOtpUseCaseRequest request){
         System.out.println("In seller controller");
         try{
-            SendOtpUseCaseResponse response= sendSellerOtpUseCase.execute(request.email());
+            SendOtpUseCaseResponse response= sendSellerOtpUseCase.execute(request.emailPhone());
             if(response.id() == -1)
                 return new RestResponse<>("-1", response.message(), null);
             return RestResponse.success(response);
@@ -73,6 +76,17 @@ public class SellerController {
             return RestResponse.success(sellers);
         }catch (Exception e){
             return RestResponse.error("Fail to search seller "+e.getMessage());
+        }
+    }
+
+    @Get("/my/products")
+    public RestResponse<List<GetSellerProductUseCaseResponse>> getProduct(@Header(HttpHeaders.AUTHORIZATION) String authorization){
+        try{
+            String token= authorization.replace("Bearer","");
+            List<GetSellerProductUseCaseResponse> products= getSellersProductUseCase.execute(token);
+            return RestResponse.success(products);
+        }catch(Exception e){
+            return RestResponse.error("Unauthorized" +e.getMessage());
         }
     }
 

@@ -13,7 +13,7 @@ import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
 import jakarta.inject.Inject;
 
-@Controller("/api/auth/user")
+@Controller("/api/v1")
 public class AuthenticateUserController {
     private final AuthenticateUserUseCase authenticateUseCase;
     public final LogoutUserUseCase logoutUserUseCase;
@@ -25,7 +25,7 @@ public class AuthenticateUserController {
         this.logoutUserUseCase=logoutUserUseCase;
     }
 
-    @Post("/login")
+    @Post("/auth/user/login")
     public RestResponse<AuthenticateUserUseCaseResponse> authUser(@Body AuthenticateUserUseCaseRequest payload){
         try {
             AuthenticateUserUseCaseResponse response= authenticateUseCase.execute(payload);
@@ -36,7 +36,7 @@ public class AuthenticateUserController {
 
     }
 
-    @Post("/logout")
+    @Post("/auth/user/logout")
     public RestResponse<LogoutUserUseCaseResponse> logoutUser(@Header(HttpHeaders.AUTHORIZATION) String authorization){
         try{
             LogoutUserUseCaseResponse response= logoutUserUseCase.execute(authorization);

@@ -11,7 +11,7 @@ import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
 import jakarta.inject.Inject;
 
-@Controller("/api")
+@Controller("/api/v1")
 public class WishListController {
 
     public final AddWishListUseCase addWishListUseCase;

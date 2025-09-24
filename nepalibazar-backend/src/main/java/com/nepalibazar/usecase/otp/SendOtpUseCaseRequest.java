@@ -4,5 +4,5 @@ import com.nepalibazar.core.usecase.UseCase;
 import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
-public record SendOtpUseCaseRequest(String email) implements UseCase.Request {
+public record SendOtpUseCaseRequest(String emailPhone) implements UseCase.Request {
 }

@@ -22,7 +22,7 @@ import jakarta.inject.Inject;
 
 import java.util.List;
 
-@Controller("/api/product")
+@Controller("/api/v1")
 public class ProductController {
 
     public final AddProductUseCase addProductUseCase;
@@ -44,7 +44,7 @@ public class ProductController {
         this.sellerRepository=sellerRepository;
     }
 
-    @Post("/add")
+    @Post("/product/add")
     public RestResponse<AddProductUseCaseResponse> postProduct(
             @Body AddProductRequestPayload request,
             @Header("authorization") String authorization
@@ -79,7 +79,7 @@ public class ProductController {
     }
 
 
-    @Get("/get")
+    @Get("/product/get")
     public RestResponse<List<SearchAllProductUseCaseResponse>> getAllProduct(){
         try{
             List<SearchAllProductUseCaseResponse> products= searchAllProductUseCase.execute();
@@ -89,7 +89,7 @@ public class ProductController {
         }
     }
 
-    @Put("/update/{id}")
+    @Put("/product/update/{id}")
     public RestResponse<UpdateProductUseCaseResponse> updateProduct(@PathVariable Integer id,
                                                                     @Body UpdateProductUseCaseRequest request){
         try{
@@ -112,7 +112,7 @@ public class ProductController {
 
     }
 
-    @Delete("/delete/{id}")
+    @Delete("/product/delete/{id}")
     public RestResponse<DeleteProductUseCaseResponse> deleteProduct(@PathVariable Integer id){
         try{
             DeleteProductUseCaseResponse response= deleteProductUseCase.execute(id);

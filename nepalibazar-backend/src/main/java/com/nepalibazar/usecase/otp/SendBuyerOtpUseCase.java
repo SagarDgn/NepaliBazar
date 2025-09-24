@@ -28,19 +28,19 @@ public class SendBuyerOtpUseCase {
 
 
 
-    public SendOtpUseCaseResponse execute(String email){
-        if(email == null || email.isBlank()){
+    public SendOtpUseCaseResponse execute(String emailPhone){
+        if(emailPhone == null || emailPhone.isBlank()){
             return new SendOtpUseCaseResponse(-1,"Email is required.");
         }
-        if(!emailValidationService.isGoogleEmail(email)){
+        if(!emailValidationService.isGoogleEmail(emailPhone)){
             return new SendOtpUseCaseResponse(-1,"Account not found.Please enter vali google account.");
         }
-        var normalizedEmail= email.trim().toLowerCase();
+        var normalizedEmail= emailPhone.trim().toLowerCase();
         if(userRepository.findByEmailPhone(normalizedEmail).isPresent()){
             return new SendOtpUseCaseResponse(-1,"Email is already in use.");
         }
 
-        otpService.sendOtpToGmail(email);
+        otpService.sendOtpToGmail(emailPhone);
         return new SendOtpUseCaseResponse(0,"Otp sent successfully to your gmail.");
     }
 

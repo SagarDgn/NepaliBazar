@@ -17,6 +17,6 @@ public record AddUserUseCaseRequest(
         @NotBlank(message = "Address is required")
         String address,
         @Nullable USER_ROLE role,
-         @Nullable String otp
+          String otp
 ) implements UseCase.Request {
 }

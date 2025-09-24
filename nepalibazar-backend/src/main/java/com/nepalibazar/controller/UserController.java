@@ -20,7 +20,7 @@ import jakarta.inject.Inject;
 
 import java.util.List;
 
-@Controller("/api")
+@Controller("/api/v1")
 public class UserController {
     public final AddUserUseCase addUserUseCase;
     public final UpdateUserUseCase updateUserUseCase;
@@ -48,6 +48,7 @@ public class UserController {
 
     @Post("/user/signup")
     public RestResponse<AddUserUseCaseResponse> postUser(@Body AddUserUseCaseRequest request) {
+        System.out.println("Inside");
         try {
             AddUserUseCaseResponse response = addUserUseCase.execute(request);
 
@@ -67,7 +68,7 @@ public class UserController {
     public RestResponse<SendOtpUseCaseResponse> sendOtp(@Body SendOtpUseCaseRequest request){
         System.out.println("In user controller");
         try{
-            SendOtpUseCaseResponse response= sendOtpUseCase.execute(request.email());
+            SendOtpUseCaseResponse response= sendOtpUseCase.execute(request.emailPhone());
             if(response.id() == -1)
                 return new RestResponse<>("-1", response.message(), null);
             return RestResponse.success(response);
