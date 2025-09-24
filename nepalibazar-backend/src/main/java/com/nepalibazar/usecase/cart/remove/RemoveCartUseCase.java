@@ -86,7 +86,7 @@ public class RemoveCartUseCase {
 
         }catch (Exception e){
             e.printStackTrace();
-            return  new RemoveCartUseCaseResponse(-1,"Error occured",0);
+            return  new RemoveCartUseCaseResponse(-1,"Internal error occured",0);
 
         }
     }

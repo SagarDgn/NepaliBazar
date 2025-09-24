@@ -80,7 +80,7 @@ public class AddCartItemUseCase {
 
         } catch (Exception e) {
             System.out.println("Error"+ e);
-            return new AddCartItemUseCaseResponse(-1, "Error occured");
+            return new AddCartItemUseCaseResponse(-1, "Internal error occured");
 
         }
     }
