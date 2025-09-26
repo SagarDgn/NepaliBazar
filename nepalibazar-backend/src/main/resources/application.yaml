@@ -71,7 +71,11 @@ jpa:
         show_sql: true
 
 smtp:
-  username: sagardhungana061@gmail.com
-  password: srhw srgv axbz qmwi
+  username: 
+  password:
+
+stripe:
+  secret-key: ${STRIPE_SECRET}
+  webhook-secret:  ${STRIPE_WEBHOOK}
 
 

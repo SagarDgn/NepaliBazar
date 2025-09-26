@@ -12,14 +12,14 @@ public class AddressEntity {
     @Column(name = "country")
     private String Country;
 
-    @Column(name = "street")
-    private String street;
-
     @Column(name = "city")
     private String city;
 
     @Column(name = "state")
     private String state;
+
+    @Column(name = "street")
+    private String street;
 
     @Column(name = "pincode")
     private String pinCode;

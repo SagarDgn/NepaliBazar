@@ -31,6 +31,7 @@ public class ProductEntity {
     @Column(name = "product_discount")
     private Integer discount;
 
+
     @Column(name = "product_image")
     private String image;
 

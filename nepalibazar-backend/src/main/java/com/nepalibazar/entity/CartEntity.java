@@ -19,13 +19,13 @@ public class CartEntity {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<CartItemEntity>cartItemEntities= new HashSet<>();
 
-    private double sellingPrice;
+    private Double sellingPrice;
 
     private Integer totalItem;
 
-    private double totalMrpPrice;
+    private Double totalMrpPrice;
 
-    private int discount;
+    private Integer discount;
 
     public Integer getId() {
         return id;
@@ -51,7 +51,7 @@ public class CartEntity {
         this.cartItemEntities = cartItemEntities;
     }
 
-    public double getSellingPrice() {
+    public Double getSellingPrice() {
         return sellingPrice;
     }
 
@@ -67,7 +67,7 @@ public class CartEntity {
         this.totalItem = totalItem;
     }
 
-    public double getTotalMrpPrice() {
+    public Double getTotalMrpPrice() {
         return totalMrpPrice;
     }
 
@@ -75,7 +75,7 @@ public class CartEntity {
         this.totalMrpPrice = totalMrpPrice;
     }
 
-    public int getDiscount() {
+    public Integer getDiscount() {
         return discount;
     }
 
