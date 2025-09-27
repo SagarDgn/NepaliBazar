@@ -29,6 +29,7 @@ dependencies {
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.postgresql:postgresql")
+    implementation("org.postgresql:postgresql:42.7.3")
     runtimeOnly("org.yaml:snakeyaml")
     testImplementation("io.micronaut:micronaut-http-client")
     aotPlugins platform("io.micronaut.platform:micronaut-platform:4.9.1")

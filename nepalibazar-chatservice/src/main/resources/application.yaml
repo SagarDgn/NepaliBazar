@@ -1,0 +1,17 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: nepalibazar-chatservice
+
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/nepalibazar-chatserver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
