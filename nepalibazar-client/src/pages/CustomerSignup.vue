@@ -100,7 +100,7 @@ export default {
        
       } catch (error) {
         console.error("Some error occurred: ", error);
-        toast.error(error.response?.data?.message || "Network error. Please try again.");
+        toast.error(error.response?.data?.message || "Internal sever error. Please try again later.");
       } finally{
         this.loading=false;
       }

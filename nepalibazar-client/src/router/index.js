@@ -5,6 +5,7 @@ import CustomerSignup from "../pages/CustomerSignup.vue";
 import CustomerVerification from "../pages/CustomerVerification.vue";
 import Loginuser from "../pages/loginuser.vue";
 import Sellersignup from "../pages/Sellersignup.vue";
+import SellerVerifivation from "../pages/SellerVerifivation.vue";
 
 
 const routes=[
@@ -12,7 +13,8 @@ const routes=[
     {path: '/sellersignup', name: 'Sellersignup', component: Sellersignup},
     {path: '/usersignup', name: 'CustomerSignup',component:CustomerSignup},
     { path: '/userverification', name: 'CustomerVerification', component: CustomerVerification},
-    {path:'/userlogin' ,name: 'UserLoginPage',component: Loginuser}
+    {path:'/userlogin' ,name: 'UserLoginPage',component: Loginuser},
+    {path: '/sellerverification', name: 'SellerVerification',component: SellerVerifivation}
 
 ]
 

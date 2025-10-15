@@ -152,7 +152,7 @@ export default {
         }
       } catch (error) {
         console.error("Signup failed", error);
-        toast.error(error.response?.data?.message || "Network error. Please try again.");
+        toast.error(error.response?.data?.message || "Internal server error. Please try again later.");
       } finally {
         this.loading = false;
       }
