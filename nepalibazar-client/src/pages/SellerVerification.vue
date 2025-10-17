@@ -1,4 +1,5 @@
 <template>
+  <div>
   <Hero />
   <Navbar />
   <div class="my-15">
@@ -70,6 +71,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -160,6 +162,7 @@ export default {
             const response= await signUpSeller(sellerData);
             if(response.data.code === "0"){
                 toast.success("Signup success");
+                this.$router.push({name: "LoginSeller"});
             }else{
                 toast.error(response.data.message || "Signup failed");
             }

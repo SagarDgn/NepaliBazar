@@ -16,7 +16,7 @@
         <div class="mt-30 py-10 flex flex-col">
           <form class="mt-10 w-96 gap-4 " @submit.prevent="handleSentOtp">
             <h2 className="text-2xl font-medium mb-4 border-b border-gray-300 ">
-              Enter Gmail to signup
+              Enter Gmail to Become our Seller
             </h2>
 
             <input

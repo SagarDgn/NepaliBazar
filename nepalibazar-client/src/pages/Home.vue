@@ -1,6 +1,9 @@
 <template>
+  <div>
   <Hero/>
   <Navbar/>
+
+  </div>
 
 </template>
 
