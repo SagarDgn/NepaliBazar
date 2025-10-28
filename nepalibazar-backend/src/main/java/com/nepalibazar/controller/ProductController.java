@@ -113,9 +113,14 @@ public class ProductController {
     }
 
     @Delete("/product/delete/{id}")
-    public RestResponse<DeleteProductUseCaseResponse> deleteProduct(@PathVariable Integer id){
+    public RestResponse<DeleteProductUseCaseResponse> deleteProduct(@PathVariable Integer id,
+                                                                    @Header(HttpHeaders.AUTHORIZATION)String authorization){
+
+        if(authorization==null){
+            return RestResponse.error("Unauthorized");
+        }
         try{
-            DeleteProductUseCaseResponse response= deleteProductUseCase.execute(id);
+            DeleteProductUseCaseResponse response= deleteProductUseCase.execute(id,authorization);
             return RestResponse.success(response);
         }catch(Exception e){
             return RestResponse.error("Cannot delete product "+ e.getMessage());

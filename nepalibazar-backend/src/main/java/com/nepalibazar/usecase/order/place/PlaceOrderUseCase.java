@@ -10,6 +10,7 @@ import com.nepalibazar.repository.AddressRepository;
 import com.nepalibazar.repository.CartRepository;
 import com.nepalibazar.repository.OrderRepository;
 import com.nepalibazar.repository.UserRepository;
+import com.nepalibazar.usecase.order.cancel.CancelOrderUseCaseResponse;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -42,6 +43,11 @@ public class PlaceOrderUseCase {
 
             String jwt= token.replace("Bearer","").trim();
             String email= JwtUtils.getEmailFromToken(jwt);
+            String role= JwtUtils.getRoleFromToken(jwt);
+
+            if(!"BUYER".equalsIgnoreCase(role)){
+                return new PlaceOrderUseCaseResponse(-1,null,"Unauthorized");
+            }
 
             Optional<UserEntity> user= userRepository.findByEmailPhone(email);
             if(user.isEmpty()){

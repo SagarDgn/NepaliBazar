@@ -27,6 +27,7 @@ public class AuthenticateUserController {
 
     @Post("/auth/user/login")
     public RestResponse<AuthenticateUserUseCaseResponse> authUser(@Body AuthenticateUserUseCaseRequest payload){
+        System.out.println("Inside auth controller");
         try {
             AuthenticateUserUseCaseResponse response= authenticateUseCase.execute(payload);
             return RestResponse.success(response);

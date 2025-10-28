@@ -8,6 +8,7 @@ import com.nepalibazar.entity.UserEntity;
 import com.nepalibazar.repository.CartRepository;
 import com.nepalibazar.repository.ProductRepository;
 import com.nepalibazar.repository.UserRepository;
+import com.nepalibazar.usecase.wishlist.add.AddWishListUseCaseResponse;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
@@ -42,6 +43,11 @@ public class RemoveCartUseCase {
 
             String jwt= token.replace("Bearer", "").trim();
             String email= JwtUtils.getEmailFromToken(jwt);
+            String role= JwtUtils.getRoleFromToken(jwt);
+
+            if(!"BUYER".equalsIgnoreCase(role)){
+                return new RemoveCartUseCaseResponse(-1,"Unauthorized",0);
+            }
 
             Optional<UserEntity> user= userRepository.findByEmailPhone(email);
             if(user.isEmpty()){

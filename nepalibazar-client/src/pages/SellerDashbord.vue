@@ -1,13 +1,13 @@
 <template>
 <div>
     <div>
-    
+    this is seller dashbord
     </div>
 </div>
 </template>
 
 <script>
-import { Sidebar } from 'lucide-vue-next';
+
 
 export default {
     name: "SellerDashbord",

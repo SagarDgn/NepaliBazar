@@ -1,5 +1,6 @@
 package com.nepalibazar.usecase.wishlist.add;
 
+import com.nepalibazar.core.response.RestResponse;
 import com.nepalibazar.core.security.JwtUtils;
 import com.nepalibazar.core.usecase.UseCase;
 import com.nepalibazar.entity.ProductEntity;
@@ -36,22 +37,27 @@ public class AddWishListUseCase {
         System.out.println("Here inside execute function");
         try {
             if (token == null) {
-                return new AddWishListUseCaseResponse(-1, "Unauthorized: missing or invalid token");
+                return new AddWishListUseCaseResponse(-1, "Unauthorized: missing or invalid token",false);
             }
 
             String jwt = token.replace("Bearer", "").trim();
             String email = JwtUtils.getEmailFromToken(jwt);
+            String role= JwtUtils.getRoleFromToken(jwt);
+
+            if(!"BUYER".equalsIgnoreCase(role)){
+                return new AddWishListUseCaseResponse(-1,"Unauthorized",false);
+            }
 
             Optional<UserEntity> userOptional = userRepository.findByEmailPhone(email);
             if (userOptional.isEmpty()) {
-                return new AddWishListUseCaseResponse(-1, "Login required to add product in wishlist");
+                return new AddWishListUseCaseResponse(-1, "Login required to add product in wishlist",false);
             }
             UserEntity user = userOptional.get();
 
 
             Optional<ProductEntity> productOptional = productRepository.findById(request.productId());
             if (productOptional.isEmpty()) {
-                return new AddWishListUseCaseResponse(-1, "Product not found with ID: " + request.productId());
+                return new AddWishListUseCaseResponse(-1, "Product not found with ID: " + request.productId(),false);
             }
             ProductEntity product = productOptional.get();
 
@@ -70,17 +76,17 @@ public class AddWishListUseCase {
             if (wishList.getProductEntity().contains(product)) {
                 wishList.getProductEntity().remove(product);
                 wishListRepository.save(wishList);
-                return new AddWishListUseCaseResponse(0, "Product removed from wishlist");
+                return new AddWishListUseCaseResponse(0, "Product removed from wishlist",false);
             } else {
                 wishList.getProductEntity().add(product);
                 wishListRepository.save(wishList);
-                return new AddWishListUseCaseResponse(0, "Product added to wishlist");
+                return new AddWishListUseCaseResponse(0, "Product added to wishlist",true);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             return new AddWishListUseCaseResponse(-1,
-                    "Wishlist operation failed: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+                    "Wishlist operation failed: " + e.getClass().getSimpleName() + " - " + e.getMessage(),false);
         }
     }
 }

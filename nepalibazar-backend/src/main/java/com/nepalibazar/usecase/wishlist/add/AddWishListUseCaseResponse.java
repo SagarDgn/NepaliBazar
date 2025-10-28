@@ -7,5 +7,6 @@ import java.util.Set;
 
 @Serdeable
 public record AddWishListUseCaseResponse(Integer code,
-                                         String message)implements UseCase.Response {
+                                         String message,
+                                         boolean isWishlisted)implements UseCase.Response {
 }

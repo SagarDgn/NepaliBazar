@@ -7,6 +7,7 @@ import com.nepalibazar.entity.OrderEntity;
 import com.nepalibazar.entity.UserEntity;
 import com.nepalibazar.repository.OrderRepository;
 import com.nepalibazar.repository.UserRepository;
+import com.nepalibazar.usecase.wishlist.add.AddWishListUseCaseResponse;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Refund;
@@ -42,6 +43,11 @@ public class CancelOrderUseCase {
 
             String jwt = token.replace("Bearer", "").trim();
             String email = JwtUtils.getEmailFromToken(jwt);
+            String role= JwtUtils.getRoleFromToken(jwt);
+
+            if(!"BUYER".equalsIgnoreCase(role)){
+                return new CancelOrderUseCaseResponse(-1,"Unauthorized");
+            }
 
             Optional<UserEntity> userOpt = userRepository.findByEmailPhone(email);
             if (userOpt.isEmpty()) {
