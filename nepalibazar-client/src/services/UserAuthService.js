@@ -18,7 +18,7 @@ export default {
     } catch (error) {
       return error.response?.data || {
         code:"-1",
-         message: "Login failed.check your crenditals" };
+         message: "Login failed.Retry" };
     }
   },
 

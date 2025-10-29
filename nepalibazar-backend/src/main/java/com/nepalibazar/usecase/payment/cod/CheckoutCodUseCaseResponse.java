@@ -5,6 +5,7 @@ import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
 public record CheckoutCodUseCaseResponse(
+        Integer code,
         Integer orderId,
         String message
 ) implements UseCase.Response {

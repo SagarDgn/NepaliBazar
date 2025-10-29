@@ -18,7 +18,7 @@ import jakarta.inject.Inject;
 
 import java.util.Optional;
 
-@Controller("/webhook/stripe")
+@Controller("/api/v1")
 public class StripeWebHookController {
 
     private final OrderRepository orderRepository;
@@ -31,7 +31,7 @@ public class StripeWebHookController {
         this.endPointSecret = endPointSecret;
     }
 
-    @Post
+    @Post("/checkout/stripe")
     public RestResponse<String> handleWebHook(@Body String payload,
                                               @Header("Stripe-Signature") String sigHeader) {
         try {

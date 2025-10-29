@@ -8,6 +8,7 @@ import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Header;
+import io.micronaut.http.annotation.Post;
 import jakarta.inject.Inject;
 
 @Controller("/api/v1")
@@ -20,6 +21,7 @@ public class CodOrderController {
         this.checkoutCodUseCase=checkoutCodUseCase;
     }
 
+    @Post("/checkout/cod")
     public RestResponse<CheckoutCodUseCaseResponse> checkout(@Body CheckoutCodUseCaseRequest request,
                                                              @Header(HttpHeaders.AUTHORIZATION) String authorization){
         if(authorization==null){

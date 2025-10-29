@@ -269,7 +269,7 @@
             <!-- Action Buttons -->
             <div class="p-6 border-t border-gray-200 space-y-3">
               <button
-                @click="placeOrder"
+                @click="proceedToCheckout"
                 :disabled="isLoading || mergedCartItems.length === 0"
                 class="w-full py-3 bg-gradient-to-r from-red-600 to-red-600 hover:from-red-700 hover:to-red-700 text-white rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
@@ -277,7 +277,7 @@
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>Place Order • Rs. {{ totalSellingPrice.toLocaleString() }}</span>
+                  <span>Proceed to Checkout • Rs. {{ totalSellingPrice.toLocaleString() }}</span>
                 </span>
                 <span v-else class="flex items-center justify-center space-x-2">
                   <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -482,7 +482,7 @@ export default {
           // Recalculate totals
           this.calculateTotals();
           
-          this.showCustomNotification("Quantity updated successfully! ", 'success');
+          this.showCustomNotification("Quantity updated successfully! 📦", 'success');
         }
       } catch (error) {
         console.error("Update quantity error:", error);
@@ -522,7 +522,7 @@ export default {
       try {
         const result = await CartService.clearCart();
         if (result.success) {
-          this.showCustomNotification("Cart cleared successfully! ", 'success');
+          this.showCustomNotification("Cart cleared successfully! 🧹", 'success');
           await this.fetchCart();
         } else {
           this.showCustomNotification(result.message, 'error');
@@ -535,29 +535,14 @@ export default {
       }
     },
 
-    async placeOrder() {
+    proceedToCheckout() {
       if (this.mergedCartItems.length === 0) {
-        this.showCustomNotification("Your cart is empty. Add some items first! ", 'error');
+        this.showCustomNotification("Your cart is empty. Add some items first! 🛒", 'error');
         return;
       }
-
-      this.isLoading = true;
-      try {
-        // Simulate order placement
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        this.showCustomNotification(" Order placed successfully! Thank you for your purchase!", 'success');
-        
-        // Clear cart after successful order
-        await this.clearCart();
-        
-      } catch (error) {
-        console.error("Place order error:", error);
-        this.showCustomNotification("Failed to place order. Please try again.", 'error');
-      } finally {
-        this.isLoading = false;
-      }
-    },
+      // Navigate to checkout page
+      this.$router.push('/checkout');
+    }
   },
 };
 </script>

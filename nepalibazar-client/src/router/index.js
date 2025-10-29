@@ -1,3 +1,5 @@
+
+
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../pages/Home.vue";
 import CustomerSignup from "../pages/CustomerSignup.vue";
@@ -12,14 +14,16 @@ import ProductList from "../pages/ProductList.vue";
 import LoginUser from "../pages/loginUser.vue";
 import WishlistPage from "../pages/WishlistPage.vue";
 import CartItemPage from "../pages/CartItemPage.vue";
-
+import CheckoutPage from "../pages/CheckoutPage.vue";
+import OrderSuccess from "../pages/OrderSuccess.vue";
+import OrderHistory from "../pages/OrderHistory.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
   { path: "/sellersignup", name: "Sellersignup", component: Sellersignup, meta: { guestOnly: true } },
   { path: "/usersignup", name: "CustomerSignup", component: CustomerSignup, meta: { guestOnly: true } },
   { path: "/userverification", name: "CustomerVerification", component: CustomerVerification, meta: { guestOnly: true } },
-  {path: '/loginuser',name:'LoginUser',component: LoginUser},
+  { path: '/loginuser', name: 'LoginUser', component: LoginUser },
   { path: "/sellerverification", name: "SellerVerification", component: SellerVerification, meta: { guestOnly: true } },
   { path: "/sellerlogin", name: "LoginSeller", component: LoginSeller },
   {
@@ -35,9 +39,25 @@ const routes = [
     component: WishlistPage,
     meta: { requiresUserAuth: true }, //  only logged-in users can view wishlist
   },
-  {path: "/mycart",name:"CartItemPage",component: CartItemPage}
-
-
+  { path: "/mycart", name: "CartItemPage", component: CartItemPage },
+  { 
+    path: "/checkout", 
+    name: "CheckoutPage", 
+    component: CheckoutPage,
+    meta: { requiresUserAuth: true } // Add auth protection for checkout
+  },
+  { 
+    path: "/order-success", 
+    name: "OrderSuccess", 
+    component: OrderSuccess,
+    meta: { requiresUserAuth: true } // Add auth protection for order success
+  },
+  { 
+    path: "/orders", 
+    name: "OrderHistory", 
+    component: OrderHistory, // Lazy load
+    meta: { requiresUserAuth: true } // Add auth protection for order history
+  }
 ];
 
 const router = createRouter({
@@ -49,16 +69,16 @@ router.beforeEach((to, from, next) => {
   const userLoggedIn = UserAuthService.isAuthenticated();
   const sellerLoggedIn = SellerAuthService.isAuthenticated();
   const seller_role = localStorage.getItem("seller_role"); // "BUYER" or "SELLER"
-   const buyer_role = localStorage.getItem("buyer_role");
+  const buyer_role = localStorage.getItem("buyer_role");
 
   // Prevent infinite redirect
   if (to.name === from.name) return next();
 
   // 🔹 Guest-only routes (login/signup)
-  if (to.meta.guestOnly) {
-    if (userLoggedIn && buyer_role === "BUYER") return next({ name: "Home" });
-    if (sellerLoggedIn && seller_role === "SELLER") return next({ name: "SellerDashbord" });
-  }
+  // if (to.meta.guestOnly) {
+  //   if (userLoggedIn && buyer_role === "BUYER") return next({ name: "Home" });
+  //   if (sellerLoggedIn && seller_role === "SELLER") return next({ name: "SellerDashbord" });
+  // }
 
   // 🔹 Seller-only routes
   if (to.meta.requiresSellerAuth) {
@@ -73,6 +93,5 @@ router.beforeEach((to, from, next) => {
   // Default: allow navigation
   next();
 });
-
 
 export default router;

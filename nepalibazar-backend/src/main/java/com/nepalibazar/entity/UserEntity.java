@@ -4,14 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nepalibazar.domain.USER_ROLE;
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
+import io.micronaut.serde.annotation.SerdeImport;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-
+@SerdeImport
 @Entity
 @Table(name = "users_details")
 public class UserEntity {
@@ -122,10 +124,12 @@ public class UserEntity {
         this.updatedAt = updatedAt;
     }
 
+    @Transactional
     public void setAddressEntityset(Set<AddressEntity> addressEntityset) {
         this.addressEntityset = addressEntityset;
     }
 
+    @Transactional
     public Set<AddressEntity> getAddressEntityset() {
         return addressEntityset;
     }

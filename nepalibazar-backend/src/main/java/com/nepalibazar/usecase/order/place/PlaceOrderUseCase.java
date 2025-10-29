@@ -13,6 +13,7 @@ import com.nepalibazar.repository.UserRepository;
 import com.nepalibazar.usecase.order.cancel.CancelOrderUseCaseResponse;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import jakarta.transaction.Transactional;
 
 import java.util.Optional;
 
@@ -35,6 +36,7 @@ public class PlaceOrderUseCase {
         this.addressRepository=addressRepository;
         this.cartRepository=cartRepository;
     }
+    @Transactional
     public PlaceOrderUseCaseResponse execute(String token,PlaceOrderUseCaseRequest request){
         try{
             if(token==null){
@@ -76,7 +78,7 @@ public class PlaceOrderUseCase {
             cartEntity.setDiscount(0);
             cartRepository.update(cartEntity);
 
-            return new PlaceOrderUseCaseResponse(0, savedOrder.getId(), "Order placed successfullu");
+            return new PlaceOrderUseCaseResponse(0, savedOrder.getId(), "Order placed successfully");
 
 
 

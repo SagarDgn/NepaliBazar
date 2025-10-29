@@ -4,6 +4,7 @@ import com.nepalibazar.domain.ORDER_STATUS;
 import com.nepalibazar.domain.PAYMENT_METHOD;
 import com.nepalibazar.domain.PAYMENT_ORDER_STATUS;
 import io.micronaut.data.annotation.DateCreated;
+import io.micronaut.serde.annotation.SerdeImport;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
+@SerdeImport
 public class OrderEntity {
 
     @Id
