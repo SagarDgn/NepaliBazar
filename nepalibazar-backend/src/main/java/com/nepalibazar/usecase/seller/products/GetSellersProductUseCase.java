@@ -18,7 +18,8 @@ public class GetSellersProductUseCase {
     }
 
     public List<GetSellerProductUseCaseResponse> execute(String token){
-        String sellerEmail= JwtUtils.getEmailFromToken(token);
+        String jwt= token.replace("Bearer","").trim();
+        String sellerEmail= JwtUtils.getEmailFromToken(jwt);
         List<ProductEntity> productEntitiy= productRepository.findBySeller_EmailPhone(sellerEmail);
 
         return productEntitiy.stream().

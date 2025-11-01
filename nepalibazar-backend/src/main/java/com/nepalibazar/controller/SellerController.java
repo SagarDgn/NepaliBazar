@@ -82,7 +82,7 @@ public class SellerController {
     @Get("/my/products")
     public RestResponse<List<GetSellerProductUseCaseResponse>> getProduct(@Header(HttpHeaders.AUTHORIZATION) String authorization){
         try{
-            String token= authorization.replace("Bearer","");
+            String token= authorization.replace("Bearer","").trim();
             List<GetSellerProductUseCaseResponse> products= getSellersProductUseCase.execute(token);
             return RestResponse.success(products);
         }catch(Exception e){

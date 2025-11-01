@@ -28,7 +28,7 @@
                 Explore Products
               </router-link>
               <router-link 
-                to="/about" 
+                to="/aboutus" 
                 class="px-8 py-4 border border-gray-300 text-gray-700 font-semibold rounded-2xl hover:bg-gray-50 transition-all duration-300"
               >
                 Our Story
@@ -121,7 +121,7 @@
           <div class="bg-white rounded-2xl p-6 shadow-lg border border-green-200 text-center">
             <div class=" mx-auto mb-4 bg-blue-100 rounded-2xl flex items-center justify-center">
               <span class="text-2xl">
-                <img src="https://imgs.search.brave.com/OTM5MhX6icZ5Y61BIOFx5ilzrQ5R_hh-c2u1qiPqBX4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTI4/NTIxNDgzNi9waG90/by90aGUtZXZlcmVz/dC1iYXNlLWNhbXAt/aGlraW5nLXRyYWls/LW5lYXItdGhlLWRp/bmdib2NoZS12aWxs/YWdlLWluLXRoZS1o/aW1hbGF5YS1pbi1u/ZXBhbC5qcGc_cz02/MTJ4NjEyJnc9MCZr/PTIwJmM9b1VkcFM0/aVpyZHo1bjItSHl2/QzVwNUUzVm55cVc3/b01kX0RPa2pOd205/RT0"
+                <img src="../assets/himalaya.webp"
                 />
               </span>
             </div>
@@ -132,7 +132,7 @@
           <div class="bg-white rounded-2xl p-6 shadow-lg border border-green-200 text-center">
             <div class=" mx-auto mb-4 bg-green-100 rounded-2xl flex items-center justify-center">
               <span class="text-2xl">
-                <img src="https://imgs.search.brave.com/yeF_ikky1Q2Lq7M1B2CyWrl2b_b4U8GryLesTuYPMsI/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMucGV4ZWxzLmNv/bS9waG90b3MvMzAy/NzEzOC9wZXhlbHMt/cGhvdG8tMzAyNzEz/OC5qcGVnP2F1dG89/Y29tcHJlc3MmY3M9/dGlueXNyZ2ImZHBy/PTEmdz01MDA"
+                <img src="../assets/hills.webp"
                 />
               </span>
             </div>
@@ -143,7 +143,7 @@
           <div class="bg-white rounded-2xl p-6 shadow-lg border border-green-200 text-center">
             <div class=" mx-auto mb-4 bg-orange-100 rounded-2xl flex items-center justify-center">
               <span class="text-2xl">
-                <img src="https://imgs.search.brave.com/LcvrqotJUSd9Wtc20V4jVA0MXxsOeaO4PUHIECFqoGY/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzY2Lzlk/L2JkLzY2OWRiZDgw/MjQ5ZTQ2MWQ2N2U2/YjIyODFlNzM5NGQ2/LmpwZw"
+                <img src="../assets/terai.webp"
                />
               </span>
             </div>

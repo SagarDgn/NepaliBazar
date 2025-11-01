@@ -84,12 +84,7 @@
                     </svg>
                     Password
                   </label>
-                  <router-link 
-                    to="/seller-forgot-password" 
-                    class="text-xs text-orange-600 hover:text-orange-700 hover:underline transition-colors"
-                  >
-                    Forgot password?
-                  </router-link>
+                 
                 </div>
                 <div class="relative">
                   <input
@@ -262,7 +257,7 @@ export default {
         if (response.code === "0") {
           toast.success(" Welcome to Seller Center! Access granted.");
           setTimeout(() => {
-            this.$router.push({ name: "SellerDashbord" });
+            this.$router.push({ name: "SellerDashboard" });
           }, 1000);
         }
         else if (response.code === "-1") {

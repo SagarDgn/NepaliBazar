@@ -119,6 +119,7 @@ public class ProductController {
         if(authorization==null){
             return RestResponse.error("Unauthorized");
         }
+        System.out.println("Received" + authorization);
         try{
             DeleteProductUseCaseResponse response= deleteProductUseCase.execute(id,authorization);
             return RestResponse.success(response);

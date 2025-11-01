@@ -1,7 +1,70 @@
-
+/* 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
 @import "tailwindcss";
 *{
     font-family: Outfit;
+} */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
+
+* {
+    font-family: Outfit;
+}
+
+/* Dark mode transitions for smooth theme switching */
+html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ensure proper dark mode background */
+.dark {
+    color-scheme: dark;
+}
+
+.dark body {
+    background-color: #111827; /* gray-900 */
+    color: #f9fafb; /* gray-50 */
+}
+
+/* Light mode background */
+:root {
+    color-scheme: light;
+}
+
+body {
+    background-color: #ffffff;
+    color: #111827; /* gray-900 */
+}
+
+/* Smooth transitions for all elements */
+* {
+    transition: background-color 0.3s ease, 
+                border-color 0.3s ease, 
+                color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Optional: Custom scrollbar for dark mode */
+.dark ::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #374151; /* gray-700 */
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #6b7280; /* gray-500 */
+    border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af; /* gray-400 */
 }

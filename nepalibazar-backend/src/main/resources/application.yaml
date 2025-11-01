@@ -75,7 +75,7 @@ smtp:
   password: srhw srgv axbz qmwi
 
 stripe:
-  secret-key: sk_test_51SBU7VHgmyCxLoBYaRB0QjF0XFSaSgKfUBWCziiQ9CJWRpwQLc4nJpolWtnxIhYY8ItAR4Qr7UuEHmHVWAUOXafC00mnoxIgTr
-  webhook-secret: whsec_3b7d1e0a83940223b3f4ec78afda50b29d791c7008aee2e8c18ccf7d2e1c496fx
+  secret-key:
+  webhook-secret: 
 
 

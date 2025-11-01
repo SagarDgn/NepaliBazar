@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-black text-white flex justify-center items-center h-8 relative overflow-hidden">
+  <div class="bg-black text-white flex justify-center items-center h-8 relative overflow-hidden ">
     <!-- Animated background elements -->
     <div class="absolute inset-0">
       <div class="absolute top-1 left-1/4 w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
@@ -10,7 +10,7 @@
     <p class="font-light text-sm tracking-wider transform hover:scale-105 transition-all duration-300 flex items-center space-x-3">
       <span class="text-yellow-300 animate-bounce">✨</span>
       <span class="font-medium bg-gradient-to-r from-green-300 to-orange-300 bg-clip-text text-transparent">
-        Get All Nepali Products in single marketplace
+        Sell All Nepali Products in single marketplace
       </span>
       <span class="text-yellow-300 animate-bounce delay-100">🎯</span>
     </p>
@@ -27,7 +27,7 @@
 
 <script>
 export default {
-    name: "Hero"
+    name: "SellerHero"
 }
 </script>
 

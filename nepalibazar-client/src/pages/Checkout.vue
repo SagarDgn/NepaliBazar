@@ -92,7 +92,6 @@ export default {
     ShippingStep,
     PaymentStep,
     ConfirmationStep
-   
   },
   name: "CheckoutPage",
   data() {
@@ -258,63 +257,89 @@ export default {
 
       this.processPayment();
     },
- async processPayment() {
-   this.isLoading = true;
-   try {
-     const orderData = {
-       paymentMethod: this.paymentMethod,
-       country: this.shippingData.country,
-      city: this.shippingData.city,
-       state: this.shippingData.state,
-       street: this.shippingData.street,
-    pinCode: this.shippingData.pinCode,
-      phoneNumber: this.shippingData.phoneNumber
-    };
 
-    const placeOrderResult = await OrderService.placeOrder(orderData);
-     if (!placeOrderResult.success) {
-       this.showCustomNotification(placeOrderResult.message, 'error');
-       return;
-    }
+    async processPayment() {
+      this.isLoading = true;
+      try {
+        const orderData = {
+          paymentMethod: this.paymentMethod,
+          Country: this.shippingData.country, // Capital C for backend
+          city: this.shippingData.city,
+          state: this.shippingData.state,
+          street: this.shippingData.street,
+          pinCode: this.shippingData.pinCode,
+          phoneNumber: this.shippingData.phoneNumber
+        };
 
-    this.orderId = placeOrderResult.orderId;
+        console.log("🛒 Placing order with data:", orderData);
 
-    // Cash on Delivery
-     if (this.paymentMethod === 'CASH') {
-      const codResult = await PaymentService.confirmCodOrder(this.orderId);
-      if (!codResult.success) {
-        this.showCustomNotification(codResult.message, 'error');
-         return;
+        const placeOrderResult = await OrderService.placeOrder(orderData);
+        
+        console.log("📦 Place order result:", placeOrderResult);
+
+        if (!placeOrderResult.success) {
+          this.showCustomNotification(placeOrderResult.message, 'error');
+          return;
+        }
+
+        this.orderId = placeOrderResult.orderId;
+
+        // Handle different payment methods
+        if (this.paymentMethod === 'CASH') {
+          console.log("💰 Processing Cash on Delivery for order:", this.orderId);
+          
+          // Confirm COD order with backend
+          const codResult = await PaymentService.confirmCodOrder(this.orderId);
+          
+          console.log("📨 COD confirmation result:", codResult);
+          
+          if (codResult.success) {
+            this.currentStep = 3;
+            this.showCustomNotification("🎉 Order placed successfully with Cash on Delivery!", 'success');
+            await CartService.clearCart();
+          } else {
+            this.showCustomNotification(codResult.message, 'error');
+          }
+
+        } else if (this.paymentMethod === 'STRIPE') {
+          console.log("💳 Processing Stripe payment for order:", this.orderId);
+          
+          const successUrl = `${window.location.origin}/order-success?orderId=${this.orderId}`;
+          const cancelUrl = `${window.location.origin}/checkout?step=2`;
+
+          console.log("🔗 Redirect URLs:", { successUrl, cancelUrl });
+
+          const stripeResult = await PaymentService.createStripeCheckout(
+            this.orderId, 
+            successUrl, 
+            cancelUrl
+          );
+
+          console.log("💳 Stripe checkout result:", stripeResult);
+
+          if (stripeResult.success) {
+            // Redirect to Stripe checkout
+            window.location.href = stripeResult.sessionUrl;
+          } else {
+            this.showCustomNotification(stripeResult.message, 'error');
+          }
+        }
+
+      } catch (error) {
+        console.error("❌ Payment processing error:", error);
+        this.showCustomNotification("Failed to process payment. Please try again.", 'error');
+      } finally {
+        this.isLoading = false;
       }
+    },
 
-     this.showCustomNotification("Order placed successfully with Cash on Delivery!", 'success');
-      this.currentStep = 3; // Move to confirmation step
-     await CartService.clearCart();
-     }
+    viewOrderHistory() {
+      this.$router.push('/orders');
+    },
 
-    // Stripe Payment
-    else if (this.paymentMethod === 'STRIPE') {
-      const successUrl = `${window.location.origin}/order-success?orderId=${this.orderId}`;
-      const cancelUrl = `${window.location.origin}/checkout?step=2`;
-
-      const stripeResult = await PaymentService.createStripeCheckout(this.orderId, successUrl, cancelUrl);
-
-         this.showCustomNotification(stripeResult.message, 'error');
-        return;
-      }
-
-       window.location.href = stripeResult.sessionUrl;
+    continueShopping() {
+      this.$router.push('/products');
     }
-
- catch (error) {
-     console.error("Payment processing error:", error);
-this.showCustomNotification("Failed to process payment. Please try again.", 'error');
-  } finally {
-    this.isLoading = false;
-   }
- },
-
-
-
+  }
 };
 </script>
