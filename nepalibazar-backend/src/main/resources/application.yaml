@@ -71,9 +71,10 @@ jpa:
         show_sql: true
 
 smtp:
-  username: your email
-  password: your app password
-
-  #your stripe secret key and webhook config here
+  username: sagardhungana061@gmail.com
+  password: srhw srgv axbz qmwi
+stripe:
+  secret-key: ${STRIPE_SECRET}
+  webhook-secret:  ${STRIPE_WEBHOOK}
 
 
