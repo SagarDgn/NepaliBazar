@@ -2,6 +2,7 @@ package com.nepalibazar.entity;
 
 import com.nepalibazar.domain.PAYMENT_METHOD;
 import com.nepalibazar.domain.PAYMENT_ORDER_STATUS;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "payment_order")
+@Serdeable
 public class PaymentOrderEntity {
 
     @GeneratedValue(strategy = GenerationType.AUTO)

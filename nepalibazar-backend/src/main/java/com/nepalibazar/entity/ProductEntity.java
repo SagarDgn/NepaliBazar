@@ -3,6 +3,7 @@ package com.nepalibazar.entity;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "products_details")
-
+@Serdeable
 public class ProductEntity {
 
     @Id
@@ -32,7 +33,7 @@ public class ProductEntity {
     private Integer discount;
 
 
-    @Column(name = "product_image")
+    @Column(name = "product_image",columnDefinition = "TEXT")
     private String image;
 
     @Column(name = "product_quantity")

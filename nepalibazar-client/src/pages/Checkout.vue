@@ -2,10 +2,10 @@
   <div class="min-h-screen bg-white">
     <Hero />
     <Navbar />
-    
+
     <!-- Checkout Progress -->
     <CheckoutProgress :currentStep="currentStep" />
-    
+
     <!-- Custom Notification -->
     <CustomNotification
       :show="showNotification"
@@ -16,7 +16,7 @@
 
     <div class="container mx-auto px-4 py-8 max-w-6xl">
       <!-- Empty Cart State -->
-      <EmptyCartState 
+      <EmptyCartState
         v-if="cartItems.length === 0 && !isLoading"
         @continue-shopping="$router.push('/products')"
       />
@@ -73,7 +73,6 @@ import CartService from "../services/CartService";
 import OrderService from "../services/OrderService";
 import PaymentService from "../services/PaymentService";
 
-// Import components
 import CheckoutProgress from "../components/checkout/CheckoutProgress.vue";
 import CustomNotification from "../components/ui/CustomNotification.vue";
 import EmptyCartState from "../components/checkout/EmptyCartState.vue";
@@ -82,9 +81,10 @@ import PaymentStep from "../components/checkout/PaymentStep.vue";
 import ConfirmationStep from "../components/checkout/ConfirmationStep.vue";
 
 export default {
-  components: { 
-    Hero, 
-    Navbar, 
+  name: "CheckoutPage",
+  components: {
+    Hero,
+    Navbar,
     Footer,
     CheckoutProgress,
     CustomNotification,
@@ -93,7 +93,6 @@ export default {
     PaymentStep,
     ConfirmationStep
   },
-  name: "CheckoutPage",
   data() {
     return {
       currentStep: 1,
@@ -115,33 +114,48 @@ export default {
       notificationMessage: '',
       notificationType: 'success',
       notificationTimeout: null,
-      errors: {}
+      errors: {
+        paymentMethod: '',
+        country: '',
+        city: '',
+        state: '',
+        street: '',
+        pinCode: '',
+        phoneNumber: ''
+      }
     };
   },
   async mounted() {
     await this.fetchCart();
   },
   methods: {
+    // ------------------ Notification ------------------
     showCustomNotification(message, type = 'success') {
+      console.log(`🔔 Notification: ${message}, Type: ${type}`);
+      clearTimeout(this.notificationTimeout);
       this.notificationMessage = message;
       this.notificationType = type;
       this.showNotification = true;
 
-      clearTimeout(this.notificationTimeout);
       this.notificationTimeout = setTimeout(() => {
         this.hideNotification();
       }, 4000);
     },
-
     hideNotification() {
       this.showNotification = false;
       clearTimeout(this.notificationTimeout);
     },
 
+    // ------------------ Errors ------------------
     clearErrors() {
-      this.errors = {};
+      for (const key in this.errors) {
+        if (Object.hasOwnProperty.call(this.errors, key)) {
+          this.errors[key] = '';
+        }
+      }
     },
 
+    // ------------------ Shipping ------------------
     updateShippingData(field, value) {
       this.shippingData[field] = value;
     },
@@ -154,7 +168,6 @@ export default {
         return false;
       }
 
-      // Specific validations
       switch (field) {
         case 'phoneNumber':
           const phoneRegex = /^[0-9]{10}$/;
@@ -164,7 +177,6 @@ export default {
             return false;
           }
           break;
-        
         case 'pinCode':
           const pinRegex = /^[0-9]{6}$/;
           if (!pinRegex.test(value)) {
@@ -172,7 +184,6 @@ export default {
             return false;
           }
           break;
-        
         case 'country':
         case 'city':
         case 'state':
@@ -181,7 +192,6 @@ export default {
             return false;
           }
           break;
-        
         case 'street':
           if (value.length < 5) {
             this.errors.street = 'Address must be at least 5 characters';
@@ -189,7 +199,6 @@ export default {
           }
           break;
       }
-
       return true;
     },
 
@@ -199,10 +208,8 @@ export default {
 
     validateShipping() {
       this.clearErrors();
-      
       let isValid = true;
       const fields = ['country', 'city', 'state', 'street', 'pinCode', 'phoneNumber'];
-      
       fields.forEach(field => {
         if (!this.validateField(field, this.shippingData[field])) {
           isValid = false;
@@ -213,20 +220,20 @@ export default {
         this.showCustomNotification('Please fix the errors in the form', 'error');
         return;
       }
-
       this.currentStep = 2;
     },
 
+    // ------------------ Cart ------------------
     async fetchCart() {
       this.isLoading = true;
       try {
         const result = await CartService.getCartItems();
-        if (result.code === "0" && result.data) {
+        if ((result.code === "0" || result.code === 0) && result.data) {
           const cartData = result.data;
           this.cartItems = cartData.cartItems || [];
           this.totalMrpPrice = cartData.totalMrpPrice || 0;
           this.totalSellingPrice = cartData.totalSellingPrice || 0;
-          
+
           if (this.cartItems.length === 0) {
             this.showCustomNotification("Your cart is empty. Please add items before checkout.", 'error');
           }
@@ -241,6 +248,7 @@ export default {
       }
     },
 
+    // ------------------ Payment ------------------
     selectPaymentMethod(method) {
       this.paymentMethod = method;
       this.errors.paymentMethod = '';
@@ -248,98 +256,126 @@ export default {
 
     validatePayment() {
       this.clearErrors();
-      
       if (!this.paymentMethod) {
         this.errors.paymentMethod = 'Please select a payment method';
         this.showCustomNotification('Please select a payment method', 'error');
         return;
       }
-
       this.processPayment();
     },
+async processPayment() {
+  console.log("🚀 STARTING PAYMENT PROCESS...");
+  
+  this.isLoading = true;
+  
+  try {
+    const orderData = {
+      paymentMethod: this.paymentMethod,
+      country: this.shippingData.country,
+      city: this.shippingData.city,
+      state: this.shippingData.state,
+      street: this.shippingData.street,
+      pinCode: this.shippingData.pinCode,
+      phoneNumber: this.shippingData.phoneNumber
+    };
 
-    async processPayment() {
-      this.isLoading = true;
-      try {
-        const orderData = {
-          paymentMethod: this.paymentMethod,
-          Country: this.shippingData.country, // Capital C for backend
-          city: this.shippingData.city,
-          state: this.shippingData.state,
-          street: this.shippingData.street,
-          pinCode: this.shippingData.pinCode,
-          phoneNumber: this.shippingData.phoneNumber
-        };
+    console.log("🛒 Placing order:", orderData);
 
-        console.log("🛒 Placing order with data:", orderData);
+    // STEP 1: Place Order
+    const placeOrderResult = await OrderService.placeOrder(orderData);
+    console.log("📦 Place order result:", placeOrderResult);
 
-        const placeOrderResult = await OrderService.placeOrder(orderData);
+    // Check if order placement was successful
+    if (!placeOrderResult || !placeOrderResult.success) {
+      const errorMsg = placeOrderResult?.message || 'Failed to place order';
+      this.showCustomNotification(errorMsg, 'error');
+      return;
+    }
+
+    // Extract order ID from the response
+    this.orderId = placeOrderResult.orderId || placeOrderResult.data?.orderId;
+    
+    if (!this.orderId) {
+      console.error("❌ No order ID in response");
+      this.showCustomNotification('Order placed but no order ID received', 'error');
+      return;
+    }
+
+    console.log("✅ Order placed successfully, Order ID:", this.orderId);
+
+    // STEP 2: Handle payment method
+    if (this.paymentMethod === 'CASH') {
+      console.log("💵 Processing Cash on Delivery...");
+      
+      const codResult = await PaymentService.confirmCodOrder(this.orderId);
+      console.log("💰 COD result:", codResult);
+
+      if (codResult && codResult.success) {
+        // SUCCESS: Move to confirmation step
+        this.currentStep = 3;
+        this.showCustomNotification("🎉 Order placed successfully with Cash on Delivery!", 'success');
         
-        console.log("📦 Place order result:", placeOrderResult);
-
-        if (!placeOrderResult.success) {
-          this.showCustomNotification(placeOrderResult.message, 'error');
-          return;
+        // Clear cart after successful order
+        try {
+          await CartService.clearCart();
+          console.log("🛒 Cart cleared successfully");
+        } catch (cartError) {
+          console.warn("⚠️ Could not clear cart:", cartError);
         }
-
-        this.orderId = placeOrderResult.orderId;
-
-        // Handle different payment methods
-        if (this.paymentMethod === 'CASH') {
-          console.log("💰 Processing Cash on Delivery for order:", this.orderId);
-          
-          // Confirm COD order with backend
-          const codResult = await PaymentService.confirmCodOrder(this.orderId);
-          
-          console.log("📨 COD confirmation result:", codResult);
-          
-          if (codResult.success) {
-            this.currentStep = 3;
-            this.showCustomNotification("🎉 Order placed successfully with Cash on Delivery!", 'success');
-            await CartService.clearCart();
-          } else {
-            this.showCustomNotification(codResult.message, 'error');
-          }
-
-        } else if (this.paymentMethod === 'STRIPE') {
-          console.log("💳 Processing Stripe payment for order:", this.orderId);
-          
-          const successUrl = `${window.location.origin}/order-success?orderId=${this.orderId}`;
-          const cancelUrl = `${window.location.origin}/checkout?step=2`;
-
-          console.log("🔗 Redirect URLs:", { successUrl, cancelUrl });
-
-          const stripeResult = await PaymentService.createStripeCheckout(
-            this.orderId, 
-            successUrl, 
-            cancelUrl
-          );
-
-          console.log("💳 Stripe checkout result:", stripeResult);
-
-          if (stripeResult.success) {
-            // Redirect to Stripe checkout
-            window.location.href = stripeResult.sessionUrl;
-          } else {
-            this.showCustomNotification(stripeResult.message, 'error');
-          }
-        }
-
-      } catch (error) {
-        console.error("❌ Payment processing error:", error);
-        this.showCustomNotification("Failed to process payment. Please try again.", 'error');
-      } finally {
-        this.isLoading = false;
+      } else {
+        const errorMsg = codResult?.message || 'Cash on Delivery confirmation failed';
+        this.showCustomNotification(errorMsg, 'error');
       }
-    },
 
+    } else if (this.paymentMethod === 'STRIPE') {
+      console.log("💳 Processing Stripe payment...");
+      
+      const successUrl = `${window.location.origin}/order-success?orderId=${this.orderId}`;
+      const cancelUrl = `${window.location.origin}/checkout?step=2`;
+
+      const stripeResult = await PaymentService.createStripeCheckout(
+        this.orderId,
+        successUrl,
+        cancelUrl
+      );
+
+      if (stripeResult && stripeResult.success) {
+        const sessionUrl = stripeResult.sessionUrl;
+        if (sessionUrl) {
+          window.location.href = sessionUrl;
+        } else {
+          this.showCustomNotification("Stripe session URL not found", 'error');
+        }
+      } else {
+        const errorMsg = stripeResult?.message || "Stripe checkout failed";
+        this.showCustomNotification(errorMsg, 'error');
+      }
+    }
+
+  } catch (error) {
+    console.error("❌ Payment processing error:", error);
+    this.showCustomNotification(
+      error.response?.data?.message || 
+      error.message || 
+      "Failed to process payment. Please try again.", 
+      'error'
+    );
+  } finally {
+    this.isLoading = false;
+  }
+},
+
+    // ------------------ Navigation ------------------
     viewOrderHistory() {
       this.$router.push('/orders');
     },
-
     continueShopping() {
       this.$router.push('/products');
     }
   }
 };
 </script>
+
+<style scoped>
+/* Optional: Add some padding for empty cart */
+</style>

@@ -53,7 +53,7 @@ public class UserEntity {
     private Instant updatedAt;
 
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Set<AddressEntity> addressEntityset= new HashSet<>();
 
@@ -124,12 +124,12 @@ public class UserEntity {
         this.updatedAt = updatedAt;
     }
 
-    @Transactional
+
     public void setAddressEntityset(Set<AddressEntity> addressEntityset) {
         this.addressEntityset = addressEntityset;
     }
 
-    @Transactional
+
     public Set<AddressEntity> getAddressEntityset() {
         return addressEntityset;
     }

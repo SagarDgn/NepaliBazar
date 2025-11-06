@@ -1,9 +1,11 @@
 package com.nepalibazar.entity;
 
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users_address")
+@Serdeable
 public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

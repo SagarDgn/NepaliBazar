@@ -5,6 +5,7 @@ import com.nepalibazar.domain.PAYMENT_METHOD;
 import com.nepalibazar.domain.PAYMENT_ORDER_STATUS;
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.serde.annotation.SerdeImport;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -13,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
-@SerdeImport
+@Serdeable
 public class OrderEntity {
 
     @Id
@@ -25,7 +26,7 @@ public class OrderEntity {
     @JoinColumn(name = "buyer_id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "order" ,cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "order" ,cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
     private Set<OrderItemEntity> orderItem= new HashSet<>();
 
     @ManyToOne

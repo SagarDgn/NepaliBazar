@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <!-- Header -->
-     
     <div class="p-8 border-b border-gray-200/30 dark:border-gray-700/30 bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700">
       <div class="flex items-center space-x-4">
         <div class="p-3 bg-gradient-to-r from-green-500 to-orange-500 rounded-2xl shadow-lg">
@@ -136,29 +135,84 @@
               </p>
             </div>
 
-            <!-- Image URL -->
+            <!-- Image Upload -->
             <div class="group">
               <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center space-x-2">
                 <svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
-                <span>Image URL</span>
+                <span>Product Image *</span>
               </label>
-              <input
-                v-model="productForm.imageUrl"
-                type="url"
+              
+              <!-- File Upload Area -->
+              <div 
+                @click="triggerFileInput"
+                @drop="handleDrop"
+                @dragover="handleDragOver"
+                @dragleave="handleDragLeave"
                 :class="[
-                  'w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-2xl focus:ring-4 transition-all duration-300',
-                  errors.imageUrl ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-200 dark:border-gray-700 focus:border-pink-500 focus:ring-pink-200 dark:focus:ring-pink-900/30'
+                  'border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all duration-300',
+                  isDragOver ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 
+                  errors.image ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 
+                  'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 hover:border-green-500 dark:hover:border-green-400'
                 ]"
-                placeholder="https://example.com/image.jpg"
-                @blur="validateField('imageUrl')"
               >
-              <p v-if="errors.imageUrl" class="text-red-500 text-xs mt-2 flex items-center space-x-1">
+                <input
+                  ref="fileInput"
+                  type="file"
+                  accept="image/*"
+                  @change="handleFileSelect"
+                  class="hidden"
+                >
+                
+                <div v-if="!productForm.imageFile && !productForm.imageUrl">
+                  <svg class="w-12 h-12 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <p class="mt-3 text-sm text-gray-600 dark:text-gray-400">
+                    <span class="font-semibold text-green-600 dark:text-green-400">Click to upload</span> or drag and drop
+                  </p>
+                  <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                    PNG, JPG, WEBP up to 5MB
+                  </p>
+                </div>
+
+                <!-- Image Preview -->
+                <div v-else class="space-y-4">
+                  <div class="relative inline-block">
+                    <img 
+                      :src="productForm.imageUrl || imagePreview" 
+                      alt="Product preview"
+                      class="w-32 h-32 object-cover rounded-xl shadow-lg mx-auto"
+                    >
+                    <button
+                      type="button"
+                      @click.stop="removeImage"
+                      class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors duration-200"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">
+                    {{ productForm.imageFile?.name || 'Image selected' }}
+                  </p>
+                  <button
+                    type="button"
+                    @click.stop="triggerFileInput"
+                    class="text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium"
+                  >
+                    Change image
+                  </button>
+                </div>
+              </div>
+
+              <p v-if="errors.image" class="text-red-500 text-xs mt-2 flex items-center space-x-1">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span>{{ errors.imageUrl }}</span>
+                <span>{{ errors.image }}</span>
               </p>
             </div>
           </div>
@@ -203,8 +257,14 @@
             <div v-if="productForm.name" class="bg-gradient-to-br from-gray-50 to-green-50 dark:from-gray-700 dark:to-gray-600 rounded-2xl p-4 border-2 border-dashed border-gray-200 dark:border-gray-600">
               <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Preview</h3>
               <div class="flex space-x-3">
-                <div class="w-16 h-16 bg-gradient-to-br from-green-200 to-orange-200 dark:from-green-600 dark:to-orange-600 rounded-xl flex items-center justify-center">
-                  <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-16 h-16 bg-gradient-to-br from-green-200 to-orange-200 dark:from-green-600 dark:to-orange-600 rounded-xl flex items-center justify-center overflow-hidden">
+                  <img 
+                    v-if="productForm.imageUrl || imagePreview"
+                    :src="productForm.imageUrl || imagePreview" 
+                    alt="Product preview"
+                    class="w-full h-full object-cover"
+                  >
+                  <svg v-else class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                   </svg>
                 </div>
@@ -264,11 +324,13 @@ import ProductService from '../services/ProductService';
 
 export default {
   name: 'AddProduct',
-  components: { SellerFooter,SellerHeader },
+  components: { SellerFooter, SellerHeader },
   data() {
     return {
       submitting: false,
       isEditing: false,
+      isDragOver: false,
+      imagePreview: null,
       productForm: {
         id: null,
         name: '',
@@ -276,6 +338,7 @@ export default {
         price: 0,
         discount: 0,
         quantity: 0,
+        imageFile: null,
         imageUrl: ''
       },
       errors: {
@@ -284,9 +347,8 @@ export default {
         price: '',
         discount: '',
         quantity: '',
-        imageUrl: ''
-      },
-      showAllErrors: false
+        image: ''
+      }
     }
   },
   mounted() {
@@ -299,6 +361,76 @@ export default {
   methods: {
     calculateDiscountedPrice(price, discount) {
       return (price * (1 - discount / 100)).toFixed(2)
+    },
+
+    triggerFileInput() {
+      this.$refs.fileInput.click()
+    },
+
+    handleFileSelect(event) {
+      const file = event.target.files[0]
+      if (file) {
+        this.processImageFile(file)
+      }
+    },
+
+    handleDrop(event) {
+      event.preventDefault()
+      this.isDragOver = false
+      
+      const files = event.dataTransfer.files
+      if (files.length > 0) {
+        const file = files[0]
+        if (file.type.startsWith('image/')) {
+          this.processImageFile(file)
+        } else {
+          this.errors.image = 'Please select an image file'
+        }
+      }
+    },
+
+    handleDragOver(event) {
+      event.preventDefault()
+      this.isDragOver = true
+    },
+
+    handleDragLeave(event) {
+      event.preventDefault()
+      this.isDragOver = false
+    },
+
+    processImageFile(file) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
+      if (!validTypes.includes(file.type)) {
+        this.errors.image = 'Please select a valid image file (JPEG, PNG, WEBP)'
+        return
+      }
+
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        this.errors.image = 'Image size must be less than 5MB'
+        return
+      }
+
+      this.errors.image = ''
+      this.productForm.imageFile = file
+      this.productForm.imageUrl = '' // Clear URL if file is selected
+
+      // Create preview
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        this.imagePreview = e.target.result
+      }
+      reader.readAsDataURL(file)
+    },
+
+    removeImage() {
+      this.productForm.imageFile = null
+      this.productForm.imageUrl = ''
+      this.imagePreview = null
+      this.errors.image = ''
+      this.$refs.fileInput.value = ''
     },
 
     validateField(field) {
@@ -353,37 +485,25 @@ export default {
           }
           break
 
-        case 'imageUrl':
-          if (this.productForm.imageUrl && !this.isValidUrl(this.productForm.imageUrl)) {
-            this.errors.imageUrl = 'Please enter a valid URL'
+        case 'image':
+          if (!this.productForm.imageFile && !this.productForm.imageUrl) {
+            this.errors.image = 'Product image is required'
           }
           break
       }
     },
 
-    isValidUrl(string) {
-      try {
-        new URL(string)
-        return true
-      } catch (_) {
-        return false
-      }
-    },
-
     validateAllFields() {
-      // Validate all required fields
       this.validateField('name')
       this.validateField('description')
       this.validateField('price')
       this.validateField('quantity')
       this.validateField('discount')
-      this.validateField('imageUrl')
+      this.validateField('image')
 
-      // Check if any errors exist
       const hasErrors = Object.values(this.errors).some(error => error !== '')
       
       if (hasErrors) {
-        // Show notification for first error found
         const firstError = Object.values(this.errors).find(error => error !== '')
         if (firstError) {
           this.$parent.showToast(`Please fix the form errors: ${firstError}`, 'error')
@@ -394,9 +514,7 @@ export default {
     },
 
     async validateAndSubmit() {
-      // Validate all fields when submit is clicked
       if (!this.validateAllFields()) {
-        // Scroll to first error
         this.scrollToFirstError()
         return
       }
@@ -405,7 +523,6 @@ export default {
     },
 
     scrollToFirstError() {
-      // Find first element with error and scroll to it
       const firstErrorElement = this.$el.querySelector('.border-red-500')
       if (firstErrorElement) {
         firstErrorElement.scrollIntoView({ 
@@ -425,7 +542,15 @@ export default {
           price: parseFloat(this.productForm.price),
           discount: parseInt(this.productForm.discount) || 0,
           quantity: parseInt(this.productForm.quantity),
-          image: this.productForm.imageUrl.trim() || null
+        }
+
+        // Handle image upload
+        if (this.productForm.imageFile) {
+          // Here you would typically upload the file to your server
+          // For now, we'll create a data URL (in real app, upload to cloud storage)
+          productData.image = await this.uploadImage(this.productForm.imageFile)
+        } else if (this.productForm.imageUrl) {
+          productData.image = this.productForm.imageUrl
         }
 
         if (this.isEditing) {
@@ -443,6 +568,23 @@ export default {
       } finally {
         this.submitting = false
       }
+    },
+
+    async uploadImage(file) {
+      // Simulate image upload - replace this with actual upload to your server
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          // In a real application, you would:
+          // 1. Upload to cloud storage (AWS S3, Cloudinary, etc.)
+          // 2. Get the URL from the response
+          // 3. Return the URL
+          
+          // For demo purposes, we'll return the data URL
+          const reader = new FileReader()
+          reader.onload = (e) => resolve(e.target.result)
+          reader.readAsDataURL(file)
+        }, 1000)
+      })
     }
   }
 }

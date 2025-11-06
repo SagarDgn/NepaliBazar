@@ -9,6 +9,7 @@ import com.nepalibazar.repository.UserRepository;
 import com.stripe.Stripe;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import io.micronaut.context.annotation.Value;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
@@ -25,7 +26,7 @@ public class CheckoutStripeUseCase {
     @Inject
     public CheckoutStripeUseCase(UserRepository userRepository,
                                  OrderRepository orderRepository,
-                                 @jakarta.inject.Named("stripe.secret-key")String stripeSecretKey){
+                                 @Value("${stripe.secret-key}") String stripeSecretKey){
         this.orderRepository=orderRepository;
         this.userRepository=userRepository;
         Stripe.apiKey=stripeSecretKey;

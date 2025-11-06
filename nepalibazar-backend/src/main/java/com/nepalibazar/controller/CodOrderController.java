@@ -29,7 +29,7 @@ public class CodOrderController {
         }
 
         try{
-            CheckoutCodUseCaseResponse response = checkoutCodUseCase.execute(authorization,request);
+            CheckoutCodUseCaseResponse response = checkoutCodUseCase.execute(request,authorization);
             return RestResponse.success(response);
         }catch(Exception e){
             return RestResponse.error("Internal error"+e.getMessage());

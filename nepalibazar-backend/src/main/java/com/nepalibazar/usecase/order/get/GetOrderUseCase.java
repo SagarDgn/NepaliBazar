@@ -26,8 +26,9 @@ public class GetOrderUseCase {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
     }
-    @Transactional
 
+
+    @Transactional
     public GetOrderUseCaseResponse execute(String token) {
         try {
             if (token == null) {

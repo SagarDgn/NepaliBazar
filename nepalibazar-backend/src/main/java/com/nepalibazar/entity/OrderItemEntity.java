@@ -1,9 +1,12 @@
 package com.nepalibazar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "order_item")
+@Serdeable
 public class OrderItemEntity {
 
     @Id
@@ -13,6 +16,7 @@ public class OrderItemEntity {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private OrderEntity order;
 
     @ManyToOne

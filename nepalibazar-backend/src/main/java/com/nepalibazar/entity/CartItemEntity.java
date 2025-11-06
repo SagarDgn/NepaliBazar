@@ -1,10 +1,12 @@
 package com.nepalibazar.entity;
 
 
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cartItem")
+@Serdeable
 public class CartItemEntity {
 
     @Id

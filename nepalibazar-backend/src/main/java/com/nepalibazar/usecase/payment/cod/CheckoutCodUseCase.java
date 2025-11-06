@@ -26,7 +26,7 @@ public class CheckoutCodUseCase {
         this.orderRepository=orderRepository;
     }
 
-    public CheckoutCodUseCaseResponse execute(String token, CheckoutCodUseCaseRequest request){
+    public CheckoutCodUseCaseResponse execute( CheckoutCodUseCaseRequest request,String token){
         try{
             if(token==null){
                 return new CheckoutCodUseCaseResponse(-1,null, "Unauthorized");

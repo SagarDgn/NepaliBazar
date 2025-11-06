@@ -56,7 +56,7 @@
           </h3>
           <div class="space-y-4">
             <div class="flex items-start space-x-3">
-              <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div class="w-10 h-10 bg-gradient-to-r rounded-lg flex items-center justify-center flex-shrink-0">
                 <span class="text-white text-lg">📞</span>
               </div>
               <div>
@@ -66,7 +66,7 @@
             </div>
             
             <div class="flex items-start space-x-3">
-              <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div class="w-10 h-10 bg-gradient-to-r rounded-lg flex items-center justify-center flex-shrink-0">
                 <span class="text-white text-lg">✉️</span>
               </div>
               <div>
@@ -76,7 +76,7 @@
             </div>
             
             <div class="flex items-start space-x-3">
-              <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div class="w-10 h-10 bg-gradient-to-r rounded-lg flex items-center justify-center flex-shrink-0">
                 <span class="text-white text-lg">🕒</span>
               </div>
               <div>

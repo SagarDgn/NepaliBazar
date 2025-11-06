@@ -33,7 +33,7 @@ const OrderService = {
 
       const res = response.data;
 
-      if (res.code === 0 && res.data && res.data.code === 0) {
+      if ((res.code === "0" || res.code === 0) && res.data && (res.data.code === 0 || res.data.code === "0")) {
         return {
           success: true,
           message: res.data.message || "Order placed successfully",

@@ -4,103 +4,108 @@ import api from './api';
 
 const PaymentService = {
   // Cash on Delivery confirmation
-  async confirmCodOrder(orderId) {
-    try {
-      const token = localStorage.getItem("buyer_jwt");
-      const role = localStorage.getItem("buyer_role");
+  // Cash on Delivery confirmation
+async confirmCodOrder(orderId) {
+  try {
+    const token = localStorage.getItem("buyer_jwt");
+    const role = localStorage.getItem("buyer_role");
 
-      if (!token || role !== "BUYER") {
-        return { 
-          success: false, 
-          message: "Only buyers can confirm orders." 
-        };
-      }
-
-      const cleanToken = token.trim();
-      
-      const requestBody = {
-        orderId: parseInt(orderId)
+    if (!token || role !== "BUYER") {
+      return { 
+        success: false, 
+        message: "Only buyers can confirm orders." 
       };
+    }
 
-      console.log("🔐 Calling COD endpoint: /checkout/cod");
-      console.log("Request body:", requestBody);
+    const cleanToken = token.trim();
+    
+    const requestBody = {
+      orderId: parseInt(orderId)
+    };
 
-      const response = await api.post(
-        "/checkout/cod",
-        { 
-          headers: { 
-            Authorization: `Bearer ${cleanToken}`,
-            'Content-Type': 'application/json'
-          } 
-        },
-        requestBody
-      );
+    console.log("💰 Calling COD endpoint: /checkout/cod");
+    console.log("📦 Request body:", requestBody);
 
-      console.log("📨 COD endpoint response:", response.data);
-      const res = response.data;
+    const response = await api.post(
+      "/checkout/cod",
+      requestBody,
+      { 
+        headers: { 
+          Authorization: `Bearer ${cleanToken}`,
+          'Content-Type': 'application/json'
+        } 
+      }
+    );
 
-      // Handle the nested response structure
-      if (res.code === "0" && res.data) {
-        if (typeof res.data === 'object' && res.data.code !== undefined) {
-          const nestedResponse = res.data;
-          if (nestedResponse.code === 0) {
-            return { 
-              success: true,
-              message: nestedResponse.message || "Order confirmed successfully",
-              data: nestedResponse
-            };
-          } else {
-            return { 
-              success: false, 
-              message: nestedResponse.message || "Failed to confirm order." 
-            };
-          }
-        } else {
+    console.log("📨 COD endpoint response:", response.data);
+
+    const res = response.data;
+
+    // Handle your backend response format: { code: "0", message: "SUCCESS", data: { code: 0, orderId: 123, message: "..." } }
+    if (res.code === "0" || res.code === 0) {
+      // Check the nested data object for actual COD result
+      if (res.data && typeof res.data === 'object') {
+        const codData = res.data;
+        
+        // Success if nested code is 0
+        if (codData.code === 0 || codData.code === "0") {
           return { 
             success: true,
-            message: res.message || "Order confirmed successfully",
-            data: res.data
+            code: codData.code,
+            message: codData.message || "Order confirmed successfully",
+            orderId: codData.orderId
+          };
+        } else {
+          // Nested data indicates failure
+          return { 
+            success: false,
+            code: codData.code,
+            message: codData.message || "Failed to confirm COD order"
           };
         }
       } else {
+        // Direct success without nested data structure
         return { 
-          success: false, 
-          message: res.message || "Failed to confirm order." 
+          success: true,
+          code: res.code,
+          message: res.message || "Order confirmed successfully",
+          orderId: res.data // data might be direct orderId
         };
       }
-    } catch (error) {
-      console.error("❌ COD confirmation error:", error);
-      console.error("Error response:", error.response?.data);
-      console.error("Error status:", error.response?.status);
-
-      const backendMessage = error.response?.data?.message;
-      const statusCode = error.response?.status;
-
-      if (statusCode === 401) {
-        return { 
-          success: false, 
-          message: "Your session has expired. Please login again." 
-        };
-      }
-      if (statusCode === 403) {
-        return { 
-          success: false, 
-          message: "You don't have permission to confirm orders." 
-        };
-      }
-      if (backendMessage) {
-        return { 
-          success: false, 
-          message: backendMessage 
-        };
-      }
-
+    } else {
+      // Outer response indicates failure
       return { 
-        success: false, 
-        message: "Failed to confirm COD order. Please try again." 
+        success: false,
+        code: res.code,
+        message: res.message || "Failed to confirm order." 
       };
     }
-  },
+  } catch (error) {
+    console.error("❌ COD confirmation error:", error);
+    
+    const backendMessage = error.response?.data?.message;
+    const nestedMessage = error.response?.data?.data?.message;
+
+    // Use the nested error message if available
+    if (nestedMessage) {
+      return { 
+        success: false, 
+        message: nestedMessage 
+      };
+    }
+    if (backendMessage) {
+      return { 
+        success: false, 
+        message: backendMessage 
+      };
+    }
+
+    return { 
+      success: false, 
+      message: "Failed to confirm COD order. Please try again." 
+    };
+  }
+},
 
   // Stripe checkout - Use the correct endpoint once you create the controller
   async createStripeCheckout(orderId, successUrl, cancelUrl) {
@@ -127,7 +132,7 @@ const PaymentService = {
       console.log("Request body:", requestBody);
 
       const response = await api.post(
-        "/stripe/checkout", // This endpoint needs to be created in your backend
+        "stripe/create-checkout", // This endpoint needs to be created in your backend
         requestBody,
          { 
           headers: { 

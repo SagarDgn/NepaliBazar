@@ -10,6 +10,7 @@ import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
+import io.micronaut.context.annotation.Value;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Header;
@@ -18,7 +19,7 @@ import jakarta.inject.Inject;
 
 import java.util.Optional;
 
-@Controller("/api/v1")
+@Controller("webhook/stripe")
 public class StripeWebHookController {
 
     private final OrderRepository orderRepository;
@@ -26,12 +27,12 @@ public class StripeWebHookController {
 
     @Inject
     public StripeWebHookController(OrderRepository orderRepository,
-                                   @jakarta.inject.Named("stripe.webhook.secret") String endPointSecret) {
+                                   @Value("${stripe.webhook-secret}") String endPointSecret) {
         this.orderRepository = orderRepository;
         this.endPointSecret = endPointSecret;
     }
 
-    @Post("/checkout/stripe")
+    @Post
     public RestResponse<String> handleWebHook(@Body String payload,
                                               @Header("Stripe-Signature") String sigHeader) {
         try {

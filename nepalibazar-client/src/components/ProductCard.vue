@@ -80,16 +80,25 @@
         </div>
       </button>
 
+      <!-- View Details Button -->
+      <button
+        @click="handleViewDetails"
+        class="absolute bottom-4 left-4 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl hover:scale-105 flex items-center space-x-2"
+      >
+        <Eye class="w-4 h-4" />
+        <span>
+         View details
+        </span>
+      </button>
+
       <!-- Quick Add to Cart Button (Appears on Hover) -->
       <button
         @click="handleAddToCart"
         :disabled="isSeller || isCartLoading"
-        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-2xl font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:from-red-700 hover:to-red-800 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:scale-105"
+        class="absolute bottom-4 right-4 px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-2xl font-semibold shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:from-red-700 hover:to-red-800 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:scale-105 flex items-center space-x-2"
       >
-        <div class="flex items-center space-x-2">
-          <ShoppingBasket class="w-4 h-4" :class="isCartLoading ? 'animate-spin' : ''" />
-          <span>{{ isCartLoading ? 'Adding...' : 'Add to Cart' }}</span>
-        </div>
+        <ShoppingBasket class="w-4 h-4" :class="isCartLoading ? 'animate-spin' : ''" />
+        <span>{{ isCartLoading ? 'Adding...' : 'Add to Cart' }}</span>
       </button>
 
       <!-- Seller Badge -->
@@ -194,13 +203,18 @@
 </template>
 
 <script>
-import { HeartIcon, HeartOffIcon, ShoppingBasket } from "lucide-vue-next";
+import { HeartIcon, HeartOffIcon, ShoppingBasket, Eye } from "lucide-vue-next";
 import WishlistService from "../services/WishlistService";
 import CartService from "../services/CartService";
 
 export default {
   name: "ProductCard",
-  components: { HeartIcon, HeartOffIcon, ShoppingBasket },
+  components: { 
+    HeartIcon, 
+    HeartOffIcon, 
+    ShoppingBasket, 
+    Eye 
+  },
   props: {
     product: { 
       type: Object, 
@@ -277,6 +291,15 @@ export default {
     hideNotification() {
       this.showNotification = false;
       clearTimeout(this.notificationTimeout);
+    },
+
+    handleViewDetails() {
+      // Navigate to product details page
+      this.$router.push({
+        name: 'ProductDetails',
+        params: { id: this.product.id },
+        query: { product: JSON.stringify(this.product) }
+      });
     },
 
     async handleAddToCart() {

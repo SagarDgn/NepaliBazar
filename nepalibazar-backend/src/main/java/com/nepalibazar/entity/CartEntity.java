@@ -1,5 +1,6 @@
 package com.nepalibazar.entity;
 
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "cart")
+@Serdeable
 public class CartEntity {
 
     @Id

@@ -22,6 +22,8 @@ import AnalyticsPage from "../pages/AnalyticsPage.vue";
 import AddProductPage from "../pages/AddProductPage.vue";
 import SellerProductPage from "../pages/SellerProductPage.vue";
 import SellerDashbord from "../pages/SellerDashbord.vue";
+import ProductDetails from "../pages/ProductDetails.vue";
+import Checkout from "../pages/Checkout.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
@@ -33,6 +35,12 @@ const routes = [
   { path: "/sellerverification", name: "SellerVerification", component: SellerVerification, meta: { guestOnly: true } },
   { path: "/sellerlogin", name: "LoginSeller", component: LoginSeller },
   {path: "/contactus", name: "ContactUs",component: ContactusPage},
+  // In your router/index.js
+{
+  path: '/product/:id',
+  name: 'ProductDetails',
+  component: ProductDetails
+},
    {
     path: '/sellerdashboard',
     name: 'SellerDashboard',
@@ -71,7 +79,7 @@ const routes = [
   { 
     path: "/checkout", 
     name: "CheckoutPage", 
-    component: CheckoutPage,
+    component: Checkout,
     meta: { requiresUserAuth: true } // Add auth protection for checkout
   },
   { 
@@ -103,10 +111,10 @@ router.beforeEach((to, from, next) => {
   if (to.name === from.name) return next();
 
   // 🔹 Guest-only routes (login/signup)
-  if (to.meta.guestOnly) {
-    if (userLoggedIn && buyer_role === "BUYER") return next({ name: "Home" });
-    if (sellerLoggedIn && seller_role === "SELLER") return next({ name: "SellerDashbord" });
-  }
+  // if (to.meta.guestOnly) {
+  //   if (userLoggedIn && buyer_role === "BUYER") return next({ name: "Home" });
+  //   if (sellerLoggedIn && seller_role === "SELLER") return next({ name: "SellerDashbord" });
+  // }
 
   // 🔹 Seller-only routes
   if (to.meta.requiresSellerAuth) {

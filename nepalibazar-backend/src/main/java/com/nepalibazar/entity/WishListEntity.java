@@ -1,11 +1,13 @@
 package com.nepalibazar.entity;
 
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "wishlist")
+@Serdeable
 public class WishListEntity {
 
     @Id
