@@ -85,33 +85,52 @@ const OrderService = {
   },
 
   async getUserOrders() {
-    try {
-      const token = localStorage.getItem("buyer_jwt");
-      const role = localStorage.getItem("buyer_role");
+  try {
+    const token = localStorage.getItem("buyer_jwt");
+    const role = localStorage.getItem("buyer_role");
 
-      if (!token || role !== "BUYER") {
-        return { success: false, message: "Only buyers can view orders." };
-      }
-
-      const cleanToken = token.trim();
-
-      const response = await api.get("/orders", {
-        headers: { Authorization: `Bearer ${cleanToken}` }
-      });
-
-      const res = response.data;
-
-      if (res.code === 0 && res.data) {
-        return { success: true, message: res.message || "Orders retrieved successfully", orders: res.data };
-      }
-
-      return { success: false, message: res.message || "Failed to retrieve orders." };
-
-    } catch (error) {
-      console.error("Get user orders error:", error);
-      return { success: false, message: "Failed to retrieve orders. Please try again." };
+    if (!token || role !== "BUYER") {
+      return { success: false, message: "Authentication required" };
     }
+
+    const cleanToken = token.trim();
+
+    const response = await api.get("/orders", {
+      headers: { Authorization: `Bearer ${cleanToken}` }
+    });
+
+    const res = response.data;
+    
+    // Try different possible response structures
+    let orders = [];
+    
+    if (res.data?.orders) {
+      orders = res.data.orders;
+    } else if (res.orders) {
+      orders = res.orders;
+    } else if (Array.isArray(res)) {
+      orders = res;
+    } else if (Array.isArray(res.data)) {
+      orders = res.data;
+    }
+    
+    console.log("Final orders array:", orders);
+    
+    return { 
+      success: true, 
+      orders: orders,
+      message: "Orders fetched successfully"
+    };
+
+  } catch (error) {
+    console.error("Get user orders error:", error);
+    return { 
+      success: false, 
+      message: "Failed to fetch orders. Please try again.",
+      orders: []
+    };
   }
+}
 };
 
 export default OrderService;

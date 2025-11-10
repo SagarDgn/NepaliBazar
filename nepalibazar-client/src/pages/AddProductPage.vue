@@ -1,15 +1,15 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col bg-white dark:bg-gray-900">
     <!-- Header -->
-    <div class="p-8 border-b border-gray-200/30 dark:border-gray-700/30 bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700">
+    <div class="p-8 border-b border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
       <div class="flex items-center space-x-4">
-        <div class="p-3 bg-gradient-to-r from-green-500 to-orange-500 rounded-2xl shadow-lg">
+        <div class="p-3 bg-black rounded-2xl shadow">
           <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
           </svg>
         </div>
         <div>
-          <h1 class="text-3xl font-bold bg-gradient-to-r from-green-600 to-orange-600 bg-clip-text text-transparent">
+          <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
             {{ isEditing ? 'Edit Product' : 'Add New Product' }}
           </h1>
           <p class="text-gray-600 dark:text-gray-400 mt-2">
@@ -28,7 +28,7 @@
             <!-- Product Name -->
             <div class="group">
               <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center space-x-2">
-                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
                 <span>Product Name *</span>
@@ -37,8 +37,8 @@
                 v-model="productForm.name"
                 type="text"
                 :class="[
-                  'w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-2xl focus:ring-4 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500',
-                  errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-200 dark:border-gray-700 focus:border-green-500 focus:ring-green-200 dark:focus:ring-green-900/30'
+                  'w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-lg focus:ring-2 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500',
+                  errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-300 dark:border-gray-600 focus:border-black focus:ring-gray-300 dark:focus:ring-gray-700'
                 ]"
                 placeholder="Enter product name"
                 @blur="validateField('name')"
@@ -55,7 +55,7 @@
             <div class="grid grid-cols-2 gap-4">
               <div class="group">
                 <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center space-x-2">
-                  <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                   </svg>
                   <span>Price (Rs.) *</span>
@@ -66,8 +66,8 @@
                   step="0.01"
                   min="0"
                   :class="[
-                    'w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-2xl focus:ring-4 transition-all duration-300',
-                    errors.price ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-200 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-200 dark:focus:ring-blue-900/30'
+                    'w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-lg focus:ring-2 transition-all duration-300',
+                    errors.price ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-300 dark:border-gray-600 focus:border-black focus:ring-gray-300 dark:focus:ring-gray-700'
                   ]"
                   placeholder="0.00"
                   @blur="validateField('price')"
@@ -82,7 +82,7 @@
 
               <div class="group">
                 <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center space-x-2">
-                  <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"></path>
                   </svg>
                   <span>Discount (%)</span>
@@ -93,8 +93,8 @@
                   min="0"
                   max="100"
                   :class="[
-                    'w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-2xl focus:ring-4 transition-all duration-300',
-                    errors.discount ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-200 dark:border-gray-700 focus:border-orange-500 focus:ring-orange-200 dark:focus:ring-orange-900/30'
+                    'w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-lg focus:ring-2 transition-all duration-300',
+                    errors.discount ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-300 dark:border-gray-600 focus:border-black focus:ring-gray-300 dark:focus:ring-gray-700'
                   ]"
                   placeholder="0"
                   @blur="validateField('discount')"
@@ -111,7 +111,7 @@
             <!-- Quantity -->
             <div class="group">
               <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center space-x-2">
-                <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
                 <span>Quantity *</span>
@@ -121,8 +121,8 @@
                 type="number"
                 min="0"
                 :class="[
-                  'w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-2xl focus:ring-4 transition-all duration-300',
-                  errors.quantity ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-200 dark:border-gray-700 focus:border-purple-500 focus:ring-purple-200 dark:focus:ring-purple-900/30'
+                  'w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-lg focus:ring-2 transition-all duration-300',
+                  errors.quantity ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-300 dark:border-gray-600 focus:border-black focus:ring-gray-300 dark:focus:ring-gray-700'
                 ]"
                 placeholder="0"
                 @blur="validateField('quantity')"
@@ -138,7 +138,7 @@
             <!-- Image Upload -->
             <div class="group">
               <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center space-x-2">
-                <svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
                 <span>Product Image *</span>
@@ -151,10 +151,10 @@
                 @dragover="handleDragOver"
                 @dragleave="handleDragLeave"
                 :class="[
-                  'border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all duration-300',
-                  isDragOver ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 
+                  'border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all duration-300',
+                  isDragOver ? 'border-black bg-gray-100 dark:bg-gray-800' : 
                   errors.image ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 
-                  'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 hover:border-green-500 dark:hover:border-green-400'
+                  'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50'
                 ]"
               >
                 <input
@@ -170,7 +170,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                   </svg>
                   <p class="mt-3 text-sm text-gray-600 dark:text-gray-400">
-                    <span class="font-semibold text-green-600 dark:text-green-400">Click to upload</span> or drag and drop
+                    <span class="font-semibold text-gray-700 dark:text-gray-300">Click to upload</span> or drag and drop
                   </p>
                   <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
                     PNG, JPG, WEBP up to 5MB
@@ -183,12 +183,12 @@
                     <img 
                       :src="productForm.imageUrl || imagePreview" 
                       alt="Product preview"
-                      class="w-32 h-32 object-cover rounded-xl shadow-lg mx-auto"
+                      class="w-32 h-32 object-cover rounded-lg shadow mx-auto"
                     >
                     <button
                       type="button"
                       @click.stop="removeImage"
-                      class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors duration-200"
+                      class="absolute -top-2 -right-2 bg-black text-white rounded-full p-1 transition-colors duration-200"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -201,7 +201,7 @@
                   <button
                     type="button"
                     @click.stop="triggerFileInput"
-                    class="text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium"
+                    class="text-sm text-gray-700 dark:text-gray-300 font-medium"
                   >
                     Change image
                   </button>
@@ -222,7 +222,7 @@
             <!-- Description -->
             <div class="group h-full">
               <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center space-x-2">
-                <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
                 </svg>
                 <span>Description *</span>
@@ -231,8 +231,8 @@
                 v-model="productForm.description"
                 rows="12"
                 :class="[
-                  'w-full h-48 px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-2xl focus:ring-4 transition-all duration-300 resize-none',
-                  errors.description ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-200 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-200 dark:focus:ring-indigo-900/30'
+                  'w-full h-48 px-4 py-3 bg-white dark:bg-gray-800 border-2 rounded-lg focus:ring-2 transition-all duration-300 resize-none',
+                  errors.description ? 'border-red-500 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900/30' : 'border-gray-300 dark:border-gray-600 focus:border-black focus:ring-gray-300 dark:focus:ring-gray-700'
                 ]"
                 placeholder="Describe your product features, benefits, and specifications..."
                 @blur="validateField('description')"
@@ -254,10 +254,10 @@
             </div>
 
             <!-- Preview Card -->
-            <div v-if="productForm.name" class="bg-gradient-to-br from-gray-50 to-green-50 dark:from-gray-700 dark:to-gray-600 rounded-2xl p-4 border-2 border-dashed border-gray-200 dark:border-gray-600">
+            <div v-if="productForm.name" class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-2 border-dashed border-gray-300 dark:border-gray-600">
               <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Preview</h3>
               <div class="flex space-x-3">
-                <div class="w-16 h-16 bg-gradient-to-br from-green-200 to-orange-200 dark:from-green-600 dark:to-orange-600 rounded-xl flex items-center justify-center overflow-hidden">
+                <div class="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
                     v-if="productForm.imageUrl || imagePreview"
                     :src="productForm.imageUrl || imagePreview" 
@@ -270,7 +270,7 @@
                 </div>
                 <div class="flex-1">
                   <h4 class="font-semibold text-gray-800 dark:text-white text-sm">{{ productForm.name }}</h4>
-                  <p class="text-green-600 dark:text-green-400 font-bold text-lg mt-1">
+                  <p class="text-gray-900 dark:text-white font-bold text-lg mt-1">
                     Rs.{{ calculateDiscountedPrice(productForm.price, productForm.discount) }}
                     <span v-if="productForm.discount > 0" class="text-sm text-gray-500 line-through ml-2">
                       Rs.{{ productForm.price }}
@@ -283,11 +283,11 @@
         </div>
 
         <!-- Form Actions -->
-        <div class="flex space-x-4 pt-8 mt-8 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex space-x-4 pt-8 mt-8 border-t border-gray-300 dark:border-gray-700">
           <button
             type="submit"
             :disabled="submitting"
-            class="px-8 py-4 bg-gradient-to-r from-green-500 to-orange-500 hover:from-green-600 hover:to-orange-600 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center space-x-3 min-w-40 justify-center"
+            class="px-8 py-4 bg-black text-white font-semibold rounded-lg transition-all duration-300 shadow flex items-center space-x-3 min-w-40 justify-center"
           >
             <svg v-if="submitting" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -301,7 +301,7 @@
           
           <router-link
             to="/sellerdashboard/products"
-            class="px-8 py-4 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:to-gray-500 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center space-x-3"
+            class="px-8 py-4 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-all duration-300 shadow flex items-center space-x-3"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>

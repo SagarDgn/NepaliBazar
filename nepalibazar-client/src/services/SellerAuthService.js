@@ -8,8 +8,8 @@ export default {
       const {token,permission} = response.data.data;
 
       if (token && permission) {
-        localStorage.setItem("seller_jwt", token);
-       localStorage.setItem("seller_role", permission[0]);
+        sessionStorage.setItem("seller_jwt", token);
+       sessionStorage.setItem("seller_role", permission[0]);
       
         
       }
@@ -20,16 +20,44 @@ export default {
          message: "Login failed" };
     }
   },
+
+   async googleLogin(idToken){
+      try{
+        const response= await api.post("/seller/google/login",{
+          token: idToken,
+          clientId: "819481703907-espu7bdv7nntjvn3jn0lvjtl1ncpleru.apps.googleusercontent.com"
+  
+        });
+        const {token,permission}= response.data.data;
+  
+        if(token && permission){
+          const cleanToken = token.replace(/[\s\u0000-\u001F]+/g, "");
+          sessionStorage.setItem("seller_jwt", cleanToken);
+          sessionStorage.setItem("seller_role", permission);
+        }
+        return response.data;
+  
+      }catch(error){
+        console.error("Google login failed:", error);
+        return (
+          error.response?.data || {
+            code: "-1",
+            message: "Google login failed. Retry",
+          }
+        );
+  
+      }
+    },
   getToken() {
-    return localStorage.getItem("seller_jwt");
+    return sessionStorage.getItem("seller_jwt");
   },
 
   getRole() {
-    return localStorage.getItem("seller_role");
+    return sessionStorage.getItem("seller_role");
   },
 
   isAuthenticated() {
-    return !!localStorage.getItem("seller_jwt");
+    return !!sessionStorage.getItem("seller_jwt");
   },
 
  // In your sellerAuthService.js
@@ -38,8 +66,8 @@ async logout() {
   
   // Always clear local storage first to prevent race conditions
   const savedToken = token; // Save token before removing
-  localStorage.removeItem("seller_jwt");
-  localStorage.removeItem("seller_role");
+  sessionStorage.removeItem("seller_jwt");
+  sessionStorage.removeItem("seller_role");
 
   try {
     if (savedToken) {

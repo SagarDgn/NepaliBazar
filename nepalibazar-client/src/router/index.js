@@ -13,7 +13,6 @@ import ProductList from "../pages/ProductList.vue";
 import LoginUser from "../pages/loginUser.vue";
 import WishlistPage from "../pages/WishlistPage.vue";
 import CartItemPage from "../pages/CartItemPage.vue";
-import CheckoutPage from "../pages/CheckoutPage.vue";
 import OrderSuccess from "../pages/OrderSuccess.vue";
 import OrderHistory from "../pages/OrderHistory.vue";
 import AboutusPage from "../pages/AboutusPage.vue";
@@ -104,7 +103,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const userLoggedIn = UserAuthService.isAuthenticated();
   const sellerLoggedIn = SellerAuthService.isAuthenticated();
-  const seller_role = localStorage.getItem("seller_role"); // "BUYER" or "SELLER"
+  const seller_role = sessionStorage.getItem("seller_role"); // "BUYER" or "SELLER"
   const buyer_role = localStorage.getItem("buyer_role");
 
   // Prevent infinite redirect

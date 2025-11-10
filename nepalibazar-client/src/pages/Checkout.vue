@@ -131,7 +131,7 @@ export default {
   methods: {
     // ------------------ Notification ------------------
     showCustomNotification(message, type = 'success') {
-      console.log(`🔔 Notification: ${message}, Type: ${type}`);
+      console.log(`Notification: ${message}, Type: ${type}`);
       clearTimeout(this.notificationTimeout);
       this.notificationMessage = message;
       this.notificationType = type;
@@ -263,107 +263,108 @@ export default {
       }
       this.processPayment();
     },
-async processPayment() {
-  console.log("🚀 STARTING PAYMENT PROCESS...");
-  
-  this.isLoading = true;
-  
-  try {
-    const orderData = {
-      paymentMethod: this.paymentMethod,
-      country: this.shippingData.country,
-      city: this.shippingData.city,
-      state: this.shippingData.state,
-      street: this.shippingData.street,
-      pinCode: this.shippingData.pinCode,
-      phoneNumber: this.shippingData.phoneNumber
-    };
 
-    console.log("🛒 Placing order:", orderData);
-
-    // STEP 1: Place Order
-    const placeOrderResult = await OrderService.placeOrder(orderData);
-    console.log("📦 Place order result:", placeOrderResult);
-
-    // Check if order placement was successful
-    if (!placeOrderResult || !placeOrderResult.success) {
-      const errorMsg = placeOrderResult?.message || 'Failed to place order';
-      this.showCustomNotification(errorMsg, 'error');
-      return;
-    }
-
-    // Extract order ID from the response
-    this.orderId = placeOrderResult.orderId || placeOrderResult.data?.orderId;
-    
-    if (!this.orderId) {
-      console.error("❌ No order ID in response");
-      this.showCustomNotification('Order placed but no order ID received', 'error');
-      return;
-    }
-
-    console.log("✅ Order placed successfully, Order ID:", this.orderId);
-
-    // STEP 2: Handle payment method
-    if (this.paymentMethod === 'CASH') {
-      console.log("💵 Processing Cash on Delivery...");
+    async processPayment() {
+      console.log("Starting payment process...");
       
-      const codResult = await PaymentService.confirmCodOrder(this.orderId);
-      console.log("💰 COD result:", codResult);
+      this.isLoading = true;
+      
+      try {
+        const orderData = {
+          paymentMethod: this.paymentMethod,
+          country: this.shippingData.country,
+          city: this.shippingData.city,
+          state: this.shippingData.state,
+          street: this.shippingData.street,
+          pinCode: this.shippingData.pinCode,
+          phoneNumber: this.shippingData.phoneNumber
+        };
 
-      if (codResult && codResult.success) {
-        // SUCCESS: Move to confirmation step
-        this.currentStep = 3;
-        this.showCustomNotification("🎉 Order placed successfully with Cash on Delivery!", 'success');
+        console.log("Placing order:", orderData);
+
+        // STEP 1: Place Order
+        const placeOrderResult = await OrderService.placeOrder(orderData);
+        console.log("Place order result:", placeOrderResult);
+
+        // Check if order placement was successful
+        if (!placeOrderResult || !placeOrderResult.success) {
+          const errorMsg = placeOrderResult?.message || 'Failed to place order';
+          this.showCustomNotification(errorMsg, 'error');
+          return;
+        }
+
+        // Extract order ID from the response
+        this.orderId = placeOrderResult.orderId || placeOrderResult.data?.orderId;
         
-        // Clear cart after successful order
-        try {
-          await CartService.clearCart();
-          console.log("🛒 Cart cleared successfully");
-        } catch (cartError) {
-          console.warn("⚠️ Could not clear cart:", cartError);
+        if (!this.orderId) {
+          console.error("No order ID in response");
+          this.showCustomNotification('Order placed but no order ID received', 'error');
+          return;
         }
-      } else {
-        const errorMsg = codResult?.message || 'Cash on Delivery confirmation failed';
-        this.showCustomNotification(errorMsg, 'error');
-      }
 
-    } else if (this.paymentMethod === 'STRIPE') {
-      console.log("💳 Processing Stripe payment...");
-      
-      const successUrl = `${window.location.origin}/order-success?orderId=${this.orderId}`;
-      const cancelUrl = `${window.location.origin}/checkout?step=2`;
+        console.log("Order placed successfully, Order ID:", this.orderId);
 
-      const stripeResult = await PaymentService.createStripeCheckout(
-        this.orderId,
-        successUrl,
-        cancelUrl
-      );
+        // STEP 2: Handle payment method
+        if (this.paymentMethod === 'CASH') {
+          console.log("Processing Cash on Delivery...");
+          
+          const codResult = await PaymentService.confirmCodOrder(this.orderId);
+          console.log("COD result:", codResult);
 
-      if (stripeResult && stripeResult.success) {
-        const sessionUrl = stripeResult.sessionUrl;
-        if (sessionUrl) {
-          window.location.href = sessionUrl;
-        } else {
-          this.showCustomNotification("Stripe session URL not found", 'error');
+          if (codResult && codResult.success) {
+            // SUCCESS: Move to confirmation step
+            this.currentStep = 3;
+            this.showCustomNotification("Order placed successfully with Cash on Delivery!", 'success');
+            
+            // Clear cart after successful order
+            try {
+              await CartService.clearCart();
+              console.log("Cart cleared successfully");
+            } catch (cartError) {
+              console.warn("Could not clear cart:", cartError);
+            }
+          } else {
+            const errorMsg = codResult?.message || 'Cash on Delivery confirmation failed';
+            this.showCustomNotification(errorMsg, 'error');
+          }
+
+        } else if (this.paymentMethod === 'STRIPE') {
+          console.log("Processing Stripe payment...");
+          
+          const successUrl = `${window.location.origin}/order-success?orderId=${this.orderId}`;
+          const cancelUrl = `${window.location.origin}/checkout?step=2`;
+
+          const stripeResult = await PaymentService.createStripeCheckout(
+            this.orderId,
+            successUrl,
+            cancelUrl
+          );
+
+          if (stripeResult && stripeResult.success) {
+            const sessionUrl = stripeResult.sessionUrl;
+            if (sessionUrl) {
+              window.location.href = sessionUrl;
+            } else {
+              this.showCustomNotification("Stripe session URL not found", 'error');
+            }
+          } else {
+            const errorMsg = stripeResult?.message || "Stripe checkout failed";
+            this.showCustomNotification(errorMsg, 'error');
+          }
         }
-      } else {
-        const errorMsg = stripeResult?.message || "Stripe checkout failed";
-        this.showCustomNotification(errorMsg, 'error');
-      }
-    }
 
-  } catch (error) {
-    console.error("❌ Payment processing error:", error);
-    this.showCustomNotification(
-      error.response?.data?.message || 
-      error.message || 
-      "Failed to process payment. Please try again.", 
-      'error'
-    );
-  } finally {
-    this.isLoading = false;
-  }
-},
+      } catch (error) {
+        console.error("Payment processing error:", error);
+        this.showCustomNotification(
+          error.response?.data?.message || 
+          error.message || 
+          "Failed to process payment. Please try again.", 
+          'error'
+        );
+      } finally {
+        this.isLoading = false;
+      }
+    },
 
     // ------------------ Navigation ------------------
     viewOrderHistory() {

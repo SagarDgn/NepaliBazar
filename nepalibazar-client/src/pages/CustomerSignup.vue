@@ -1,61 +1,70 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br  ">
-    <Hero />
-    <Navbar />
-    
-    
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
-      <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
-        <!-- Left Side - Image -->
-        <div class="lg:w-1/2 flex justify-center">
-          <div class="relative">
-            <img
-              src="../assets/signupPic.PNG"
-              alt="Welcome to our platform"
-              class="rounded-3xl shadow-2xl w-full max-w-lg transform hover:scale-105 transition-transform duration-500"
-            />
-            <!-- Floating decoration elements -->
-            <div class="absolute -top-4 -left-4 w-24 h-24 bg-blue-200 rounded-full opacity-50 animate-pulse"></div>
-            <div class="absolute -bottom-4 -right-4 w-16 h-16 bg-purple-200 rounded-full opacity-50 animate-pulse delay-1000"></div>
-          </div>
-        </div>
+  <div class="min-h-screen bg-white">
+    <!-- Header -->
+     <Hero/>
+     <Navbar/>
+   
 
-        <!-- Right Side - Signup Form -->
-        <div class="lg:w-1/2 flex justify-center">
-          <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 w-full max-w-md border border-white/20">
-            <!-- Header -->
-            <div class="text-center mb-8">
-              <h1 class="text-3xl font-bold bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent mb-2">
-                Join Our Community
-              </h1>
-              <p class="text-gray-600">Start your journey with us today</p>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+      <div class="flex flex-col lg:flex-row items-start justify-between gap-12">
+        <!-- Left Side - Form -->
+        <div class="lg:w-1/2 w-full max-w-md mx-auto lg:mx-0">
+          <div class="py-8">
+            <!-- Progress Steps -->
+            <div class="flex items-center justify-between mb-8">
+              <div class="flex items-center">
+                <div class="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center text-sm font-medium">
+                  1
+                </div>
+                <span class="ml-2 text-sm font-medium text-gray-900">Account</span>
+              </div>
+              <div class="flex-1 h-0.5 bg-gray-200 mx-4"></div>
+              <div class="flex items-center">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-medium">
+                  2
+                </div>
+                <span class="ml-2 text-sm font-medium text-gray-500">Verification</span>
+              </div>
+            </div>
+
+            <!-- Form Header -->
+            <div class="mb-8">
+              <h1 class="text-2xl font-bold text-gray-900 mb-2">Create your account</h1>
+              <p class="text-gray-600">Join thousands of shoppers worldwide</p>
+            </div>
+
+            <!-- Social Signup -->
+            <div class="space-y-3 mb-6">
+               <div id="googleLoginButton"></div>
+            
+            </div>
+
+            <!-- Divider -->
+            <div class="relative mb-6">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500">Or continue with email</span>
+              </div>
             </div>
 
             <!-- Form -->
             <form class="space-y-6" @submit.prevent="handleSentOtp">
               <!-- Email Input -->
-              <div class="space-y-2">
-                <label class="text-sm font-medium text-gray-700 flex items-center">
-                  <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                  </svg>
-                  Gmail Address
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                  Email address
                 </label>
-                <div class="relative">
-                  <input
-                    v-model="email"
-                    type="email"
-                    placeholder="Enter your Gmail address"
-                    class="w-full px-4 py-3 pl-11 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-white/50"
-                    :class="{ 'border-red-500 focus:ring-red-500': emailError }"
-                  />
-                  <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
-                    </svg>
-                  </div>
-                </div>
-                <p v-if="emailError" class="text-red-500 text-sm flex items-center mt-1 animate-pulse">
+                <input
+                  v-model="email"
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all duration-200 outline-none"
+                  :class="{ 'border-red-500 focus:ring-red-500 focus:border-red-500': emailError }"
+                />
+                <p v-if="emailError" class="text-red-500 text-sm mt-2 flex items-center">
                   <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
@@ -63,104 +72,141 @@
                 </p>
               </div>
 
+              <!-- Terms and Conditions -->
+              <div class="flex items-start space-x-3">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  class="mt-1 w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900"
+                />
+                <label for="terms" class="text-sm text-gray-600">
+                  I agree to the 
+                  <a href="#" class="text-gray-900 hover:underline font-medium">Terms of Service</a> 
+                  and 
+                  <a href="#" class="text-gray-900 hover:underline font-medium">Privacy Policy</a>
+                </label>
+              </div>
+
               <!-- Submit Button -->
               <button
                 type="submit"
                 :disabled="loading"
-                class="w-full py-3 px-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-600 hover:to-red-800 text-white font-semibold rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                class="w-full py-3 px-4 bg-black text-white font-semibold rounded-lg shadow-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div class="flex items-center justify-center space-x-2">
                   <svg v-if="loading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  <span>{{ loading ? "Sending OTP..." : "Send Verification OTP" }}</span>
+                  <span>{{ loading ? "Creating Account..." : "Create Account" }}</span>
                 </div>
               </button>
 
-              <!-- Features List -->
-              <div class="bg-blue-50/50 rounded-2xl p-4 border border-blue-100">
-                <h3 class="text-sm font-semibold text-blue-800 mb-2 flex items-center">
-                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                  Why sign up with us?
-                </h3>
-                <ul class="text-xs text-blue-600 space-y-1">
-                  <li class="flex items-center">
-                    <span class="w-1 h-1 bg-blue-500 rounded-full mr-2"></span>
-                    Secure and verified account
-                  </li>
-                  <li class="flex items-center">
-                    <span class="w-1 h-1 bg-blue-500 rounded-full mr-2"></span>
-                    Fast and easy checkout
-                  </li>
-                  <li class="flex items-center">
-                    <span class="w-1 h-1 bg-blue-500 rounded-full mr-2"></span>
-                    Personalized recommendations
-                  </li>
-                </ul>
+              <!-- Login Redirect -->
+              <div class="text-center pt-4 border-t border-gray-200">
+                <p class="text-gray-600 text-sm">
+                  Already have an account?
+                  <router-link 
+                    to="/loginuser" 
+                    class="text-gray-900 hover:text-gray-700 font-semibold transition-colors duration-200 ml-1 hover:underline"
+                  >
+                    Sign In
+                  </router-link>
+                </p>
               </div>
             </form>
+          </div>
+        </div>
 
-            <!-- Login Redirect -->
-            <div class="text-center mt-6 pt-6 border-t border-gray-200">
-              <p class="text-gray-600 text-sm">
-                Already have an account?
-                <router-link 
-                  to="/loginuser" 
-                  class="text-blue-600 hover:text-blue-700 font-semibold transition-colors duration-200 ml-1 hover:underline"
-                >
-                  Log In
-                </router-link>
-              </p>
-            </div>
-
-            <!-- Trust Badges -->
-            <div class="flex justify-center space-x-6 mt-6 pt-6 border-t border-gray-200">
-              <div class="text-center">
-                <div class="w-8 h-8 mx-auto mb-1 text-green-500">
-                  <svg fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        <!-- Right Side - Benefits -->
+        <div class="lg:w-1/2 w-full bg-gray-50 rounded-2xl p-8 lg:p-12">
+          <div class="max-w-md mx-auto">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Why join us?</h2>
+            
+            <div class="space-y-6">
+              <div class="flex items-start space-x-4">
+                <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                   </svg>
                 </div>
-                <span class="text-xs text-gray-500">Secure</span>
-              </div>
-              <div class="text-center">
-                <div class="w-8 h-8 mx-auto mb-1 text-purple-500">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                  </svg>
+                <div>
+                  <h3 class="font-semibold text-gray-900 mb-1">Fast & Free Shipping</h3>
+                  <p class="text-gray-600 text-sm">Free delivery on orders. Enjoy quick shipping worldwide.</p>
                 </div>
-                <span class="text-xs text-gray-500">Verified</span>
               </div>
-              <div class="text-center">
-                <div class="w-8 h-8 mx-auto mb-1 text-blue-500">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+              <div class="flex items-start space-x-4">
+                <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                   </svg>
                 </div>
-                <span class="text-xs text-gray-500">Trusted</span>
+                <div>
+                  <h3 class="font-semibold text-gray-900 mb-1">Secure Shopping</h3>
+                  <p class="text-gray-600 text-sm">Your data is protected with bank-level security encryption.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-4">
+                <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900 mb-1">Exclusive Member Deals</h3>
+                  <p class="text-gray-600 text-sm">Get access to special discounts and early sale access.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-4">
+                <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900 mb-1">Easy Returns</h3>
+                  <p class="text-gray-600 text-sm">30-day return policy. No questions asked.</p>
+                </div>
               </div>
             </div>
+
+            <!-- Testimonial -->
+            
           </div>
         </div>
       </div>
     </div>
-    
+
+    <!-- Trust Indicators -->
+    <div class="bg-gray-50 border-t border-gray-200 py-8">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-6">
+          <p class="text-gray-600 text-sm">Trusted by millions of shoppers worldwide</p>
+        </div>
+        <div class="flex flex-wrap justify-center items-center gap-8 opacity-60">
+          <div class="text-gray-400 font-bold text-lg">Stripe</div>
+         
+        </div>
+      </div>
+    </div>
+
     <Footer />
   </div>
 </template>
 
 <script>
 import { toast } from "vue3-toastify";
-import Hero from "../components/ui/Hero.vue";
-import Navbar from "../components/ui/Navbar.vue";
-import { sentOtp } from "../services/UsersignupService";
 import Footer from "../components/ui/Footer.vue";
+import { sentOtp } from "../services/UsersignupService";
+import Navbar from "../components/ui/Navbar.vue";
+import Hero from "../components/ui/Hero.vue";
+import UserAuthService from "../services/UserAuthService";
 
 export default {
-  components: { Hero, Navbar, Footer },
+  components: {Navbar,Hero ,Footer },
   name: "CustomerSignup",
 
   data() {
@@ -172,6 +218,44 @@ export default {
   },
 
   methods: {
+
+     async handleGoogleLogin(response) {
+    const idToken = response.credential;
+    if (!idToken) return;
+
+    try {
+      const result = await UserAuthService.googleLogin(idToken);
+      if (result.code === "0") {
+        toast.success("Logged in with Google successfully!");
+        this.$router.push({ name: "Home" });
+      } else {
+        toast.error(result.message || "Google login failed");
+      }
+    } catch (error) {
+      toast.error("Google login error. Try again.");
+    }
+  },
+
+  initGoogleSignIn() {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: "819481703907-espu7bdv7nntjvn3jn0lvjtl1ncpleru.apps.googleusercontent.com",
+      callback: this.handleGoogleLogin,
+    });
+
+    // Render the Google button
+    google.accounts.id.renderButton(
+      document.getElementById("googleLoginButton"),
+      {
+        theme: "outline",
+        size: "large",
+        width: "100%",
+      }
+    );
+
+    // Optional: automatically prompt login
+    // google.accounts.id.prompt();
+  },
     isValidGmail(email) {
       const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
       return gmailRegex.test(email);
@@ -198,7 +282,7 @@ export default {
           sessionStorage.setItem("signupEmail", this.email);
           this.$router.push({ name: "CustomerVerification" });
         } else {
-          toast.error(response.data.message || "This Gmail is already registered!");
+          toast.error(response.data.message || "This email is already registered!");
         }
       } catch (error) {
         console.error("Signup error: ", error);
@@ -207,6 +291,17 @@ export default {
         this.loading = false;
       }
     },
+  },
+   mounted() {
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = this.initGoogleSignIn;
+    document.head.appendChild(script);
+    
+   
+    
   },
 };
 </script>
@@ -231,20 +326,8 @@ export default {
   background: #a8a8a8;
 }
 
-/* Smooth transitions for all interactive elements */
+/* Smooth transitions */
 button, input, a {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Gradient text animation */
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.bg-gradient-to-r {
-  background-size: 200% 200%;
-  animation: gradientShift 3s ease infinite;
 }
 </style>

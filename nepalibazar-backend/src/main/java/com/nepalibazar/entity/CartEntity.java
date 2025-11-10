@@ -27,7 +27,7 @@ public class CartEntity {
 
     private Double totalMrpPrice;
 
-    private Integer discount;
+    private Double discount;
 
     public Integer getId() {
         return id;
@@ -77,11 +77,11 @@ public class CartEntity {
         this.totalMrpPrice = totalMrpPrice;
     }
 
-    public Integer getDiscount() {
+    public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(Double discount) {
         this.discount = discount;
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen bg-gray-50">
     <Hero />
     <Navbar />
     
@@ -9,9 +9,9 @@
       class="fixed top-4 right-4 z-50 transform transition-all duration-500"
       :class="notificationClass"
     >
-      <div class="flex items-center space-x-3 px-6 py-4 rounded-2xl shadow-2xl backdrop-blur-sm border" :class="notificationStyle">
+      <div class="flex items-center space-x-3 px-6 py-4 rounded-lg shadow-lg border" :class="notificationStyle">
         <div class="flex-shrink-0">
-          <div class="w-8 h-8 rounded-full flex items-center justify-center animate-pulse" :class="notificationIconStyle">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center" :class="notificationIconStyle">
             <svg v-if="notificationType === 'success'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
@@ -41,10 +41,10 @@
       v-if="showConfirmation"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
     >
-      <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-auto transform transition-all duration-300 scale-100">
+      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-auto">
         <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
             </svg>
           </div>
@@ -59,7 +59,7 @@
             </button>
             <button
               @click="confirmClear"
-              class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium"
+              class="px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors duration-200 font-medium"
             >
               Clear All
             </button>
@@ -73,10 +73,10 @@
       v-if="showRemoveConfirmationModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
     >
-      <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-auto transform transition-all duration-300 scale-100">
+      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-auto">
         <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-orange-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
             </svg>
           </div>
@@ -91,7 +91,7 @@
             </button>
             <button
               @click="confirmRemove"
-              class="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors duration-200 font-medium"
+              class="px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors duration-200 font-medium"
             >
               Remove Item
             </button>
@@ -119,7 +119,7 @@
           <p class="text-gray-500 mb-6">Start shopping to add items to your cart</p>
           <button 
             @click="$router.push('/products')"
-            class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 font-medium shadow-lg"
+            class="px-6 py-3 bg-black text-white rounded-lg font-medium shadow"
           >
             Continue Shopping
           </button>
@@ -130,14 +130,14 @@
       <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Cart Items Section -->
         <div class="lg:col-span-2">
-          <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+          <div class="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
             <!-- Cart Header -->
-            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+            <div class="p-6 border-b border-gray-200 bg-gray-50">
               <div class="flex justify-between items-center">
                 <h2 class="text-xl font-semibold text-gray-800">Cart Items ({{ totalItems }})</h2>
                 <button
                   @click.stop="showClearConfirmation"
-                  class="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 font-medium border border-red-200 hover:border-red-300"
+                  class="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-all duration-200 font-medium border border-gray-300 hover:border-gray-400"
                 >
                   Clear All
                 </button>
@@ -149,11 +149,11 @@
               <div
                 v-for="(item, index) in mergedCartItems"
                 :key="item.productId + '-' + index"
-                class="p-6 hover:bg-gray-50 transition-all duration-200 group"
+                class="p-6 hover:bg-gray-50 transition-all duration-200"
               >
                 <div class="flex items-center space-x-4">
                   <!-- Product Image Placeholder -->
-                  <div class="w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                  <div class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
                     <span class="text-2xl">🛒</span>
                   </div>
 
@@ -162,15 +162,15 @@
                     <div class="flex items-start justify-between">
                       <div>
                         <h3 class="text-lg font-semibold text-gray-800 truncate">{{ item.productName }}</h3>
-                        <p class="text-gray-600 mt-1">Rs. {{ item.price.toLocaleString() }} per item</p>
+                        <p class="text-gray-600 mt-1">NPR. {{ item.price.toLocaleString() }} per item</p>
                       </div>
                       <!-- Item Total -->
                       <div class="text-right">
-                        <p class="text-lg font-semibold text-blue-600">
-                          Rs. {{ (item.price * item.quantity).toLocaleString() }}
+                        <p class="text-lg font-semibold text-gray-800">
+                          NPR. {{ (item.price * item.quantity).toLocaleString() }}
                         </p>
                         <p class="text-sm text-gray-500">
-                          {{ item.quantity }} × Rs. {{ item.price.toLocaleString() }}
+                          {{ item.quantity }} × NPR. {{ item.price.toLocaleString() }}
                         </p>
                       </div>
                     </div>
@@ -180,14 +180,14 @@
                       <button
                         @click.stop="updateQuantity(item.productId, item.quantity - 1)"
                         :disabled="item.quantity <= 1 || isLoading"
-                        class="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md"
+                        class="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         :class="{ 'hover:bg-gray-200': item.quantity > 1 && !isLoading }"
                       >
                         <span class="text-gray-600 font-semibold text-lg">−</span>
                       </button>
                       
                       <div class="flex flex-col items-center">
-                        <span class="w-16 text-center font-semibold text-gray-700 bg-gray-50 py-2 rounded-xl text-lg border border-gray-200">
+                        <span class="w-16 text-center font-semibold text-gray-700 bg-gray-50 py-2 rounded-lg text-lg border border-gray-200">
                           {{ item.quantity }}
                         </span>
                         <span class="text-xs text-gray-500 mt-1">quantity</span>
@@ -196,7 +196,7 @@
                       <button
                         @click.stop="updateQuantity(item.productId, item.quantity + 1)"
                         :disabled="isLoading"
-                        class="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md"
+                        class="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <span class="text-gray-600 font-semibold text-lg">+</span>
                       </button>
@@ -205,7 +205,7 @@
                       <button
                         @click.stop="showRemoveConfirmation(item.productId, item.productName)"
                         :disabled="isLoading"
-                        class="ml-4 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl transition-all duration-200 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed border border-red-200 hover:border-red-300 hover:shadow-md"
+                        class="ml-4 px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg transition-all duration-200 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300 hover:border-gray-400"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -222,9 +222,9 @@
 
         <!-- Order Summary -->
         <div class="lg:col-span-1">
-          <div class="bg-white rounded-2xl shadow-lg border border-gray-200 sticky top-4">
+          <div class="bg-white rounded-lg shadow border border-gray-200 sticky top-4">
             <!-- Summary Header -->
-            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-green-50 to-emerald-50">
+            <div class="p-6 border-b border-gray-200 bg-gray-50">
               <h2 class="text-xl font-semibold text-gray-800">Order Summary</h2>
             </div>
 
@@ -237,30 +237,30 @@
               
               <div class="flex justify-between items-center">
                 <span class="text-gray-600">Subtotal</span>
-                <span class="text-gray-800 font-medium">Rs. {{ totalMrpPrice.toLocaleString() }}</span>
+                <span class="text-gray-800 font-medium">NPR. {{ totalMrpPrice.toLocaleString() }}</span>
               </div>
               
-              <div v-if="totalMrpPrice > totalSellingPrice" class="flex justify-between items-center text-green-600 bg-green-50 rounded-lg p-3">
+              <div v-if="totalMrpPrice > totalSellingPrice" class="flex justify-between items-center text-gray-700 bg-gray-100 rounded-lg p-3">
                 <span class="font-medium">Discount</span>
-                <span class="font-semibold">- Rs. {{ (totalMrpPrice - totalSellingPrice).toLocaleString() }}</span>
+                <span class="font-semibold">- NPR. {{ (totalMrpPrice - totalSellingPrice).toLocaleString() }}</span>
               </div>
               
               <div class="border-t border-gray-200 pt-4">
                 <div class="flex justify-between items-center text-lg font-semibold">
                   <span class="text-gray-800">Total Amount</span>
-                  <span class="text-green-600">Rs. {{ totalSellingPrice.toLocaleString() }}</span>
+                  <span class="text-gray-800">NPR. {{ totalSellingPrice.toLocaleString() }}</span>
                 </div>
                 <p class="text-sm text-gray-500 mt-1">Inclusive of all taxes</p>
               </div>
 
               <!-- Savings Badge -->
-              <div v-if="totalMrpPrice > totalSellingPrice" class="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg p-4 text-center">
+              <div v-if="totalMrpPrice > totalSellingPrice" class="bg-gray-800 text-white rounded-lg p-4 text-center">
                 <div class="flex items-center justify-center space-x-2">
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                   </svg>
                   <span class="font-semibold">
-                    You save Rs. {{ (totalMrpPrice - totalSellingPrice).toLocaleString() }}
+                    You save NPR. {{ (totalMrpPrice - totalSellingPrice).toLocaleString() }}
                   </span>
                 </div>
               </div>
@@ -271,13 +271,13 @@
               <button
                 @click="proceedToCheckout"
                 :disabled="isLoading || mergedCartItems.length === 0"
-                class="w-full py-3 bg-gradient-to-r from-red-600 to-red-600 hover:from-red-700 hover:to-red-700 text-white rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                class="w-full py-3 bg-black text-white rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span v-if="!isLoading" class="flex items-center justify-center space-x-2">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  <span>Proceed to Checkout • Rs. {{ totalSellingPrice.toLocaleString() }}</span>
+                  <span>Proceed to Checkout • NPR. {{ totalSellingPrice.toLocaleString() }}</span>
                 </span>
                 <span v-else class="flex items-center justify-center space-x-2">
                   <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -291,7 +291,7 @@
               <button
                 @click="$router.push('/products')"
                 :disabled="isLoading"
-                class="w-full py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl font-medium transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Continue Shopping
               </button>
@@ -301,13 +301,13 @@
             <div class="px-6 pb-6">
               <div class="flex items-center justify-center space-x-6 text-gray-500 text-sm">
                 <div class="flex items-center space-x-1">
-                  <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                   </svg>
                   <span>Secure Checkout</span>
                 </div>
                 <div class="flex items-center space-x-1">
-                  <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                  <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                   </svg>
                   <span>Easy Returns</span>
@@ -377,18 +377,18 @@ export default {
     },
     notificationStyle() {
       return this.notificationType === 'success' 
-        ? 'bg-green-50 border-green-200 text-green-800' 
-        : 'bg-red-50 border-red-200 text-red-800';
+        ? 'bg-gray-50 border-gray-200 text-gray-800' 
+        : 'bg-gray-50 border-gray-200 text-gray-800';
     },
     notificationIconStyle() {
       return this.notificationType === 'success' 
-        ? 'bg-green-100 text-green-600' 
-        : 'bg-red-100 text-red-600';
+        ? 'bg-gray-100 text-gray-700' 
+        : 'bg-gray-100 text-gray-700';
     },
     notificationTextStyle() {
       return this.notificationType === 'success' 
-        ? 'text-green-800' 
-        : 'text-red-800';
+        ? 'text-gray-800' 
+        : 'text-gray-800';
     }
   },
   mounted() {
@@ -482,7 +482,7 @@ export default {
           // Recalculate totals
           this.calculateTotals();
           
-          this.showCustomNotification("Quantity updated successfully! 📦", 'success');
+          this.showCustomNotification("Quantity updated successfully!", 'success');
         }
       } catch (error) {
         console.error("Update quantity error:", error);
@@ -504,7 +504,7 @@ export default {
       try {
         const result = await CartService.removeCartItem(productId);
         if (result.success) {
-          this.showCustomNotification("Item removed from cart 🗑️", 'success');
+          this.showCustomNotification("Item removed from cart", 'success');
           await this.fetchCart();
         } else {
           this.showCustomNotification(result.message, 'error');
@@ -522,7 +522,7 @@ export default {
       try {
         const result = await CartService.clearCart();
         if (result.success) {
-          this.showCustomNotification("Cart cleared successfully! 🧹", 'success');
+          this.showCustomNotification("Cart cleared successfully!", 'success');
           await this.fetchCart();
         } else {
           this.showCustomNotification(result.message, 'error');
@@ -537,7 +537,7 @@ export default {
 
     proceedToCheckout() {
       if (this.mergedCartItems.length === 0) {
-        this.showCustomNotification("Your cart is empty. Add some items first! 🛒", 'error');
+        this.showCustomNotification("Your cart is empty. Add some items first!", 'error');
         return;
       }
       // Navigate to checkout page

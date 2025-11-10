@@ -13,6 +13,7 @@ public record SearchAllProductUseCaseResponse(
         Double price,
         Integer discount,
         Integer quantity,
-        SellerEntity sellerEntity
+        SellerEntity sellerEntity,
+        Double discountedPrice
 ) implements UseCase.Response {
 }

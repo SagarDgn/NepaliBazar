@@ -9,8 +9,8 @@ const api= axios.create({
 
 api.interceptors.request.use(config => {
     const buyerToken = localStorage.getItem('buyer_jwt');
-    const sellerToken = localStorage.getItem('seller_jwt');
-    const role = localStorage.getItem('buyer_role') || localStorage.getItem('seller_role');
+    const sellerToken = sessionStorage.getItem('seller_jwt');
+    const role = localStorage.getItem('buyer_role') || sessionStorage.getItem('seller_role');
 
     // Only set the correct token based on role
     if (role === 'BUYER' && buyerToken) {

@@ -1,6 +1,9 @@
 package com.nepalibazar.controller;
 
 import com.nepalibazar.core.response.RestResponse;
+import com.nepalibazar.usecase.user.authgoogle.AuthenticateGoogleUserUseCase;
+import com.nepalibazar.usecase.user.authgoogle.AuthenticateGoogleUserUseCaseRequest;
+import com.nepalibazar.usecase.user.authgoogle.AuthenticateGoogleUserUseCaseResponse;
 import com.nepalibazar.usecase.user.authuser.AuthenticateUserUseCase;
 import com.nepalibazar.usecase.user.authuser.AuthenticateUserUseCaseRequest;
 import com.nepalibazar.usecase.user.authuser.AuthenticateUserUseCaseResponse;
@@ -17,12 +20,15 @@ import jakarta.inject.Inject;
 public class AuthenticateUserController {
     private final AuthenticateUserUseCase authenticateUseCase;
     public final LogoutUserUseCase logoutUserUseCase;
+    public final AuthenticateGoogleUserUseCase authenticateGoogleUserUseCase;
 
     @Inject
     public AuthenticateUserController(AuthenticateUserUseCase authenticateUseCase,
-                                      LogoutUserUseCase logoutUserUseCase){
+                                      LogoutUserUseCase logoutUserUseCase,
+                                      AuthenticateGoogleUserUseCase authenticateGoogleUserUseCase){
         this.authenticateUseCase=authenticateUseCase;
         this.logoutUserUseCase=logoutUserUseCase;
+        this.authenticateGoogleUserUseCase=authenticateGoogleUserUseCase;
     }
 
     @Post("/auth/user/login")
@@ -45,6 +51,17 @@ public class AuthenticateUserController {
         }catch (Exception e){
             return RestResponse.error( e.getLocalizedMessage());
 
+        }
+    }
+
+    @Post("/user/google/login")
+    public RestResponse<AuthenticateGoogleUserUseCaseResponse> loginGoogle(@Body AuthenticateGoogleUserUseCaseRequest request){
+        try{
+            var response= authenticateGoogleUserUseCase.execute(request);
+            return RestResponse.success(response);
+        }catch (Exception e){
+            e.printStackTrace();
+            return RestResponse.error("Some exception occured");
         }
     }
 }

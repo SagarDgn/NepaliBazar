@@ -13,5 +13,6 @@ public record PlaceOrderUseCaseRequest(
         String street,
         String pinCode,
         String phoneNumber
+
 ) implements UseCase.Request {
 }

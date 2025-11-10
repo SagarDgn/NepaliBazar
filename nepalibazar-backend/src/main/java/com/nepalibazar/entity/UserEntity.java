@@ -5,6 +5,7 @@ import com.nepalibazar.domain.USER_ROLE;
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
 import io.micronaut.serde.annotation.SerdeImport;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
@@ -16,6 +17,7 @@ import java.util.Set;
 @SerdeImport
 @Entity
 @Table(name = "users_details")
+@Serdeable
 public class UserEntity {
 
     @Id

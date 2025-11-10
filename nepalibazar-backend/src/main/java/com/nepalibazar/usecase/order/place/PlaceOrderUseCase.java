@@ -75,7 +75,7 @@ public class PlaceOrderUseCase {
             cartEntity.setTotalMrpPrice(0.0);
             cartEntity.setTotalItem(0);
             cartEntity.setSellingPrice(0.0);
-            cartEntity.setDiscount(0);
+            cartEntity.setDiscount(0.0);
             cartRepository.update(cartEntity);
 
             return new PlaceOrderUseCaseResponse(0, savedOrder.getId(), "Order placed successfully");

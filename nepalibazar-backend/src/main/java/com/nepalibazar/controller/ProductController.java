@@ -47,12 +47,17 @@ public class ProductController {
     @Post("/product/add")
     public RestResponse<AddProductUseCaseResponse> postProduct(
             @Body AddProductRequestPayload request,
-            @Header("authorization") String authorization
+            @Header(HttpHeaders.AUTHORIZATION) String authorization
     ) {
+        System.out.println("Inside add product");
         try {
-            String token = authorization.replace("Bearer ", "");
+            System.out.println(authorization);
+            String token = authorization.replace("Bearer ", "").trim();
             String emailOrPhone = JwtUtils.getEmailFromToken(token);// sub = email/phone
+            System.out.println(emailOrPhone);
             String role= JwtUtils.getRoleFromToken(token);
+
+            System.out.println("Received token"+ token);
 
             if(!"SELLER".equalsIgnoreCase(role)){
                 return RestResponse.error("Unauthorized");

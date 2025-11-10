@@ -33,7 +33,7 @@ public class SendMessageUseCase {
                 return new SendMessageUseCaseResponse(null,null,null,null,null);
             }
 
-            String jwt= token.replace("Bearer","");
+            String jwt= token.replace("Bearer","").trim();
             String senderEmail= JwtUtils.extractEmail(jwt);
 
             ChatRoomEntity chatRoom= chatRoomRepository.

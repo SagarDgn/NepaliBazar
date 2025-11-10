@@ -81,9 +81,11 @@ public class SellerController {
 
     @Get("/my/products")
     public RestResponse<List<GetSellerProductUseCaseResponse>> getProduct(@Header(HttpHeaders.AUTHORIZATION) String authorization){
+        if(authorization.isBlank()){
+            return RestResponse.error("Unauthorized");
+        }
         try{
-            String token= authorization.replace("Bearer","").trim();
-            List<GetSellerProductUseCaseResponse> products= getSellersProductUseCase.execute(token);
+            List<GetSellerProductUseCaseResponse> products= getSellersProductUseCase.execute(authorization);
             return RestResponse.success(products);
         }catch(Exception e){
             return RestResponse.error("Unauthorized" +e.getMessage());

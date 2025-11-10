@@ -20,6 +20,7 @@ export default {
         description: p.aboutProduct,
         price: p.price,
         discount: p.discount,
+        discountPrice: p.discountedPrice,
         quantity: p.quantity,
         imageUrl: p.image,
         sellerName: p.sellerEntity?.sellerName || "",
@@ -33,12 +34,12 @@ export default {
 
    async getMyProducts() {
     try {
-      const token = localStorage.getItem('seller_jwt');
+      const token = sessionStorage.getItem('seller_jwt');
       const cleanToken= token.trim();
       console.log("sending token",cleanToken)
       const response = await api.get('/my/products', {
         headers: {
-          'Authorization': `Bearer ${cleanToken}`
+            'Authorization': `Bearer ${cleanToken}`,
         }
       });
 
@@ -71,14 +72,15 @@ export default {
    // Add new product
   async addProduct(productData) {
     try {
-      const token = localStorage.getItem('seller_jwt');
+      const token = sessionStorage.getItem('seller_jwt').trim();
+      console.log("TOken from session storage", token)
       const response = await api.post('/product/add', productData, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+           'Authorization': `Bearer ${token}`,
+           "Content-Type": "application/json"
         }
       });
-
+      console.log("Sending token to add product...",token);
       if (response.data.code !== "0") {
         throw new Error(response.data.message);
       }
@@ -93,7 +95,7 @@ export default {
    // Update product
   async updateProduct(id, productData) {
     try {
-      const token = localStorage.getItem('seller_jwt');
+      const token = sessionStorage.getItem('seller_jwt');
       const response = await api.put(`/product/update/${id}`, productData, {
         headers: {
           // 'Authorization': `Bearer ${token}`,
@@ -115,7 +117,7 @@ export default {
     // Delete product
   async deleteProduct(id) {
     try {
-      const token = localStorage.getItem('seller_jwt');
+      const token = sessionStorage.getItem('seller_jwt');
       const response = await api.delete(`/product/delete/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`

@@ -75,7 +75,7 @@ public class AddCartItemUseCase {
 
             cart.setTotalItem(cart.getCartItemEntities().size());
             cart.setTotalMrpPrice(cart.getCartItemEntities().stream().mapToDouble(CartItemEntity::getPrice).sum());
-            cart.setDiscount(20);
+            cart.setDiscount(productEntity.getDiscountedPrice());
             Double discountedAmount= cart.getTotalMrpPrice()* cart.getDiscount()/100;
             cart.setSellingPrice(cart.getTotalMrpPrice()-discountedAmount);
 

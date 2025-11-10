@@ -30,7 +30,8 @@ public class ProductConvertor {
                 product.getPrice(),
                 product.getDiscount(),
                 product.getQuantity(),
-                product.getSeller()
+                product.getSeller(),
+                product.getDiscountedPrice()
         );
     }
 

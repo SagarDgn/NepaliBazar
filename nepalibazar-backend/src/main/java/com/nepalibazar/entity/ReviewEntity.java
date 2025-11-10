@@ -2,13 +2,14 @@ package com.nepalibazar.entity;
 
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.data.annotation.DateCreated;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.util.List;
 
 @Entity
-
+@Serdeable
 @Table(name = "review")
 public class ReviewEntity {
 

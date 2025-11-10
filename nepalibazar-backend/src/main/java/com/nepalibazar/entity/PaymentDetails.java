@@ -1,11 +1,13 @@
 package com.nepalibazar.entity;
 
 import com.nepalibazar.domain.PAYMENT_STATUS;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 @Embeddable
+@Serdeable
 public class PaymentDetails {
 
     private String paymentId;

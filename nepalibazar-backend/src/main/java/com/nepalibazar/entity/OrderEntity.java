@@ -37,7 +37,7 @@ public class OrderEntity {
 
     private Double totalSellingPrice;
 
-    private Integer discount;
+    private Double discount;
 
     private Integer totalItem;
 
@@ -111,11 +111,11 @@ public class OrderEntity {
         this.totalSellingPrice = totalSellingPrice;
     }
 
-    public Integer getDiscount() {
+    public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Integer discount) {
+    public void setDiscount(Double discount) {
         this.discount = discount;
     }
 

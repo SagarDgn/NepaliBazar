@@ -32,6 +32,7 @@ public class ProductEntity {
     @Column(name = "product_discount")
     private Integer discount;
 
+    private Double discountedPrice;
 
     @Column(name = "product_image",columnDefinition = "TEXT")
     private String image;
@@ -51,7 +52,7 @@ public class ProductEntity {
     @DateUpdated
     private Instant updatedAt;
 
-    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<ReviewEntity> review= new ArrayList<>();
 
     public Integer getId() {
@@ -140,5 +141,17 @@ public class ProductEntity {
 
     public void setSeller(SellerEntity seller) {
         this.seller = seller;
+    }
+
+    @Transient
+    public Double getDiscountedPrice() {
+        if (price == null || discount == null) {
+            return 0.0;
+        }
+        return price - (price * discount / 100);
+    }
+
+    public void setDiscountedPrice(Double discountedPrice) {
+        this.discountedPrice = discountedPrice;
     }
 }
