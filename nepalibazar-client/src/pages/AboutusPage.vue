@@ -46,7 +46,7 @@
                 <div class="absolute top-8 left-1/4 transform -translate-x-1/2">
                   <div class="relative">
                     <div class="w-16 h-16 bg-white rounded-full border-2 border-gray-700 shadow-lg flex items-center justify-center">
-                      <div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                      <div class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center">
                         <div class="w-3 h-3 bg-white rounded-full"></div>
                       </div>
                     </div>
@@ -59,7 +59,7 @@
                 <div class="absolute top-1/3 left-2/3 transform -translate-x-1/2">
                   <div class="relative">
                     <div class="w-20 h-20 bg-white rounded-full border-2 border-gray-600 shadow-lg flex items-center justify-center">
-                      <div class="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center">
+                      <div class="w-10 h-10 bg-green-400 rounded-full flex items-center justify-center">
                         <div class="w-4 h-4 bg-white rounded-full"></div>
                       </div>
                     </div>
@@ -72,7 +72,7 @@
                 <div class="absolute bottom-16 left-1/3 transform -translate-x-1/2">
                   <div class="relative">
                     <div class="w-24 h-18 bg-white rounded-full border-2 border-gray-500 shadow-lg flex items-center justify-center">
-                      <div class="w-12 h-8 bg-gray-500 rounded-full flex items-center justify-center">
+                      <div class="w-12 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
                         <div class="w-4 h-4 bg-white rounded-full"></div>
                       </div>
                     </div>
@@ -360,30 +360,30 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="relative bg-gray-900 py-20">
+    <section class="relative bg-white-900 py-20">
       <div class="container mx-auto px-6">
         <div class="max-w-4xl mx-auto text-center">
           <div class="inline-flex items-center space-x-4 mb-6">
             <div class="w-16 h-px bg-gray-600"></div>
-            <span class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Join Our Mission</span>
+            <span class="text-sm font-semibold text-black uppercase tracking-wider">Join Our Mission</span>
             <div class="w-16 h-px bg-gray-600"></div>
           </div>
           
-          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Be Part of Nepal's Cultural Renaissance</h2>
-          <p class="text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto">
+          <h2 class="text-4xl md:text-5xl font-bold text-black mb-6">Be Part of Nepal's Cultural Renaissance</h2>
+          <p class="text-xl text-gray-800 mb-8 leading-relaxed max-w-2xl mx-auto">
             Every purchase preserves heritage, supports communities, and creates opportunities for Nepali artisans to thrive in the global marketplace.
           </p>
           
           <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <router-link 
               to="/products" 
-              class="px-8 py-4 bg-white text-gray-900 font-bold rounded-lg hover:bg-gray-100 transition-all duration-200 text-lg border-2 border-white hover:border-gray-300 shadow-lg hover:shadow-xl"
+              class="px-8 py-4 bg-black text-gray-200 font-bold rounded-lg transition-all duration-200 text-lg border-2 border-white hover:border-gray-300 shadow-lg hover:shadow-xl"
             >
               Explore Nepali Crafts
             </router-link>
             <router-link 
               to="/contactus" 
-              class="px-8 py-4 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-gray-900 transition-all duration-200 text-lg"
+              class="px-8 py-4 border-2 border-white text-black font-bold rounded-lg hover:bg-white hover:text-gray-900 transition-all duration-200 text-lg"
             >
               Partner With Us
             </router-link>

@@ -12,6 +12,7 @@ public record GetUserCartItemUseCaseResponse(
        List<CartItemUseCaseResponse> cartItems,
        Integer totalItems,
        Double totalMrpPrice,
-       Double totalSellingPrice
+       Double totalSellingPrice,
+       Double discountedPrice
 )implements UseCase.Response {
 }

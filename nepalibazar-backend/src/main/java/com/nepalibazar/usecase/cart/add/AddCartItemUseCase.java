@@ -21,6 +21,7 @@ public class AddCartItemUseCase {
     public final CartRepository cartRepository;
     public final UserRepository userRepository;
     public final ProductRepository productRepository;
+    private ProductEntity productEntity;
 
     @Inject
     public AddCartItemUseCase(CartRepository cartRepository,
@@ -77,7 +78,12 @@ public class AddCartItemUseCase {
             cart.setTotalMrpPrice(cart.getCartItemEntities().stream().mapToDouble(CartItemEntity::getPrice).sum());
             cart.setDiscount(productEntity.getDiscountedPrice());
             Double discountedAmount= cart.getTotalMrpPrice()* cart.getDiscount()/100;
-            cart.setSellingPrice(cart.getTotalMrpPrice()-discountedAmount);
+//            cart.setSellingPrice(cart.getTotalMrpPrice()-discountedAmount);
+//            cart.setSellingPrice(productEntity.getDiscountedPrice());
+            cart.setSellingPrice(cart.getCartItemEntities()
+                    .stream().
+                    mapToDouble(item->item.getProductEntity().getDiscountedPrice())
+                    .sum());
 
             cartRepository.save(cart);
 

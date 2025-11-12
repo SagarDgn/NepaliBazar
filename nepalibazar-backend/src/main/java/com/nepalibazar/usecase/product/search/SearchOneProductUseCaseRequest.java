@@ -1,7 +1,10 @@
 package com.nepalibazar.usecase.product.search;
 
 import com.nepalibazar.core.usecase.UseCase;
+import io.micronaut.serde.annotation.Serdeable;
 
-public record SearchOneProductUseCaseRequest(Integer id)
-        implements UseCase.Request{
+@Serdeable
+public record SearchOneProductUseCaseRequest(
+        Integer productId
+) implements UseCase.Request{
 }

@@ -281,11 +281,7 @@ export default {
 
     handleViewDetails() {
       // Navigate to product details page
-      this.$router.push({
-        name: 'ProductDetails',
-        params: { id: this.product.id },
-        query: { product: JSON.stringify(this.product) }
-      });
+    this.$router.push(`/product/${this.product.id}`);
     },
 
     async handleAddToCart() {

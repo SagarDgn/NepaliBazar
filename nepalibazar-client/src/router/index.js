@@ -21,8 +21,8 @@ import AnalyticsPage from "../pages/AnalyticsPage.vue";
 import AddProductPage from "../pages/AddProductPage.vue";
 import SellerProductPage from "../pages/SellerProductPage.vue";
 import SellerDashbord from "../pages/SellerDashbord.vue";
-import ProductDetails from "../pages/ProductDetails.vue";
 import Checkout from "../pages/Checkout.vue";
+import ProductDetails from "../pages/ProductDetails.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
@@ -38,7 +38,8 @@ const routes = [
 {
   path: '/product/:id',
   name: 'ProductDetails',
-  component: ProductDetails
+  component: ProductDetails,
+  props: true
 },
    {
     path: '/sellerdashboard',

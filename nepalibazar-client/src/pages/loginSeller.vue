@@ -159,9 +159,9 @@
             <div class="mt-4 text-center">
               <p class="text-xs text-gray-500">
                 Need help? 
-                <a href="mailto:seller-support@shopmate.com" class="text-gray-900 hover:underline font-medium">
+                <router-link to="/contactus" class="text-gray-900 hover:underline font-medium">
                   Contact Seller Support
-                </a>
+                </router-link>
               </p>
             </div>
           </div>

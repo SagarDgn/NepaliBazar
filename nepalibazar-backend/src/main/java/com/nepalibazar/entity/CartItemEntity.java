@@ -20,6 +20,8 @@ public class CartItemEntity {
     @ManyToOne
     private ProductEntity productEntity;
 
+    private Double discountPrice;
+
     private Integer quantity=1;
 
     private Double price;
@@ -72,5 +74,13 @@ public class CartItemEntity {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Double getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(Double discountPrice) {
+        this.discountPrice = discountPrice;
     }
 }

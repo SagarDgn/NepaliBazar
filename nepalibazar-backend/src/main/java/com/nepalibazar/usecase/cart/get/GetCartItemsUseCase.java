@@ -31,7 +31,7 @@ public class GetCartItemsUseCase {
     public GetUserCartItemUseCaseResponse execute(String token){
         try{
             if(token==null){
-                return new GetUserCartItemUseCaseResponse(-1,"Unauthorized",null,0,0.0,0.0);
+                return new GetUserCartItemUseCaseResponse(-1,"Unauthorized",null,0,0.0,0.0,0.0);
             }
 
             String jwt= token.replace("Bearer","").trim();
@@ -39,18 +39,18 @@ public class GetCartItemsUseCase {
             String role= JwtUtils.getRoleFromToken(jwt);
 
             if(!"BUYER".equalsIgnoreCase(role)){
-                return new GetUserCartItemUseCaseResponse(-1,"Unauthorized",null,0,0.0,0.0);
+                return new GetUserCartItemUseCaseResponse(-1,"Unauthorized",null,0,0.0,0.0,0.0);
             }
 
             Optional<UserEntity> user= userRepository.findByEmailPhone(email);
             if(user.isEmpty()){
-                return new GetUserCartItemUseCaseResponse(-1,"User not found",null,0,0.0,0.0);
+                return new GetUserCartItemUseCaseResponse(-1,"User not found",null,0,0.0,0.0,0.0);
             }
             UserEntity userEntity= user.get();
 
             Optional<CartEntity> cart= cartRepository.findByUser(userEntity);
             if(cart.isEmpty() || cart.get().getCartItemEntities().isEmpty()){
-                return new GetUserCartItemUseCaseResponse(-1,"Cart not available", List.of(),0,0.0,0.0);
+                return new GetUserCartItemUseCaseResponse(-1,"Cart not available", List.of(),0,0.0,0.0,0.0);
             }
             CartEntity cartEntity= cart.get();
 
@@ -60,6 +60,7 @@ public class GetCartItemsUseCase {
                             item.getProductEntity().getProductName(),
                             item.getPrice(),
                             item.getQuantity()
+
                     )).collect(Collectors.toUnmodifiableList());
 
             return new GetUserCartItemUseCaseResponse(
@@ -68,12 +69,14 @@ public class GetCartItemsUseCase {
                     items,
                     cartEntity.getTotalItem(),
                     cartEntity.getTotalMrpPrice(),
-                    cartEntity.getSellingPrice()
+                    cartEntity.getSellingPrice(),
+                    cartEntity.getDiscount()
+
             );
 
         }catch (Exception e){
             e.printStackTrace();
-            return new GetUserCartItemUseCaseResponse(-1,"Internal error occured",null,0,0.0,0.0);
+            return new GetUserCartItemUseCaseResponse(-1,"Internal error occured",null,0,0.0,0.0,0.0);
 
         }
     }

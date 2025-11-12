@@ -12,6 +12,8 @@ import com.nepalibazar.usecase.product.delete.DeleteProductUseCase;
 import com.nepalibazar.usecase.product.delete.DeleteProductUseCaseResponse;
 import com.nepalibazar.usecase.product.search.SearchAllProductUseCase;
 import com.nepalibazar.usecase.product.search.SearchAllProductUseCaseResponse;
+import com.nepalibazar.usecase.product.search.SearchOneProductUseCase;
+import com.nepalibazar.usecase.product.search.SearchOneProductUseCaseRequest;
 import com.nepalibazar.usecase.product.update.UpdateProductUseCase;
 import com.nepalibazar.usecase.product.update.UpdateProductUseCaseRequest;
 import com.nepalibazar.usecase.product.update.UpdateProductUseCaseResponse;
@@ -30,18 +32,22 @@ public class ProductController {
     public final UpdateProductUseCase updateProductUseCase;
     public final DeleteProductUseCase deleteProductUseCase;
     public final SellerRepository sellerRepository;
+    public final SearchOneProductUseCase searchOneProductUseCase;
 
     @Inject
     public ProductController(AddProductUseCase addProductUseCase,
                              SearchAllProductUseCase searchAllProductUseCase,
                              UpdateProductUseCase updateProductUseCase,
                              DeleteProductUseCase deleteProductUseCase,
-                             SellerRepository sellerRepository){
+                             SellerRepository sellerRepository,
+                             SearchOneProductUseCase searchOneProductUseCase){
         this.addProductUseCase=addProductUseCase;
         this.searchAllProductUseCase=searchAllProductUseCase;
         this.updateProductUseCase=updateProductUseCase;
         this.deleteProductUseCase=deleteProductUseCase;
         this.sellerRepository=sellerRepository;
+        this.searchOneProductUseCase=searchOneProductUseCase;
+
     }
 
     @Post("/product/add")
@@ -131,6 +137,18 @@ public class ProductController {
         }catch(Exception e){
             return RestResponse.error("Cannot delete product "+ e.getMessage());
 
+        }
+    }
+
+    @Post("/one/product")
+    public RestResponse<List<SearchAllProductUseCaseResponse>> findSpecificProduct(@Body SearchOneProductUseCaseRequest request){
+        System.out.println("Hitting api of get one product");
+        try{
+            List<SearchAllProductUseCaseResponse> response= searchOneProductUseCase.execute(request);
+            return RestResponse.success(response);
+        }catch (Exception e){
+            e.printStackTrace();
+            return RestResponse.error("Some exception occured"+e.getLocalizedMessage());
         }
     }
 }

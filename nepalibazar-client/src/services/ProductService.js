@@ -133,5 +133,35 @@ export default {
       console.error("API error deleting product:", error);
       throw new Error('Failed to delete product');
     }
+  },
+
+ // If the above doesn't work, try this format:
+// services/ProductService.js
+async getProductById(productId) {
+  try {
+    console.log(' Making API call to /one/product with productId:', productId);
+    
+    // Convert to number and ensure it's valid
+    const numericId = parseInt(productId);
+    if (isNaN(numericId)) {
+      throw new Error(`Invalid product ID: ${productId}`);
+    }
+    
+    // The backend expects "productId" field, not "id"
+    const requestBody = {
+      productId: numericId  // This is the key fix!
+    };
+    
+    console.log('📤 Request body:', requestBody);
+    
+    const response = await api.post('/one/product', requestBody);
+    
+    console.log(' API Response received');
+    return response;
+  } catch (error) {
+    console.error(' ProductService error:', error);
+    console.error('Error response:', error.response?.data);
+    throw error;
   }
+}
 };
