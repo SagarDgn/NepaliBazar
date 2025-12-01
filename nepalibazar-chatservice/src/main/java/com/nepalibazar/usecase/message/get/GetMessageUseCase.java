@@ -15,39 +15,50 @@ import java.util.stream.Collectors;
 
 @Service
 public class GetMessageUseCase {
-    public final MessageRepository messageRepository;
 
-    public final ChatRoomRepository chatRoomRepository;
+    private final MessageRepository messageRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     @Autowired
     public GetMessageUseCase(MessageRepository messageRepository,
-
-                             ChatRoomRepository chatRoomRepository){
-        this.messageRepository=messageRepository;
-
-        this.chatRoomRepository=chatRoomRepository;
+                             ChatRoomRepository chatRoomRepository) {
+        this.messageRepository = messageRepository;
+        this.chatRoomRepository = chatRoomRepository;
     }
 
-    public List<GetMessageUseCaseResponse> execute(String token){
-        try{
-            String currentUserEmail= JwtUtils.extractEmail(token);
-            Optional<ChatRoomEntity> chatRoomEntities= chatRoomRepository.findByBuyerIdAndSellerId(currentUserEmail,currentUserEmail);
-            return chatRoomEntities.stream()
-                    .flatMap(chatRoomEntity -> messageRepository
-                            .findByChatRoomIdOrderByMessageTime(chatRoomEntity.getId())
-                            .stream())
-                    .map(message-> new GetMessageUseCaseResponse(
+    // ✅ Pass receiverEmail from frontend when user opens chat
+    public List<GetMessageUseCaseResponse> execute(String token, String receiverEmail) {
+        try {
+            String currentUserEmail = JwtUtils.extractEmail(token);
+
+            // Try to find chat room where current user is buyer or seller
+            Optional<ChatRoomEntity> chatRoomOpt =
+                    chatRoomRepository.findByBuyerIdAndSellerId(currentUserEmail, receiverEmail)
+                            .or(() -> chatRoomRepository.findByBuyerIdAndSellerId(receiverEmail, currentUserEmail));
+
+            if (chatRoomOpt.isEmpty()) {
+                return Collections.emptyList(); // No chat room yet
+            }
+
+            ChatRoomEntity chatRoom = chatRoomOpt.get();
+
+            // Fetch all messages in this chat room (sorted by time)
+            List<MessageEntity> messages = messageRepository.findByChatRoomIdOrderByMessageTime(chatRoom.getId());
+
+            // Map to response
+            return messages.stream()
+                    .map(message -> new GetMessageUseCaseResponse(
                             message.getSenderId(),
                             message.getMessageContent(),
                             message.getMessageTime()
                     ))
                     .collect(Collectors.toUnmodifiableList());
 
-
-
-
-        }catch (Exception e){
-            return Collections.singletonList(new GetMessageUseCaseResponse( null, null, null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.singletonList(
+                    new GetMessageUseCaseResponse(null, "Error: " + e.getMessage(), null)
+            );
         }
     }
 }

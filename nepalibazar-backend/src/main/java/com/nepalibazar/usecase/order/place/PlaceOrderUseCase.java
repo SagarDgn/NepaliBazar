@@ -67,7 +67,15 @@ public class PlaceOrderUseCase {
             addressRepository.save(userAddress);
 
             var order = OrderConvertor.fromCartAndRequest(userEntity, cartEntity, userAddress, request);
+            String sellerEmail = cartEntity.getCartItemEntities()
+                    .stream()
+                    .findFirst()
+                    .map(ci -> ci.getSellerEntity().getEmailPhone())
+                    .orElse(null);
+
+            order.setSellerEmail(sellerEmail);
             var savedOrder = orderRepository.save(order);
+
 
 
 

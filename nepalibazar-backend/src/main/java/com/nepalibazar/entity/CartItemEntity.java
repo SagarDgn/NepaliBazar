@@ -28,6 +28,17 @@ public class CartItemEntity {
 
     private Integer userId;
 
+    @ManyToOne
+    private SellerEntity sellerEntity;
+
+    public SellerEntity getSellerEntity() {
+        return sellerEntity;
+    }
+
+    public void setSellerEntity(SellerEntity sellerEntity) {
+        this.sellerEntity = sellerEntity;
+    }
+
     public Integer getCartItemId() {
         return cartItemId;
     }

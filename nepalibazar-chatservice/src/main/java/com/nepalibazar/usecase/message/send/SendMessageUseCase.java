@@ -13,46 +13,44 @@ import java.time.Instant;
 @Service
 public class SendMessageUseCase {
 
-    public final ChatRoomRepository chatRoomRepository;
-    public final MessageRepository messageRepository;
-
+    private final ChatRoomRepository chatRoomRepository;
+    private final MessageRepository messageRepository;
 
     @Autowired
     public SendMessageUseCase(ChatRoomRepository chatRoomRepository,
-                              MessageRepository messageRepository
-                              ){
-        this.chatRoomRepository=chatRoomRepository;
-        this.messageRepository=messageRepository;
-
+                              MessageRepository messageRepository) {
+        this.chatRoomRepository = chatRoomRepository;
+        this.messageRepository = messageRepository;
     }
 
-    public SendMessageUseCaseResponse execute(String token, SendMessageUseCaseRequest request){
-
-        try{
-            if(token==null){
-                return new SendMessageUseCaseResponse(null,null,null,null,null);
+    public SendMessageUseCaseResponse execute(String token, SendMessageUseCaseRequest request) {
+        try {
+            if (token == null) {
+                return new SendMessageUseCaseResponse(null, null, null, null, null);
             }
 
-            String jwt= token.replace("Bearer","").trim();
-            String senderEmail= JwtUtils.extractEmail(jwt);
+            String jwt = token.replace("Bearer", "").trim();
+            String senderEmail = JwtUtils.extractEmail(jwt);
 
-            ChatRoomEntity chatRoom= chatRoomRepository.
-                    findByBuyerIdAndSellerId(senderEmail,request.receiverEmail())
-                    .or(()->chatRoomRepository.findByBuyerIdAndSellerId(request.receiverEmail(),senderEmail))
-                    .orElseGet(()->chatRoomRepository.save(
-                            new ChatRoomEntity(){{
-                                setBuyerId(senderEmail);
-                                setSellerId(request.receiverEmail());
-                            }}
-                    ));
+            //  FIXED: No double-brace anonymous class
+            ChatRoomEntity chatRoom = chatRoomRepository
+                    .findByBuyerIdAndSellerId(senderEmail, request.receiverEmail())
+                    .or(() -> chatRoomRepository.findByBuyerIdAndSellerId(request.receiverEmail(), senderEmail))
+                    .orElseGet(() -> {
+                        ChatRoomEntity newChatRoom = new ChatRoomEntity();
+                        newChatRoom.setBuyerId(senderEmail);
+                        newChatRoom.setSellerId(request.receiverEmail());
+                        return chatRoomRepository.save(newChatRoom);
+                    });
 
-            MessageEntity message= new MessageEntity();
+            MessageEntity message = new MessageEntity();
             message.setSenderId(senderEmail);
             message.setReceiverId(request.receiverEmail());
             message.setMessageContent(request.content());
             message.setMessageTime(Instant.now());
             message.setChatRoom(chatRoom);
-            message= messageRepository.save(message);
+
+            message = messageRepository.save(message);
 
             return new SendMessageUseCaseResponse(
                     message.getId(),
@@ -60,14 +58,11 @@ public class SendMessageUseCase {
                     message.getReceiverId(),
                     message.getMessageContent(),
                     message.getMessageTime()
-
             );
 
-
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return  new SendMessageUseCaseResponse(null,null,null,null,null);
+            return new SendMessageUseCaseResponse(null, null, null, null, null);
         }
-
     }
 }

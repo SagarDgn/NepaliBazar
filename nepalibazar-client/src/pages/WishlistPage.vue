@@ -3,7 +3,7 @@
     <Hero/>
     <Navbar/>
     <div class="p-6">
-      <h1 class="text-2xl font-bold mb-4 text-center text-red-400">My Wishlist</h1>
+      <h1 class="text-2xl font-bold mb-4 text-center text-black">My Wishlist</h1>
 
       <div v-if="loading" class="text-gray-500">Loading wishlist...</div>
 

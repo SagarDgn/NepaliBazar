@@ -24,7 +24,9 @@ import SellerDashbord from "../pages/SellerDashbord.vue";
 import Checkout from "../pages/Checkout.vue";
 import ProductDetails from "../pages/ProductDetails.vue";
 
+
 const routes = [
+ 
   { path: "/", name: "Home", component: Home },
   { path: "/sellersignup", name: "Sellersignup", component: Sellersignup, meta: { guestOnly: true } },
   {path: "/aboutus", name: "AboutUs", component: AboutusPage},
@@ -34,7 +36,8 @@ const routes = [
   { path: "/sellerverification", name: "SellerVerification", component: SellerVerification, meta: { guestOnly: true } },
   { path: "/sellerlogin", name: "LoginSeller", component: LoginSeller },
   {path: "/contactus", name: "ContactUs",component: ContactusPage},
-  // In your router/index.js
+
+  
 {
   path: '/product/:id',
   name: 'ProductDetails',
@@ -94,6 +97,7 @@ const routes = [
     component: OrderHistory, // Lazy load
     meta: { requiresUserAuth: true } // Add auth protection for order history
   }
+  
 ];
 
 const router = createRouter({

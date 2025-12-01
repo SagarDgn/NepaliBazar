@@ -13,8 +13,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,29 +30,29 @@ public class ChatController {
     public ChatController(SendMessageUseCase sendMessageUseCase,
                           SimpMessagingTemplate simpMessagingTemplate,
                           GetMessageUseCase getMessageUseCase
-                          ){
-        this.sendMessageUseCase=sendMessageUseCase;
-        this.simpMessagingTemplate=simpMessagingTemplate;
-        this.getMessageUseCase=getMessageUseCase;
+    ) {
+        this.sendMessageUseCase = sendMessageUseCase;
+        this.simpMessagingTemplate = simpMessagingTemplate;
+        this.getMessageUseCase = getMessageUseCase;
 
     }
 
     @MessageMapping("/chat.sendMessage")
     public RestResponse<Void> sendMessage(@Payload ChatMessageWrapper payload,
-                                          @Header("Authorization") String authorization){
-        try{
+                                          @Header("Authorization") String authorization) {
+        try {
 
-            if(authorization==null){
+            if (authorization == null) {
                 return RestResponse.error("Unauthorized");
             }
 
-            String token= authorization.replace("Bearer","").trim();
-            SendMessageUseCaseRequest request= new SendMessageUseCaseRequest(
+            String token = authorization.replace("Bearer", "").trim();
+            SendMessageUseCaseRequest request = new SendMessageUseCaseRequest(
                     payload.receiverEmail(),
                     payload.content()
             );
 
-            SendMessageUseCaseResponse response= sendMessageUseCase.execute(
+            SendMessageUseCaseResponse response = sendMessageUseCase.execute(
                     payload.token(), request
             );
 
@@ -64,35 +63,55 @@ public class ChatController {
             );
             simpMessagingTemplate.convertAndSendToUser(
                     response.receiverEmail(),
-                    "queue/messages",
+                    "/queue/messages",
                     response
             );
             return RestResponse.success();
 
-        }catch (Exception e){
-            return RestResponse.error("Internal error"+e.getLocalizedMessage());
+        } catch (Exception e) {
+            return RestResponse.error("Internal error" + e.getLocalizedMessage());
         }
     }
 
     @MessageMapping("/chat.getAll")
-    public RestResponse<Void> getMessage(@Header("Authorization") String authorization){
-        if (authorization==null){
+    public RestResponse<Void> getMessage(@Header("Authorization") String authorization,
+                                         @Payload String receiverEmail) {
+        if (authorization == null) {
             return RestResponse.error("Unauthorized");
-
         }
-        String token= authorization.replace("Bearer","").trim();
-        try{
-            List<GetMessageUseCaseResponse> allMessages= getMessageUseCase.execute(token);
+
+        String token = authorization.replace("Bearer", "").trim();
+
+        try {
+            // ✅ Pass both arguments now
+            List<GetMessageUseCaseResponse> allMessages = getMessageUseCase.execute(token, receiverEmail);
+
             simpMessagingTemplate.convertAndSendToUser(
                     JwtUtils.extractEmail(token),
                     "/queue/messages",
                     allMessages
             );
+
             return RestResponse.success();
 
-        }catch(Exception e){
+        } catch (Exception e) {
             return RestResponse.error(e.getLocalizedMessage());
         }
     }
 
+    @GetMapping("/history/{receiverEmail}")
+    public RestResponse<List<GetMessageUseCaseResponse>> getChatHistory(
+            @RequestHeader("Authorization") String authorization,
+            @PathVariable String receiverEmail
+    ) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return RestResponse.error("Unauthorized");
+        }
+
+        String token = authorization.replace("Bearer", "").trim();
+
+        List<GetMessageUseCaseResponse> messages = getMessageUseCase.execute(token, receiverEmail);
+        return RestResponse.success(messages);
+
+    }
 }

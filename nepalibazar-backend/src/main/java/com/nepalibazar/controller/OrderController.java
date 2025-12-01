@@ -10,6 +10,8 @@ import com.nepalibazar.usecase.order.get.GetOrderUseCaseResponse;
 import com.nepalibazar.usecase.order.place.PlaceOrderUseCase;
 import com.nepalibazar.usecase.order.place.PlaceOrderUseCaseRequest;
 import com.nepalibazar.usecase.order.place.PlaceOrderUseCaseResponse;
+import com.nepalibazar.usecase.order.sellerorder.GetSellerOrderUseCase;
+import com.nepalibazar.usecase.order.sellerorder.GetSellerOrderUseCaseResponse;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
@@ -20,14 +22,17 @@ public class OrderController {
     public final PlaceOrderUseCase placeOrderUseCase;
     public final CancelOrderUseCase cancelOrderUseCase;
     public final GetOrderUseCase getOrderUseCase;
+    public final GetSellerOrderUseCase getSellerOrderUseCase;
 
     @Inject
     public OrderController(PlaceOrderUseCase placeOrderUseCase,
                            CancelOrderUseCase cancelOrderUseCase,
-                           GetOrderUseCase getOrderUseCase){
+                           GetOrderUseCase getOrderUseCase,
+                           GetSellerOrderUseCase getSellerOrderUseCase){
         this.placeOrderUseCase=placeOrderUseCase;
         this.cancelOrderUseCase=cancelOrderUseCase;
         this.getOrderUseCase=getOrderUseCase;
+        this.getSellerOrderUseCase=getSellerOrderUseCase;
     }
 
     @Post("/place/order")
@@ -71,6 +76,20 @@ public class OrderController {
             return RestResponse.success(response);
         } catch (Exception e) {
             return RestResponse.error("Internal error: " + e.getMessage());
+        }
+    }
+
+    @Get("/orders/from/me")
+    public RestResponse<GetSellerOrderUseCaseResponse> getSellerOrders(@Header(HttpHeaders.AUTHORIZATION) String authorization){
+        if(authorization==null){
+            return RestResponse.error("Unauthorized");
+        }
+        try{
+            GetSellerOrderUseCaseResponse response= getSellerOrderUseCase.execute(authorization);
+            return RestResponse.success(response);
+        }catch (Exception e){
+            e.printStackTrace();
+            return RestResponse.error("Exception occur"+ e.getLocalizedMessage());
         }
     }
 }

@@ -5,26 +5,31 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.MacAlgorithm;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
 
 public class JwtUtils {
 
-    // Use same approach as Micronaut
+    // FIXED: Use same shared secret as Micronaut
+    private static final String SHARED_SECRET = "uhcwuhuoehywuoycue743nfey7e83y7ney37yucuy3y48374yf7y47";
+    private static final SecretKey SECRET_KEY = new SecretKeySpec(
+            SHARED_SECRET.getBytes(),
+            "HmacSHA256"
+    );
+
+    // FIXED: Use same algorithm as Micronaut
     private static final MacAlgorithm ALGORITHM = Jwts.SIG.HS256;
-    private static final SecretKey SECRET_KEY = ALGORITHM.key().build();
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
     private JwtUtils() {
-        // private constructor to prevent instantiation
     }
 
-    // Parse token and return claims
+    // FIXED: Use same new JJWT API as Micronaut
     public static Claims parseToken(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                .verifyWith(SECRET_KEY)  // Same API as Micronaut
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)  // Same API as Micronaut
+                .getPayload();
     }
 
     // Extract email/username from token
@@ -52,5 +57,4 @@ public class JwtUtils {
             return false;
         }
     }
-
 }

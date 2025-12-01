@@ -26,6 +26,10 @@ public class OrderEntity {
     @JoinColumn(name = "buyer_id")
     private UserEntity user;
 
+    @Column(name = "seller_email")
+    private String sellerEmail;
+
+
     @OneToMany(mappedBy = "order" ,cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
     private Set<OrderItemEntity> orderItem= new HashSet<>();
 
@@ -181,5 +185,13 @@ public class OrderEntity {
 
     public void setPaymentDetails(PaymentDetails paymentDetails) {
         this.paymentDetails = paymentDetails;
+    }
+
+    public String getSellerEmail() {
+        return sellerEmail;
+    }
+
+    public void setSellerEmail(String sellerEmail) {
+        this.sellerEmail = sellerEmail;
     }
 }

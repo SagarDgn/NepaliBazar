@@ -349,6 +349,7 @@ import {
 import CartService from "../services/CartService";
 import ProductService from "../services/ProductService";
 import WishlistService from "../services/WishlistService";
+import router from "../router";
 
 export default {
   name: "ProductDetails",
@@ -456,7 +457,7 @@ export default {
           // Check if data array exists and has items
           if (response.data.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
             const productData = response.data.data[0];
-            console.log('🎯 Product data received:', productData);
+            console.log(' Product data received:', productData);
             
             // Map backend fields to frontend structure
             this.product = {
@@ -475,7 +476,7 @@ export default {
               sellerId: productData.sellerEntity?.id
             };
             
-            console.log('✅ Mapped product:', this.product);
+            console.log(' Mapped product:', this.product);
             
             // Load seller information from the product data
             if (productData.sellerEntity) {
@@ -486,7 +487,7 @@ export default {
                 createdAt: productData.sellerEntity.createdAt,
                 email: productData.sellerEntity.emailPhone
               };
-              console.log('🏪 Seller info:', this.seller);
+              console.log(' Seller info:', this.seller);
             } else {
               // Fallback seller info
               this.seller = {
@@ -497,23 +498,23 @@ export default {
               };
             }
             
-            console.log('✅ SUCCESS: Product data loaded successfully');
+            console.log(' SUCCESS: Product data loaded successfully');
           } else {
-            console.log('❌ No product data found in response.data.data');
+            console.log(' No product data found in response.data.data');
             this.error = true;
           }
         } else {
-          console.log('❌ No response data or invalid response structure');
+          console.log(' No response data or invalid response structure');
           this.error = true;
         }
       } catch (error) {
-        console.error('💥 Error loading product details:', error);
-        console.error('💥 Error response:', error.response);
+        console.error(' Error loading product details:', error);
+        console.error(' Error response:', error.response);
         this.error = true;
         this.showCustomNotification('Failed to load product details', 'error');
       } finally {
         this.loading = false;
-        console.log('🏁 Loading completed, error:', this.error, 'Product ID:', this.product.id);
+        console.log(' Loading completed, error:', this.error, 'Product ID:', this.product.id);
       }
     },
 
@@ -523,7 +524,7 @@ export default {
         
         const wishlist = await WishlistService.getWishlistProducts();
         this.isWishlisted = wishlist.some(item => item.id === this.product.id);
-        console.log('❤️ Wishlist status:', this.isWishlisted);
+        console.log(' Wishlist status:', this.isWishlisted);
       } catch (error) {
         console.error('Error checking wishlist status:', error);
       }
@@ -642,7 +643,7 @@ export default {
         return;
       }
       
-      this.showCustomNotification("Contact feature coming soon!", 'info');
+      this.showCustomNotification("Feature coming soon.....");
     }
   }
 };

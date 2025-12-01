@@ -49,6 +49,7 @@ dependencies {
     implementation("com.google.http-client:google-http-client-gson:1.43.3")
     implementation("io.micronaut.security:micronaut-security-oauth2")
     implementation("io.micronaut.session:micronaut-session")
+    implementation("io.micronaut:micronaut-websocket")
 
 }
 
