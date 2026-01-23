@@ -21,6 +21,8 @@ public class SecurityUtils {
         return Base64.getEncoder().encodeToString(salt) + ":" + Base64.getEncoder().encodeToString(hash);
     }
 
+
+
     public static boolean verifyPassword(String password, String stored) {
         System.out.println("Password "+ password);
         System.out.println("Stored " + stored);

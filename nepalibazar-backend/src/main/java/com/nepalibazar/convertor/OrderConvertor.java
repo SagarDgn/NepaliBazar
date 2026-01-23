@@ -4,7 +4,6 @@ import com.nepalibazar.entity.*;
 import com.nepalibazar.usecase.order.place.PlaceOrderUseCaseRequest;
 
 public class OrderConvertor {
-    private OrderConvertor(){}
 
     public static OrderEntity fromCartAndRequest(UserEntity userEntity,
                                                  CartEntity cartEntity,
@@ -21,13 +20,13 @@ public class OrderConvertor {
         order.setDiscount(cartEntity.getDiscount());
         order.setTotalItem(cartEntity.getTotalItem());
 
-
         for (CartItemEntity cartItem : cartEntity.getCartItemEntities()) {
             OrderItemEntity orderItem = new OrderItemEntity();
             orderItem.setOrder(order);
             orderItem.setProductEntity(cartItem.getProductEntity());
-            orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setMrpPrice(cartItem.getPrice());
+            orderItem.setQuantity(cartItem.getQuantity()); // This is correct
+            orderItem.setMrpPrice(cartItem.getProductEntity().getPrice() * cartItem.getQuantity()); // Multiply by quantity
+            orderItem.setSellingPrice(cartItem.getProductEntity().getDiscountedPrice() * cartItem.getQuantity()); // Multiply by quantity
             order.getOrderItem().add(orderItem);
         }
 

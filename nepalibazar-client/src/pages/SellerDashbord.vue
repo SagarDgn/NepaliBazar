@@ -32,7 +32,7 @@
           <!-- Header Actions -->
           <div class="flex items-center space-x-4">
             <!-- Dark Mode Toggle -->
-            <button 
+            <!-- <button 
               @click="toggleDarkMode"
               class="p-3 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 group border border-gray-200 dark:border-gray-600"
               :title="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
@@ -43,7 +43,7 @@
               <svg v-else class="w-5 h-5 transform group-hover:rotate-180 transition-transform duration-500" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
               </svg>
-            </button>
+            </button> -->
 
             <!-- User Menu -->
             <div class="relative group">

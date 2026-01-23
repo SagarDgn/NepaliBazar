@@ -11,6 +11,9 @@ import com.nepalibazar.usecase.cart.remove.RemoveCartUseCaseRequest;
 import com.nepalibazar.usecase.cart.remove.RemoveCartUseCaseResponse;
 import com.nepalibazar.usecase.cart.removeall.ClearCartUseCase;
 import com.nepalibazar.usecase.cart.removeall.ClearCartUseCaseResponse;
+import com.nepalibazar.usecase.cart.update.UpdateCartItemUseCase;
+import com.nepalibazar.usecase.cart.update.UpdateCartItemUseCaseRequest;
+import com.nepalibazar.usecase.cart.update.UpdateCartItemUseCaseResponse;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
@@ -23,16 +26,19 @@ public class CartController {
     public final RemoveCartUseCase removeCartUseCase;
     public final GetCartItemsUseCase getCartItemsUseCase;
     public final ClearCartUseCase clearCartUseCase;
+    private final UpdateCartItemUseCase updateCartItemUseCase;
 
     @Inject
     public CartController(AddCartItemUseCase addCartItemUseCase,
                           RemoveCartUseCase removeCartUseCase,
                           GetCartItemsUseCase getCartItemsUseCase,
-                          ClearCartUseCase clearCartUseCase){
+                          ClearCartUseCase clearCartUseCase,
+                          UpdateCartItemUseCase updateCartItemUseCase){
         this.addCartItemUseCase=addCartItemUseCase;
         this.removeCartUseCase=removeCartUseCase;
         this.getCartItemsUseCase=getCartItemsUseCase;
         this.clearCartUseCase=clearCartUseCase;
+        this.updateCartItemUseCase =updateCartItemUseCase;
     }
 
 
@@ -75,6 +81,25 @@ public class CartController {
             GetUserCartItemUseCaseResponse response= getCartItemsUseCase.execute(authorization);
             return RestResponse.success(response);
         }catch (Exception e){
+            e.printStackTrace();
+            return RestResponse.error(e.getMessage());
+        }
+    }
+
+    @Put("/cart/update")
+    public RestResponse<UpdateCartItemUseCaseResponse> updateCartItem(
+            @Header(HttpHeaders.AUTHORIZATION) String authorization,
+            @Body UpdateCartItemUseCaseRequest request) {
+
+        if (authorization == null) {
+            return RestResponse.error("Unauthorized");
+        }
+        System.out.println("inside updatee");
+
+        try {
+            UpdateCartItemUseCaseResponse response = updateCartItemUseCase.execute(authorization, request);
+            return RestResponse.success(response);
+        } catch (Exception e) {
             e.printStackTrace();
             return RestResponse.error(e.getMessage());
         }

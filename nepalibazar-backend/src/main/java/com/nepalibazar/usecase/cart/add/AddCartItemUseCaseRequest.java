@@ -5,6 +5,7 @@ import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
 public record AddCartItemUseCaseRequest(
+        Integer quantity,
         Integer productId
 )implements UseCase.Request {
 }

@@ -210,11 +210,11 @@
               </div>
               <div class="flex items-center space-x-2">
                 <Shield class="w-4 h-4" />
-                <span>2-year warranty</span>
+                <span>No warranty</span>
               </div>
               <div class="flex items-center space-x-2">
                 <RotateCcw class="w-4 h-4" />
-                <span>30-day returns</span>
+                <span>No returns</span>
               </div>
               <div class="flex items-center space-x-2">
                 <Headphones class="w-4 h-4" />

@@ -23,6 +23,9 @@ import SellerProductPage from "../pages/SellerProductPage.vue";
 import SellerDashbord from "../pages/SellerDashbord.vue";
 import Checkout from "../pages/Checkout.vue";
 import ProductDetails from "../pages/ProductDetails.vue";
+import AdminLogin from "../pages/AdminLogin.vue";
+import AdminDashboard from "../pages/AdminDashboard.vue";
+
 
 
 const routes = [
@@ -96,7 +99,20 @@ const routes = [
     name: "OrderHistory", 
     component: OrderHistory, // Lazy load
     meta: { requiresUserAuth: true } // Add auth protection for order history
+  },
+
+  {
+    path: "/nepalibazar",
+    name: "AdminLoginPage",
+    component: AdminLogin
+  },
+  {
+    path: "/nepalibazar/dashboard",
+    name: "AdminDashboard",
+    component: AdminDashboard
   }
+
+
   
 ];
 

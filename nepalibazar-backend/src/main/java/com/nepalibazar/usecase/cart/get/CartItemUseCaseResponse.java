@@ -5,6 +5,7 @@ import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
 public record CartItemUseCaseResponse(
+        Integer cartId,
         Integer productId,
         String productName,
         Double price,

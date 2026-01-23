@@ -321,7 +321,7 @@
               </div>
 
               <div class="flex items-start space-x-4">
-                <div
+                <!-- <div
                   class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0"
                 >
                   <svg
@@ -344,7 +344,7 @@
                     Quick and hassle-free returns with your saved preferences
                     and address.
                   </p>
-                </div>
+                </div> -->
               </div>
             </div>
 

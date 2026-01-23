@@ -178,10 +178,10 @@
                     <!-- Quantity Controls -->
                     <div class="flex items-center space-x-3 mt-4">
                       <button
-                        @click.stop="updateQuantity(item.productId, item.quantity - 1)"
-                        :disabled="item.quantity <= 1 || isLoading"
+                        @click.stop="decreaseQuantity(item)"
+                        :disabled="item.quantity <= 1 || isLoading || updatingItemId === item.productId"
                         class="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                        :class="{ 'hover:bg-gray-200': item.quantity > 1 && !isLoading }"
+                        :class="{ 'hover:bg-gray-200': item.quantity > 1 && !isLoading && updatingItemId !== item.productId }"
                       >
                         <span class="text-gray-600 font-semibold text-lg">−</span>
                       </button>
@@ -189,13 +189,14 @@
                       <div class="flex flex-col items-center">
                         <span class="w-16 text-center font-semibold text-gray-700 bg-gray-50 py-2 rounded-lg text-lg border border-gray-200">
                           {{ item.quantity }}
+                          <span v-if="updatingItemId === item.productId" class="text-xs text-gray-400 block">Updating...</span>
                         </span>
                         <span class="text-xs text-gray-500 mt-1">quantity</span>
                       </div>
                       
                       <button
-                        @click.stop="updateQuantity(item.productId, item.quantity + 1)"
-                        :disabled="isLoading"
+                        @click.stop="increaseQuantity(item)"
+                        :disabled="isLoading || updatingItemId === item.productId"
                         class="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <span class="text-gray-600 font-semibold text-lg">+</span>
@@ -203,8 +204,8 @@
 
                       <!-- Remove Button -->
                       <button
-                        @click.stop="showRemoveConfirmation(item.productId, item.productName)"
-                        :disabled="isLoading"
+                        @click.stop="showRemoveConfirmation(item.cartItemIds[0], item.productName)"
+                        :disabled="isLoading || updatingItemId === item.productId"
                         class="ml-4 px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg transition-all duration-200 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300 hover:border-gray-400"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -339,6 +340,7 @@ export default {
       totalMrpPrice: 0,
       totalSellingPrice: 0,
       isLoading: false,
+      updatingItemId: null, // Track which product is being updated
       showNotification: false,
       notificationMessage: '',
       notificationType: 'success',
@@ -357,10 +359,16 @@ export default {
       this.cartItems.forEach(item => {
         if (merged[item.productId]) {
           merged[item.productId].quantity += item.quantity;
+          // Store all cartItemIds for this product
+          if (!merged[item.productId].cartItemIds) {
+            merged[item.productId].cartItemIds = [];
+          }
+          merged[item.productId].cartItemIds.push(item.cartItemId);
         } else {
           merged[item.productId] = {
             ...item,
-            quantity: item.quantity
+            quantity: item.quantity,
+            cartItemIds: [item.cartItemId]
           };
         }
       });
@@ -424,8 +432,8 @@ export default {
       await this.clearCart();
     },
 
-    showRemoveConfirmation(productId, productName) {
-      this.productToRemove = productId;
+    showRemoveConfirmation(cartItemId, productName) {
+      this.productToRemove = cartItemId;
       this.productNameToRemove = productName;
       this.showRemoveConfirmationModal = true;
     },
@@ -458,6 +466,13 @@ export default {
           this.totalItems = cartData.totalItems || 0;
           this.totalMrpPrice = cartData.totalMrpPrice || 0;
           this.totalSellingPrice = cartData.totalSellingPrice || 0;
+          
+          // Log cart items for debugging
+          console.log("Cart items with IDs:", this.cartItems.map(item => ({
+            productId: item.productId,
+            cartItemId: item.cartItemId,
+            name: item.productName
+          })));
         } else {
           this.showCustomNotification(result.message || "Failed to load cart", 'error');
         }
@@ -469,40 +484,87 @@ export default {
       }
     },
 
-    async updateQuantity(productId, quantity) {
-      if (quantity < 1) return;
+    async increaseQuantity(item) {
+      const newQuantity = item.quantity + 1;
+      await this.updateCartItemQuantity(item, newQuantity);
+    },
+
+    async decreaseQuantity(item) {
+      if (item.quantity <= 1) {
+        // If quantity would be 0, show remove confirmation
+        this.showRemoveConfirmation(item.cartItemIds[0], item.productName);
+        return;
+      }
       
-      this.isLoading = true;
+      const newQuantity = item.quantity - 1;
+      await this.updateCartItemQuantity(item, newQuantity);
+    },
+
+    async updateCartItemQuantity(item, newQuantity) {
+      if (newQuantity < 1) return;
+      
+      // Track which item is updating
+      this.updatingItemId = item.productId;
+      
+      // Update local state immediately for better UX
+      const oldQuantity = item.quantity;
+      item.quantity = newQuantity;
+      this.calculateTotals();
+      
       try {
-        // Update quantity locally since we don't have backend API
-        const itemIndex = this.cartItems.findIndex(item => item.productId === productId);
-        if (itemIndex !== -1) {
-          this.cartItems[itemIndex].quantity = quantity;
+        // Find the cartItemId to use for API call
+        // Use the first cartItemId for this product
+        const cartItemId = item.cartItemIds ? item.cartItemIds[0] : item.cartItemId;
+        
+        if (!cartItemId) {
+          throw new Error("No cartItemId found for this product");
+        }
+        
+        // Call the backend API
+        const result = await CartService.updateCartItem(cartItemId, newQuantity);
+        
+        if (result.success) {
+          this.showCustomNotification(result.message || "Quantity updated successfully!", 'success');
           
-          // Recalculate totals
+          // Refresh cart data from server to ensure consistency
+          await this.fetchCart();
+        } else {
+          // Revert local changes if API call failed
+          item.quantity = oldQuantity;
           this.calculateTotals();
           
-          this.showCustomNotification("Quantity updated successfully!", 'success');
+          // Show error message
+          if (result.message.includes("only") && result.message.includes("available")) {
+            // Stock limitation error
+            this.showCustomNotification(result.message, 'error');
+            await this.fetchCart(); // Refresh to get correct stock info
+          } else {
+            this.showCustomNotification(result.message || "Failed to update quantity", 'error');
+          }
         }
       } catch (error) {
         console.error("Update quantity error:", error);
+        
+        // Revert local changes
+        item.quantity = oldQuantity;
+        this.calculateTotals();
+        
         this.showCustomNotification("Failed to update quantity. Please try again.", 'error');
       } finally {
-        this.isLoading = false;
+        this.updatingItemId = null;
       }
     },
 
     calculateTotals() {
-      // Recalculate all totals based on current cart items
-      this.totalItems = this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
-      this.totalMrpPrice = this.cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      this.totalItems = this.mergedCartItems.reduce((sum, item) => sum + item.quantity, 0);
+      this.totalMrpPrice = this.mergedCartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       this.totalSellingPrice = this.totalMrpPrice; // Assuming no discounts for now
     },
 
-    async removeItem(productId) {
+    async removeItem(cartItemId) {
       this.isLoading = true;
       try {
-        const result = await CartService.removeCartItem(productId);
+        const result = await CartService.removeCartItem(cartItemId);
         if (result.success) {
           this.showCustomNotification("Item removed from cart", 'success');
           await this.fetchCart();

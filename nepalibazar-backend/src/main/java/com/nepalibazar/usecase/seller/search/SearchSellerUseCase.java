@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class SearchSellerUseCase  {
 
-    public final SellerRepository sellerRepository;
+    private final SellerRepository sellerRepository;
 
     @Inject
     public SearchSellerUseCase (SellerRepository sellerRepository){

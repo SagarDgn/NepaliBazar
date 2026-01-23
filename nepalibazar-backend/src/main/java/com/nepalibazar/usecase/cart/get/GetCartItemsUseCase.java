@@ -56,6 +56,7 @@ public class GetCartItemsUseCase {
 
             List<CartItemUseCaseResponse> items= cartEntity.getCartItemEntities().stream()
                     .map(item->new CartItemUseCaseResponse(
+                            item.getCartItemId(),
                             item.getProductEntity().getId(),
                             item.getProductEntity().getProductName(),
                             item.getPrice(),
